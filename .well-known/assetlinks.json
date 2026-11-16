@@ -1,1 +1,8 @@
-
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.netlify.rovcell.twa",
+        "sha256_cert_fingerprints": ["F3:F2:3A:64:D4:4C:6A:6F:B0:BC:FE:74:B6:F9:A7:D4:D1:C4:7E:B8:EA:B2:32:BC:C4:89:AB:8C:FD:50:92:72"]
+      }
+    }]
