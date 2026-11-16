@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rovcell Smartphone - Cek Status & Service Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            dark: '#050b14',
+                            card: '#0a192f',
+                            border: '#1e3a8a',
+                            glow: 'rgba(0, 243, 255, 0.3)'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050b14;
+            color: #e2e8f0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 102, 255, 0.05) 0%, transparent 40%);
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+        }
+        .circuit-bg {
+            background-image: linear-gradient(rgba(5, 11, 20, 0.9), rgba(5, 11, 20, 0.9)), 
+                              url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300f3ff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4H-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+<link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#00f3ff">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+</head>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('ServiceWorker registered: ', reg))
+                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+            });
+        }
+    </script>
+</head>
+
+<body class="circuit-bg min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="border-b border-neon-border bg-neon-dark/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col items-center justify-center text-center gap-3">
+            <div class="flex flex-col items-center space-y-1.5 cursor-pointer" onclick="switchTab('home')">
+                <div>
+                    <h1 class="font-orbitron font-bold text-xl tracking-wider text-white">ROVCELL</h1>
+                    <p class="text-xs text-neon-blue tracking-widest uppercase">Smartphone Service</p>
+                    <p class="text-[11px] text-slate-400 mt-1 flex items-center justify-center gap-1.5"><i class="fa-solid fa-location-dot text-neon-blue"></i> Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3 pt-1">
+                <button type="button" onclick="switchTab('home')" class="px-4 py-2 text-sm font-medium rounded-lg transition text-slate-300 hover:text-neon-blue hover:bg-neon-blue/10 cursor-pointer">
+                    <i class="fa-solid fa-magnifying-glass mr-2"></i>Cek Status
+                </button>
+                <button type="button" onclick="checkAdminAccess()" class="px-4 py-2 text-sm font-semibold rounded-lg bg-neon-blue/10 border border-neon-blue text-neon-blue neon-glow hover:bg-neon-blue hover:text-neon-dark transition cursor-pointer">
+                    <i class="fa-solid fa-lock mr-2"></i>Admin Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+        
+        <!-- SECTION: HOME / CEK STATUS -->
+        <section id="tab-home" class="max-w-xl mx-auto space-y-8">
+            <div class="text-center space-y-3">
+                <h2 class="font-orbitron text-3xl font-bold text-white">Lacak Status Service HP</h2>
+                <p class="text-slate-400 text-sm">Masukkan nomor nota dan PIN 3 digit nomor HP Anda untuk melihat progres perbaikan.</p>
+            </div>
+
+            <div class="bg-neon-card p-6 rounded-2xl neon-glow border border-neon-border space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="space-y-2 sm:col-span-2">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-sm font-medium text-neon-blue">Nomor Nota Service</label>
+                            <button type="button" onclick="openLupaNotaModal()" class="text-xs text-neon-blue hover:underline font-medium cursor-pointer"><i class="fa-solid fa-circle-question mr-1"></i>Minta Nomor Nota</button>
+                        </div>
+                        <div class="relative w-full flex items-center">
+                            <span class="absolute left-4 text-neon-blue font-bold font-orbitron text-sm">ROV-</span>
+                            <input type="text" id="searchNotaInput" placeholder="0001" class="w-full bg-neon-dark border border-neon-border rounded-xl pl-16 pr-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-neon-blue uppercase">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-neon-blue">3 Digit Terakhir No. WA</label>
+                        <input type="text" id="searchPhonePin" maxlength="3" placeholder="Cth: 876" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-neon-blue text-center tracking-widest font-bold">
+                    </div>
+                </div>
+
+                <button type="button" onclick="searchService()" class="w-full bg-neon-blue text-neon-dark font-bold py-3 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-search"></i> Cek Status Service
+                </button>
+                
+                <!-- Riwayat Pengecekan Cepat -->
+                <div id="recentSearchesContainer" class="hidden pt-3 border-t border-slate-800 space-y-2">
+                    <div class="flex justify-between items-center text-[11px] text-slate-400">
+                        <span><i class="fa-solid fa-clock-rotate-left mr-1.5 text-neon-blue"></i>Riwayat Pengecekan Terakhir:</span>
+                        <button type="button" onclick="clearRecentSearches()" class="text-slate-500 hover:text-red-400 text-[10px] underline cursor-pointer">Hapus Riwayat</button>
+                    </div>
+                    <div id="recentChipsList" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+
+            <div id="searchResultContainer" class="hidden space-y-4"></div>
+        </section>
+
+        <!-- SECTION: ADMIN LOGIN -->
+        <section id="tab-login" class="max-w-md mx-auto hidden">
+            <div class="bg-neon-card p-8 rounded-2xl neon-glow border border-neon-border space-y-6">
+                <div class="text-center space-y-2">
+                    <div class="w-12 h-12 bg-neon-blue/10 border border-neon-blue rounded-full flex items-center justify-center mx-auto text-neon-blue text-xl neon-glow">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h2 class="font-orbitron text-2xl font-bold text-white">Admin Login</h2>
+                    <p class="text-slate-400 text-xs">Masukkan kredensial admin Rovcell</p>
+                </div>
+                <form id="loginForm" onsubmit="handleAdminLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Username</label>
+                        <input type="text" id="adminUser" required class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-neon-blue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
+                        <input type="password" id="adminPass" required class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-neon-blue">
+                    </div>
+                    <button type="submit" class="w-full bg-neon-blue text-neon-dark font-bold py-3 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 cursor-pointer">
+                        Masuk Dashboard
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- SECTION: ADMIN DASHBOARD -->
+        <section id="tab-admin" class="hidden space-y-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow">
+                <div>
+                    <h2 class="font-orbitron text-2xl font-bold text-white">Admin Dashboard</h2>
+                    <p class="text-[11px] text-slate-400">Kelola data service, harga modal, laba, dan status perbaikan.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button type="button" onclick="openAdminProfileModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm rounded-xl border border-slate-700 transition cursor-pointer">
+                        <i class="fa-solid fa-user-gear mr-2 text-neon-blue"></i>Edit Profil Admin
+                    </button>
+                    <button type="button" onclick="handleLogout()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm rounded-xl border border-slate-700 transition cursor-pointer">
+                        <i class="fa-solid fa-right-from-bracket mr-2"></i>Keluar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ringkasan Keuangan Harian & Bulanan -->
+            <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
+                    <h3 class="font-orbitron text-base font-bold text-white"><i class="fa-solid fa-chart-pie mr-2 text-neon-blue"></i>Ringkasan Keuangan (Harian & Bulanan)</h3>
+                    <div class="flex items-center gap-2">
+                        <label class="text-xs text-slate-300 font-medium">Pilih Bulan:</label>
+                        <input type="month" id="filterMonthInput" onchange="updateFinancialStats()" class="bg-neon-dark border border-neon-border rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-neon-blue font-orbitron">
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-[11px] text-slate-400 font-orbitron">
+                                <th class="py-2 px-3">Metrik Keuangan</th>
+                                <th class="py-2 px-3 text-right">Nilai / Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm divide-y divide-slate-800/50">
+                            <tr class="bg-slate-900/40">
+                                <td colspan="2" class="py-2 px-3 font-orbitron text-xs font-bold text-neon-blue"><i class="fa-solid fa-calendar-day mr-1.5"></i>Hari Ini</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 text-slate-300">Pendapatan Kotor Harian</td>
+                                <td id="statDailyGross" class="py-2.5 px-3 text-right font-orbitron font-bold text-cyan-400">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 text-slate-300">Total Modal Harian</td>
+                                <td id="statDailyModal" class="py-2.5 px-3 text-right font-orbitron font-bold text-orange-400">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 text-slate-300">Pendapatan Bersih Harian</td>
+                                <td id="statDailyProfit" class="py-2.5 px-3 text-right font-orbitron font-bold text-emerald-400">Rp 0</td>
+                            </tr>
+                            <tr class="bg-slate-900/40">
+                                <td colspan="2" class="py-2 px-3 font-orbitron text-xs font-bold text-neon-blue"><i class="fa-solid fa-calendar-days mr-1.5"></i>Bulanan</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 text-slate-300">Pendapatan Kotor Bulanan</td>
+                                <td id="statMonthlyGross" class="py-2.5 px-3 text-right font-orbitron font-bold text-cyan-400">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 text-slate-300">Total Modal Bulanan</td>
+                                <td id="statMonthlyModal" class="py-2.5 px-3 text-right font-orbitron font-bold text-orange-400">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 text-slate-300">Pendapatan Bersih Bulanan</td>
+                                <td id="statMonthlyProfit" class="py-2.5 px-3 text-right font-orbitron font-bold text-emerald-400">Rp 0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Form Input Service -->
+            <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <h3 id="formTitle" class="font-orbitron text-lg font-bold text-white"><i class="fa-solid fa-plus-circle mr-2 text-neon-blue"></i>Tambah Service Baru</h3>
+                    <button type="button" id="cancelEditBtn" onclick="resetServiceForm()" class="hidden text-[11px] text-slate-400 hover:text-white underline cursor-pointer">Batalkan Edit</button>
+                </div>
+
+                <form id="serviceForm" onsubmit="saveServiceData(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="space-y-1">
+                        <label class="block text-xs font-medium text-slate-300">Nomor Nota</label>
+                        <input type="text" id="inputNota" readonly class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-neon-blue font-bold text-sm">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-medium text-slate-300">Nama Pelanggan</label>
+                        <input type="text" id="inputNama" required placeholder="Nama Pelanggan" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-medium text-slate-300">No. WhatsApp</label>
+                        <input type="text" id="inputPhone" required placeholder="08xxxxxxxxxx" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-medium text-slate-300">Merk / Type HP</label>
+                        <input type="text" id="inputMerk" required placeholder="Samsung A52" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-medium text-slate-300">Kerusakan</label>
+                        <input type="text" id="inputKerusakan" required placeholder="Ganti LCD" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-medium text-slate-300">Harga Modal (Rp)</label>
+                        <input type="number" id="inputModal" required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-medium text-slate-300">Biaya Service / Jual (Rp)</label>
+                        <input type="number" id="inputBiaya" required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+                    </div>
+                    <div class="space-y-1 md:col-span-2 lg:col-span-3 flex items-center pt-2">
+                        <label class="flex items-center space-x-3 bg-neon-dark border border-neon-border px-4 py-3 rounded-xl cursor-pointer hover:border-neon-blue w-full">
+                            <input type="checkbox" id="inputLunas" class="w-4 h-4 text-neon-blue rounded focus:ring-0 bg-neon-dark border-neon-border">
+                            <span class="text-xs font-semibold text-white"><i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i>Status Pembayaran Lunas (Sudah Lunas)</span>
+                        </label>
+                    </div>
+                    <div class="space-y-1 md:col-span-2 lg:col-span-3">
+                        <label class="block text-xs font-medium text-slate-300 mb-2">Status Perbaikan</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-2" id="statusOptions">
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputStatus" value="Menunggu Pengecekan" checked class="text-neon-blue focus:ring-0">
+                                <span>Menunggu Pengecekan</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputStatus" value="Sedang Dikerjakan" class="text-neon-blue focus:ring-0">
+                                <span>Sedang Dikerjakan</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputStatus" value="Menunggu Sparepart" class="text-neon-blue focus:ring-0">
+                                <span>Menunggu Sparepart</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputStatus" value="Selesai" class="text-neon-blue focus:ring-0">
+                                <span>Selesai</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputStatus" value="Diambil" class="text-neon-blue focus:ring-0">
+                                <span>Diambil</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-red-500/40 p-2.5 rounded-xl cursor-pointer hover:border-red-500 text-xs">
+                                <input type="radio" name="inputStatus" value="Dibatalkan (Belum Diambil)" class="text-red-500 focus:ring-0">
+                                <span class="text-red-400">Batal (Belum Diambil)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-red-500/40 p-2.5 rounded-xl cursor-pointer hover:border-red-500 text-xs">
+                                <input type="radio" name="inputStatus" value="Dibatalkan (Sudah Diambil)" class="text-red-500 focus:ring-0">
+                                <span class="text-red-400">Batal (Sudah Diambil)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="space-y-1 md:col-span-2 lg:col-span-3">
+                        <label class="block text-xs font-medium text-slate-300 mb-2">Pilihan Garansi (Aktif saat status "Diambil")</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2" id="garansiOptions">
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputGaransi" value="Tidak ada" class="text-neon-blue focus:ring-0">
+                                <span>Tidak ada</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputGaransi" value="1 minggu" class="text-neon-blue focus:ring-0">
+                                <span>1 Minggu</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputGaransi" value="1 bulan" checked class="text-neon-blue focus:ring-0">
+                                <span>1 Bulan</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputGaransi" value="3 bulan" class="text-neon-blue focus:ring-0">
+                                <span>3 Bulan</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputGaransi" value="6 bulan" class="text-neon-blue focus:ring-0">
+                                <span>6 Bulan</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
+                                <input type="radio" name="inputGaransi" value="1 tahun" class="text-neon-blue focus:ring-0">
+                                <span>1 Tahun</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3 space-y-1">
+                        <label class="block text-xs font-medium text-slate-300">Keterangan Perbaikan</label>
+                        <textarea id="inputKeterangan" rows="2" placeholder="Detail pengerjaan..." class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue"></textarea>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3 flex justify-end pt-2">
+                        <button type="submit" class="bg-neon-blue text-neon-dark font-bold px-6 py-3 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 text-sm cursor-pointer">
+                            <i class="fa-solid fa-save mr-2"></i>Simpan Data Service
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabel Data (4 Baris per Nota Pelanggan) -->
+            <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <h3 class="font-orbitron text-lg font-bold text-white"><i class="fa-solid fa-list mr-2 text-neon-blue"></i>Daftar Service Pelanggan</h3>
+                    <input type="text" id="adminSearch" oninput="renderAdminTable()" placeholder="Cari nota / nama..." class="bg-neon-dark border border-neon-border rounded-xl px-4 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-neon-blue w-full sm:w-64">
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-[11px] text-slate-400 font-orbitron">
+                                <th class="py-1.5 px-2 text-[11px]">Nota & Tanggal (Masuk / Keluar)</th>
+                                <th class="py-1.5 px-2 text-[11px]">Pelanggan & Kontak</th>
+                                <th class="py-1.5 px-2 text-[11px]">Unit, Keuangan & Status Bayar</th>
+                                <th class="py-1.5 px-2 text-[11px] text-right">Status & Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody" class="text-sm divide-y divide-slate-800/50"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Lupa Nomor Nota -->
+    <div id="lupaNotaModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow max-w-md w-full space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-orbitron font-bold text-white text-base"><i class="fa-solid fa-magnifying-glass-location mr-2 text-neon-blue"></i>Cari Nomor Nota Anda</h3>
+                <button type="button" onclick="closeLupaNotaModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="text-[11px] text-slate-400">Masukkan nomor WhatsApp lengkap yang terdaftar saat service untuk melihat daftar nota dan tanggal masuk Anda.</p>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-neon-blue mb-1">Nomor WhatsApp</label>
+                    <input type="text" id="lupaPhoneInput" placeholder="Cth: 081234567890" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-neon-blue">
+                </div>
+                <button type="button" onclick="executeLupaNotaSearch()" class="w-full bg-neon-blue text-neon-dark font-bold py-3 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 text-sm cursor-pointer">
+                    Cari Nota Saya
+                </button>
+            </div>
+            <div id="lupaNotaResultContainer" class="hidden pt-3 border-t border-slate-800 space-y-2 max-h-60 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Profil Admin -->
+    <div id="adminProfileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow max-w-sm w-full space-y-4">
+            <h3 class="font-orbitron font-bold text-white text-lg">Edit Profil Admin</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Username Baru</label>
+                    <input type="text" id="newAdminUser" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Password Baru</label>
+                    <input type="password" id="newAdminPass" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeAdminProfileModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-sm rounded-xl cursor-pointer">Batal</button>
+                    <button type="button" onclick="updateAdminProfile()" class="px-4 py-2 bg-neon-blue text-neon-dark font-bold text-sm rounded-xl cursor-pointer">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-neon-border bg-neon-dark/80 py-4 text-center text-xs text-slate-500 font-orbitron">
+        &copy; 2026 ROVCELL SMARTPHONE. All Rights Reserved.
+    </footer>
+
+    <!-- Modal QRIS Pembayaran -->
+    <div id="qrisModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cyan-500 p-6 rounded-3xl neon-glow max-w-sm w-full space-y-4 text-slate-900 shadow-2xl relative">
+            <button type="button" onclick="closeQrisModal()" class="absolute top-4 right-4 w-8 h-8 bg-black/10 hover:bg-black/20 rounded-full flex items-center justify-center text-slate-900 transition cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center space-y-1 pt-2">
+                <div class="font-orbitron font-extrabold text-2xl tracking-wide text-slate-900">gopay <span class="text-xs font-sans uppercase font-bold tracking-widest bg-slate-900 text-cyan-400 px-2 py-0.5 rounded-full inline-block ml-1">merchant</span></div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-xl space-y-3 text-center border-4 border-white">
+                <div class="flex justify-between items-center px-1">
+                    <div class="font-black tracking-tighter text-lg text-slate-900 flex items-center gap-1">
+                        <span class="text-red-600 font-serif">QRIS</span>
+                        <span class="text-[9px] font-normal leading-tight text-left text-slate-600 border-l border-slate-300 pl-1">QR Code Standar<br>Pembayaran Nasional</span>
+                    </div>
+                    <div class="text-red-600 font-bold text-xs uppercase tracking-wider flex items-center gap-1">
+                        <i class="fa-solid fa-dove"></i> GPN
+                    </div>
+                </div>
+                <div class="space-y-0.5">
+                    <div class="font-orbitron font-extrabold text-slate-900 text-sm tracking-wide">ROVCELL SMARTPHONE</div>
+                    <div class="text-[11px] font-mono text-slate-600 tracking-wider">NMID: ID1026618784064</div>
+                    <div class="text-[10px] font-bold text-slate-500">A01</div>
+                </div>
+                <div class="w-56 h-56 mx-auto bg-white p-1 rounded-xl border-2 border-slate-200 flex items-center justify-center overflow-hidden">
+                    <img src="https://lh3.googleusercontent.com/d/1HZIe5gqKrYl8mcTtbCc2UrQIJiX0Ojh1" alt="QRIS Rovcell" class="w-full h-full object-contain">
+                </div>
+                <div class="text-[10px] text-slate-500 font-mono">Dicetak oleh: 93600914</div>
+                <button type="button" onclick="downloadQrisImage()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-md mt-2 cursor-pointer">
+                    <i class="fa-solid fa-download text-cyan-400"></i> Download QRIS
+                </button>
+            </div>
+            <div class="bg-slate-900 p-4 rounded-2xl text-white space-y-3 shadow-lg">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-400">Total Tagihan:</span>
+                    <span id="qrisTotalCost" class="font-orbitron font-bold text-cyan-400 text-sm">Rp 0</span>
+                </div>
+                <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-2.5 text-[11px] text-cyan-300 text-center leading-relaxed">
+                    <i class="fa-solid fa-circle-info mr-1"></i> Setelah melakukan pembayaran, silakan klik tombol di bawah dan kirimkan screenshot bukti transfer melalui WhatsApp.
+                </div>
+                <button type="button" onclick="confirmQrisPaymentWhatsApp()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
+                    <i class="fa-brands fa-whatsapp text-base"></i> Konfirmasi Pembayaran via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, setDoc, doc, deleteDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB_rbX12MbpGpbwjgbbi9O-ZXj1FsjzSVs",
+            authDomain: "rovcell-app.firebaseapp.com",
+            projectId: "rovcell-app",
+            storageBucket: "rovcell-app.firebasestorage.app",
+            messagingSenderId: "651419436645",
+            appId: "1:651419436645:web:ecdfbd27d69a7bcdb5288c",
+            measurementId: "G-DDRHGBYHZQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.collection = collection;
+        window.getDocs = getDocs;
+        window.setDoc = setDoc;
+        window.doc = doc;
+        window.deleteDoc = deleteDoc;
+        window.getDoc = getDoc;
+        window.onSnapshot = onSnapshot;
+
+        initAppData();
+    </script>
+
+    <!-- App Logic Script -->
+    <script>
+        let serviceList = [];
+        let isAdminLoggedIn = false;
+        let currentAdminUsername = "admin";
+        let activeQrisNotaItem = null;
+
+        async function initAppData() {
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const monthInput = document.getElementById('filterMonthInput');
+            if (monthInput) monthInput.value = `${yyyy}-${mm}`;
+
+            await loadServicesFromDB();
+            generateNextNota();
+        }
+
+        function loadServicesFromDB() {
+            try {
+                if (!window.db) return;
+                window.onSnapshot(window.collection(window.db, "services"), (querySnapshot) => {
+                    serviceList = [];
+                    querySnapshot.forEach((docSnap) => {
+                        serviceList.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    serviceList.sort((a, b) => b.nota.localeCompare(a.nota));
+                    updateFinancialStats();
+                    if (isAdminLoggedIn) renderAdminTable();
+                    
+                    const activeNotaInput = document.getElementById('searchNotaInput');
+                    const activePinInput = document.getElementById('searchPhonePin');
+                    if (activeNotaInput && activeNotaInput.value && activePinInput && activePinInput.value) {
+                        const container = document.getElementById('searchResultContainer');
+                        if (container && !container.classList.contains('hidden')) {
+                            searchService();
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error("Gagal memuat data real-time:", e);
+            }
+        }
+
+        function generateNextNota() {
+            let nextNum = 1;
+            if (serviceList.length > 0) {
+                let maxNum = 0;
+                serviceList.forEach(item => {
+                    let parts = item.nota.split('-');
+                    if (parts.length === 2) {
+                        let num = parseInt(parts[1]);
+                        if (!isNaN(num) && num > maxNum) maxNum = num;
+                    }
+                });
+                nextNum = maxNum + 1;
+            }
+            let notaStr = 'ROV-' + String(nextNum).padStart(4, '0');
+            const notaEl = document.getElementById('inputNota');
+            if (notaEl) notaEl.value = notaStr;
+        }
+
+        function switchTab(tabId) {
+            document.getElementById('tab-home').classList.add('hidden');
+            document.getElementById('tab-login').classList.add('hidden');
+            document.getElementById('tab-admin').classList.add('hidden');
+
+            if (tabId === 'home') document.getElementById('tab-home').classList.remove('hidden');
+            else if (tabId === 'login') document.getElementById('tab-login').classList.remove('hidden');
+            else if (tabId === 'admin') {
+                if (!isAdminLoggedIn) { switchTab('login'); return; }
+                document.getElementById('tab-admin').classList.remove('hidden');
+                renderAdminTable();
+                updateFinancialStats();
+                generateNextNota();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function checkAdminAccess() {
+            if (isAdminLoggedIn) switchTab('admin');
+            else switchTab('login');
+        }
+
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('adminUser').value;
+            const p = document.getElementById('adminPass').value;
+            try {
+                const docRef = window.doc(window.db, "settings", "adminCredentials");
+                const docSnap = await window.getDoc(docRef);
+                let validUser = "admin";
+                let validPass = "rovcell2026";
+                if (docSnap.exists()) {
+                    validUser = docSnap.data().username || "admin";
+                    validPass = docSnap.data().password || "rovcell2026";
+                } else {
+                    await window.setDoc(docRef, { username: validUser, password: validPass });
+                }
+                if (u === validUser && p === validPass) {
+                    isAdminLoggedIn = true;
+                    currentAdminUsername = validUser;
+                    document.getElementById('adminUser').value = '';
+                    document.getElementById('adminPass').value = '';
+                    switchTab('admin');
+                } else {
+                    showCustomAlert("Username dan password Salah !");
+                }
+            } catch (err) {
+                console.error(err);
+                showCustomAlert("Username dan password Salah !");
+            }
+        }
+
+        function showCustomAlert(message) {
+            let alertBox = document.createElement('div');
+            alertBox.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4';
+            alertBox.innerHTML = `
+                <div class="bg-neon-card p-6 rounded-2xl border border-red-500/50 neon-glow max-w-sm w-full space-y-4 text-center">
+                    <div class="w-12 h-12 bg-red-500/20 border border-red-500/40 rounded-full flex items-center justify-center mx-auto text-red-400 text-xl">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-base">Pemberitahuan</h3>
+                    <p class="text-xs text-slate-300">${message}</p>
+                    <button type="button" onclick="this.closest('.fixed').remove()" class="w-full bg-neon-blue text-neon-dark font-bold py-2.5 rounded-xl text-xs cursor-pointer">OK</button>
+                </div>
+            `;
+            document.body.appendChild(alertBox);
+        }
+
+        function handleLogout() {
+            isAdminLoggedIn = false;
+            switchTab('home');
+        }
+
+        async function saveServiceData(e) {
+            e.preventDefault();
+            const nota = document.getElementById('inputNota').value;
+            const nama = document.getElementById('inputNama').value;
+            const phone = document.getElementById('inputPhone').value;
+            const merk = document.getElementById('inputMerk').value;
+            const kerusakan = document.getElementById('inputKerusakan').value;
+            const modal = parseFloat(document.getElementById('inputModal').value) || 0;
+            const biaya = parseFloat(document.getElementById('inputBiaya').value) || 0;
+            const isPaid = document.getElementById('inputLunas').checked;
+            
+            const statusEl = document.querySelector('input[name="inputStatus"]:checked');
+            const status = statusEl ? statusEl.value : 'Menunggu Pengecekan';
+
+            const garansiEl = document.querySelector('input[name="inputGaransi"]:checked');
+            const garansi = garansiEl ? garansiEl.value : 'Tidak ada';
+            const keterangan = document.getElementById('inputKeterangan').value;
+            
+            let existingItem = serviceList.find(s => s.nota === nota);
+            let date = existingItem && existingItem.date ? existingItem.date : new Date().toISOString().split('T')[0];
+
+            let keluarDate = existingItem && existingItem.keluarDate ? existingItem.keluarDate : null;
+            if ((status === 'Diambil' || status === 'Dibatalkan (Sudah Diambil)') && !keluarDate) {
+                keluarDate = new Date().toISOString().split('T')[0];
+            } else if (status !== 'Diambil' && status !== 'Dibatalkan (Sudah Diambil)') {
+                keluarDate = null;
+            }
+
+            let diambilDate = (status === 'Diambil') ? keluarDate : null;
+
+            const newData = { nota, nama, phone, merk, kerusakan, modal, biaya, isPaid, status, garansi, keterangan, date, diambilDate, keluarDate };
+            try {
+                await window.setDoc(window.doc(window.db, "services", nota), newData);
+                alert("Data service berhasil disimpan!");
+                
+                let index = serviceList.findIndex(s => s.nota === nota);
+                if (index !== -1) {
+                    serviceList[index] = newData;
+                } else {
+                    serviceList.unshift(newData);
+                }
+                
+                resetServiceForm();
+                await loadServicesFromDB();
+            } catch (err) {
+                console.error(err);
+                alert("Gagal menyimpan data.");
+            }
+        }
+
+        function resetServiceForm() {
+            document.getElementById('serviceForm').reset();
+            document.getElementById('inputLunas').checked = false;
+            generateNextNota();
+        }
+
+        async function deleteService(nota) {
+            if (confirm(`Hapus nota ${nota}?`)) {
+                try {
+                    await window.deleteDoc(window.doc(window.db, "services", nota));
+                    await loadServicesFromDB();
+                } catch (err) {
+                    console.error(err);
+                    alert("Gagal menghapus data.");
+                }
+            }
+        }
+
+        function calculateGaransiExpiry(diambilDateStr, garansiType) {
+            if (!diambilDateStr || garansiType === 'Tidak ada') return null;
+            let parts = diambilDateStr.split('-');
+            if (parts.length !== 3) return null;
+            let dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+            
+            if (garansiType.includes('minggu')) {
+                let weeks = parseInt(garansiType) || 1;
+                dateObj.setDate(dateObj.getDate() + (weeks * 7));
+            } else if (garansiType.includes('bulan')) {
+                let months = parseInt(garansiType) || 1;
+                dateObj.setMonth(dateObj.getMonth() + months);
+            } else if (garansiType.includes('tahun')) {
+                let years = parseInt(garansiType) || 1;
+                dateObj.setFullYear(dateObj.getFullYear() + years);
+            }
+
+            let d = String(dateObj.getDate()).padStart(2, '0');
+            let m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            let y = dateObj.getFullYear();
+            return `${d}-${m}-${y}`;
+        }
+
+        function isGaransiActive(diambilDateStr, garansiType) {
+            if (!diambilDateStr || garansiType === 'Tidak ada') return false;
+            let parts = diambilDateStr.split('-');
+            if (parts.length !== 3) return false;
+            let startObj = new Date(parts[0], parts[1] - 1, parts[2]);
+            let expiryObj = new Date(startObj);
+
+            if (garansiType.includes('minggu')) {
+                let weeks = parseInt(garansiType) || 1;
+                expiryObj.setDate(expiryObj.getDate() + (weeks * 7));
+            } else if (garansiType.includes('bulan')) {
+                let months = parseInt(garansiType) || 1;
+                expiryObj.setMonth(expiryObj.getMonth() + months);
+            } else if (garansiType.includes('tahun')) {
+                let years = parseInt(garansiType) || 1;
+                expiryObj.setFullYear(expiryObj.getFullYear() + years);
+            }
+
+            let now = new Date();
+            return now >= startObj && now <= expiryObj;
+        }
+
+        function editService(nota) {
+            const item = serviceList.find(s => s.nota === nota);
+            if (!item) return;
+            document.getElementById('inputNota').value = item.nota;
+            document.getElementById('inputNama').value = item.nama;
+            document.getElementById('inputPhone').value = item.phone || '';
+            document.getElementById('inputMerk').value = item.merk;
+            document.getElementById('inputKerusakan').value = item.kerusakan;
+            document.getElementById('inputModal').value = item.modal || 0;
+            document.getElementById('inputBiaya').value = item.biaya;
+            document.getElementById('inputLunas').checked = !!item.isPaid;
+            
+            const statusRadios = document.querySelectorAll('input[name="inputStatus"]');
+            statusRadios.forEach(r => {
+                if (r.value === (item.status || 'Menunggu Pengecekan')) {
+                    r.checked = true;
+                }
+            });
+
+            const garansiRadios = document.querySelectorAll('input[name="inputGaransi"]');
+            garansiRadios.forEach(r => {
+                if (r.value === (item.garansi || 'Tidak ada')) {
+                    r.checked = true;
+                }
+            });
+
+            document.getElementById('inputKeterangan').value = item.keterangan;
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminTableBody');
+            const keyword = document.getElementById('adminSearch').value.toLowerCase();
+            tbody.innerHTML = '';
+            const filtered = serviceList.filter(s => s.nota.toLowerCase().includes(keyword) || s.nama.toLowerCase().includes(keyword) || s.merk.toLowerCase().includes(keyword));
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-500">Belum ada data service pelanggan yang ditemukan.</td></tr>`;
+                return;
+            }
+            filtered.forEach(s => {
+                let garansiBadge = '';
+                if (s.status === 'Diambil' && s.garansi && s.garansi !== 'Tidak ada' && s.diambilDate) {
+                    let expiryStr = calculateGaransiExpiry(s.diambilDate, s.garansi);
+                    let active = isGaransiActive(s.diambilDate, s.garansi);
+                    if (active) {
+                        garansiBadge = `<span class="inline-block px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-[10px] font-semibold rounded-md"><i class="fa-solid fa-shield-halved mr-1"></i>Garansi: ${s.garansi} (s/d ${expiryStr})</span>`;
+                    } else {
+                        garansiBadge = `<span class="inline-block px-2 py-0.5 bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] rounded-md"><i class="fa-solid fa-shield-xmark mr-1"></i>Garansi Habis (${expiryStr})</span>`;
+                    }
+                } else if (s.garansi && s.garansi !== 'Tidak ada') {
+                    garansiBadge = `<span class="inline-block px-2 py-0.5 bg-slate-800 text-slate-400 text-[10px] rounded-md">Garansi: ${s.garansi}</span>`;
+                }
+
+                let paymentToggleHtml = `
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" ${s.isPaid ? 'checked' : ''} onchange="quickTogglePaid('${s.nota}', this.checked)" class="sr-only peer">
+                        <div class="relative w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500 border border-slate-700"></div>
+                        <span class="ms-2 text-[11px] font-bold ${s.isPaid ? 'text-emerald-400' : 'text-red-400'}">${s.isPaid ? 'LUNAS' : 'BELUM'}</span>
+                    </label>
+                `;
+
+                const statuses = ['Menunggu Pengecekan', 'Sedang Dikerjakan', 'Menunggu Sparepart', 'Selesai', 'Diambil', 'Dibatalkan (Belum Diambil)', 'Dibatalkan (Sudah Diambil)'];
+                let optionsHtml = '';
+                statuses.forEach(st => {
+                    optionsHtml += `<option value="${st}" ${s.status === st ? 'selected' : ''}>${st}</option>`;
+                });
+
+                let profit = (s.biaya || 0) - (s.modal || 0);
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-800/40 transition border-t border-slate-800/80">
+                        <td colspan="4" class="py-1.5 px-2 text-[11px]">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-orbitron text-xs text-neon-blue font-bold">${s.nota}</span>
+                                    <span class="text-slate-500 text-[10px]">|</span>
+                                    <span class="text-slate-400"><i class="fa-regular fa-calendar mr-1"></i>Masuk: ${s.date || '-'}</span>
+                                    <span class="text-slate-500 text-[10px]">|</span>
+                                    <span class="text-slate-400"><i class="fa-regular fa-calendar-check mr-1"></i>Keluar: ${s.keluarDate || '-'}</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/40 transition bg-slate-900/10">
+                        <td colspan="4" class="py-1.5 px-2 text-[11px]">
+                            <div class="font-semibold text-white">
+                                <i class="fa-regular fa-user text-neon-blue mr-1.5"></i>${s.nama} 
+                                <span class="text-slate-400 font-normal text-[10px] ml-2">(<i class="fa-brands fa-whatsapp text-emerald-400 mr-0.5"></i>${s.phone || '-'})</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/40 transition bg-slate-900/30">
+                        <td colspan="4" class="py-1.5 px-2 text-[11px]">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div>
+                                    <div class="font-medium text-slate-200"><i class="fa-solid fa-mobile-screen text-slate-400 mr-1.5"></i>${s.merk}</div>
+                                    <div class="text-slate-400 mt-0.5"><span class="text-slate-500">Kerusakan:</span> ${s.kerusakan}</div>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-4 text-slate-300">
+                                    <div>${paymentToggleHtml}</div>
+                                    <span>Pendapatan Kotor: <span class="font-semibold text-cyan-400">Rp ${(s.biaya || 0).toLocaleString('id-ID')}</span></span>
+                                    <span>Modal: <span class="font-semibold text-orange-400">Rp ${(s.modal || 0).toLocaleString('id-ID')}</span></span>
+                                    <span>Pendapatan Bersih: <span class="font-bold text-emerald-400">Rp ${profit.toLocaleString('id-ID')}</span></span>
+                                    <div>${garansiBadge}</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/40 transition bg-slate-900/50 border-b border-slate-800/80">
+                        <td colspan="4" class="py-2 px-2 text-[11px]">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-slate-400 font-medium">Status Pengerjaan:</span>
+                                    <select onchange="quickUpdateStatus('${s.nota}', this.value)" class="bg-neon-dark border border-neon-blue/60 text-neon-blue font-semibold text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:border-neon-blue cursor-pointer shadow-md min-w-[150px]">
+                                        ${optionsHtml}
+                                    </select>
+                                </div>
+                                <div class="inline-flex items-center gap-1.5">
+                                    <span class="text-slate-400 font-medium mr-1">Aksi:</span>
+                                    <button type="button" onclick="editService('${s.nota}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition text-[11px] font-semibold shadow flex items-center gap-1 cursor-pointer" title="Edit Detail">
+                                        <i class="fa-solid fa-pen text-[10px]"></i> Edit
+                                    </button>
+                                    <button type="button" onclick="notifyCustomerWhatsApp('${s.nota}')" class="px-2.5 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 rounded-lg transition text-[11px] font-semibold shadow flex items-center gap-1 cursor-pointer" title="Kirim WA">
+                                        <i class="fa-brands fa-whatsapp text-xs"></i> WA
+                                    </button>
+                                    <button type="button" onclick="deleteService('${s.nota}')" class="px-2.5 py-1 bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 rounded-lg transition text-[11px] font-semibold shadow flex items-center gap-1 cursor-pointer" title="Hapus">
+                                        <i class="fa-solid fa-trash text-[10px]"></i> Hapus
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function quickTogglePaid(nota, isPaidVal) {
+            const item = serviceList.find(s => s.nota === nota);
+            if (!item) return;
+            const updatedData = { ...item, isPaid: isPaidVal };
+            try {
+                await window.setDoc(window.doc(window.db, "services", nota), updatedData);
+            } catch (err) {
+                console.error(err);
+                alert("Gagal memperbarui status pembayaran.");
+            }
+        }
+
+        function updateFinancialStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const monthInputVal = document.getElementById('filterMonthInput').value; // YYYY-MM
+            
+            let dailyProfit = 0, dailyModal = 0, dailyGross = 0;
+            let monthlyProfit = 0, monthlyModal = 0, monthlyGross = 0;
+
+            serviceList.forEach(s => {
+                let modal = s.modal || 0;
+                let biaya = s.biaya || 0;
+                let profit = biaya - modal;
+                let itemDate = s.date || '';
+
+                if (itemDate === today) {
+                    dailyProfit += profit;
+                    dailyModal += modal;
+                    dailyGross += biaya;
+                }
+
+                if (monthInputVal && itemDate.startsWith(monthInputVal)) {
+                    monthlyProfit += profit;
+                    monthlyModal += modal;
+                    monthlyGross += biaya;
+                }
+            });
+
+            document.getElementById('statDailyProfit').innerText = `Rp ${dailyProfit.toLocaleString('id-ID')}`;
+            document.getElementById('statDailyModal').innerText = `Rp ${dailyModal.toLocaleString('id-ID')}`;
+            document.getElementById('statDailyGross').innerText = `Rp ${dailyGross.toLocaleString('id-ID')}`;
+
+            document.getElementById('statMonthlyProfit').innerText = `Rp ${monthlyProfit.toLocaleString('id-ID')}`;
+            document.getElementById('statMonthlyModal').innerText = `Rp ${monthlyModal.toLocaleString('id-ID')}`;
+            document.getElementById('statMonthlyGross').innerText = `Rp ${monthlyGross.toLocaleString('id-ID')}`;
+        }
+
+        function openAdminProfileModal() {
+            document.getElementById('newAdminUser').value = currentAdminUsername;
+            document.getElementById('newAdminPass').value = '';
+            document.getElementById('adminProfileModal').classList.remove('hidden');
+        }
+
+        function closeAdminProfileModal() {
+            document.getElementById('adminProfileModal').classList.add('hidden');
+        }
+
+        async function updateAdminProfile() {
+            const u = document.getElementById('newAdminUser').value.trim();
+            const p = document.getElementById('newAdminPass').value.trim();
+            if (!u || !p) {
+                alert("Username dan password tidak boleh kosong!");
+                return;
+            }
+            try {
+                const docRef = window.doc(window.db, "settings", "adminCredentials");
+                await window.setDoc(docRef, { username: u, password: p }, { merge: true });
+                currentAdminUsername = u;
+                alert("Profil admin berhasil diperbarui!");
+                closeAdminProfileModal();
+            } catch (err) {
+                console.error(err);
+                alert("Gagal memperbarui profil admin.");
+            }
+        }
+
+        function openQrisModal(nota) {
+            const item = serviceList.find(s => s.nota === nota);
+            if (!item) return;
+            activeQrisNotaItem = item;
+            document.getElementById('qrisTotalCost').innerText = `Rp ${(item.biaya || 0).toLocaleString('id-ID')}`;
+            document.getElementById('qrisModal').classList.remove('hidden');
+        }
+
+        function closeQrisModal() {
+            document.getElementById('qrisModal').classList.add('hidden');
+            activeQrisNotaItem = null;
+        }
+
+        function confirmQrisPaymentWhatsApp() {
+            if (!activeQrisNotaItem) return;
+            let text = `Halo Admin Rovcell Smartphone, saya sudah melakukan pembayaran lewat QRIS untuk service dengan Nomor Nota *${activeQrisNotaItem.nota}* atas nama *${activeQrisNotaItem.nama}* (${activeQrisNotaItem.merk}) sejumlah Rp ${(activeQrisNotaItem.biaya || 0).toLocaleString('id-ID')}. Berikut bukti transfernya. Terima kasih!`;
+            let phoneTarget = '6288908890176';
+            window.open(`https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`, '_blank');
+            closeQrisModal();
+        }
+
+        async function downloadQrisImage() {
+            const imageUrl = "https://lh3.googleusercontent.com/d/1HZIe5gqKrYl8mcTtbCc2UrQIJiX0Ojh1";
+            try {
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = "QRIS-Rovcell-Smartphone.jpg";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl);
+            } catch (err) {
+                console.error("Gagal mendownload via blob:", err);
+                window.open(imageUrl, '_blank');
+            }
+        }
+
+        function getProgressBarHtml(currentStatus) {
+            if (currentStatus && currentStatus.startsWith('Dibatalkan')) {
+                return `
+                    <div class="py-4 px-4 bg-red-500/10 rounded-2xl border border-red-500/30 my-2 text-center space-y-2">
+                        <div class="w-12 h-12 bg-red-500/20 border border-red-500/40 rounded-full flex items-center justify-center mx-auto text-red-400 text-xl">
+                            <i class="fa-solid fa-ban"></i>
+                        </div>
+                        <div class="font-orbitron font-bold text-red-400 text-base">Service Dibatalkan</div>
+                        <p class="text-[11px] text-slate-400">Proses perbaikan untuk unit ini telah dibatalkan.</p>
+                    </div>
+                `;
+            }
+
+            const steps = [
+                { name: 'Menunggu Pengecekan', label: 'Pengecekan', icon: 'fa-clipboard-question' },
+                { name: 'Sedang Dikerjakan', label: 'Perbaikan', icon: 'fa-screwdriver-wrench' },
+                { name: 'Selesai', label: 'Selesai', icon: 'fa-circle-check' },
+                { name: 'Diambil', label: 'Diambil', icon: 'fa-bag-shopping' }
+            ];
+
+            let activeIdx = 0;
+            if (currentStatus === 'Menunggu Pengecekan') activeIdx = 0;
+            else if (currentStatus === 'Sedang Dikerjakan' || currentStatus === 'Menunggu Sparepart') activeIdx = 1;
+            else if (currentStatus === 'Selesai') activeIdx = 2;
+            else if (currentStatus === 'Diambil') activeIdx = 3;
+
+            let html = '<div class="py-4 px-2 bg-neon-dark/60 rounded-2xl border border-neon-border/60 my-2"><div class="flex items-center justify-between relative max-w-md mx-auto px-4">';
+            html += '<div class="absolute left-10 right-10 top-5 h-1 bg-slate-800 -z-0"></div>';
+            
+            steps.forEach((step, idx) => {
+                let isCompleted = idx <= activeIdx;
+                let isCurrent = idx === activeIdx;
+                
+                let circleClass = isCompleted ? 'bg-neon-blue text-neon-dark neon-glow border-neon-blue scale-110 shadow-lg shadow-cyan-500/50' : 'bg-slate-900 text-slate-500 border-slate-700';
+                if (isCurrent) circleClass += ' ring-4 ring-neon-blue/40 font-black animate-pulse';
+
+                html += `
+                    <div class="flex flex-col items-center relative z-10 space-y-2">
+                        <div class="w-10 h-10 rounded-xl border-2 flex items-center justify-center font-bold text-sm transition-all duration-300 ${circleClass}">
+                            <i class="fa-solid ${step.icon}"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold tracking-wide text-center ${isCurrent ? 'text-neon-blue font-bold bg-neon-blue/10 px-2 py-0.5 rounded-md border border-neon-blue/40 shadow' : (isCompleted ? 'text-slate-200' : 'text-slate-500')}">${step.label}</span>
+                    </div>
+                `;
+            });
+
+            html += '</div></div>';
+            return html;
+        }
+
+        function searchService() {
+            let rawInput = document.getElementById('searchNotaInput').value.trim().toUpperCase();
+            let pinInput = document.getElementById('searchPhonePin').value.trim();
+            const container = document.getElementById('searchResultContainer');
+            container.classList.remove('hidden');
+
+            if (!rawInput) {
+                container.innerHTML = `<div class="bg-neon-card p-6 rounded-2xl border border-red-500/30 text-center space-y-2"><i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i><h3 class="font-orbitron font-bold text-white">Masukkan Nomor Nota</h3><p class="text-[11px] text-slate-400">Kolom nomor nota wajib diisi.</p></div>`;
+                return;
+            }
+
+            if (!pinInput || pinInput.length !== 3) {
+                container.innerHTML = `<div class="bg-neon-card p-6 rounded-2xl border border-red-500/30 text-center space-y-2"><i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i><h3 class="font-orbitron font-bold text-white">Masukkan 3 Digit Akhir No. HP</h3><p class="text-[11px] text-slate-400">Demi keamanan, masukkan 3 digit terakhir nomor WhatsApp pelanggan yang terdaftar.</p></div>`;
+                return;
+            }
+
+            let query = rawInput.startsWith('ROV-') ? rawInput : 'ROV-' + rawInput.padStart(4, '0');
+            const item = serviceList.find(s => s.nota === query);
+
+            if (!item) {
+                container.innerHTML = `<div class="bg-neon-card p-6 rounded-2xl border border-red-500/30 text-center space-y-2"><i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i><h3 class="font-orbitron font-bold text-white">Nota Tidak Ditemukan</h3><p class="text-[11px] text-slate-400">Pastikan nomor nota benar.</p></div>`;
+                return;
+            }
+
+            let cleanPhone = (item.phone || '').replace(/[^0-9]/g, '');
+            let last3Digits = cleanPhone.slice(-3);
+
+            if (last3Digits !== pinInput) {
+                container.innerHTML = `<div class="bg-neon-card p-6 rounded-2xl border border-red-500/30 text-center space-y-2"><i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i><h3 class="font-orbitron font-bold text-white">Verifikasi Gagal</h3><p class="text-[11px] text-slate-400">3 digit akhir nomor HP yang Anda masukkan tidak sesuai dengan data nota ${item.nota}.</p></div>`;
+                return;
+            }
+
+            saveRecentSearch(item.nota, pinInput, item.nama, item.merk);
+
+            let statusColor = 'text-yellow-400 border-yellow-500/30 bg-yellow-500/10';
+            if (item.status === 'Selesai') statusColor = 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10';
+            if (item.status === 'Diambil') statusColor = 'text-blue-400 border-blue-500/30 bg-blue-500/10';
+            if (item.status && item.status.startsWith('Dibatalkan')) statusColor = 'text-red-400 border-red-500/30 bg-red-500/10';
+
+            let paymentBadge = item.isPaid 
+                ? `<span class="px-3 py-1 rounded-full text-xs border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>LUNAS</span>`
+                : `<span class="px-3 py-1 rounded-full text-xs border border-red-500/30 bg-red-500/10 text-red-400 font-bold"><i class="fa-solid fa-clock mr-1"></i>BELUM LUNAS</span>`;
+
+            let qrisButtonHtml = '';
+            if (!item.isPaid) {
+                qrisButtonHtml = `
+                    <button type="button" onclick="openQrisModal('${item.nota}')" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer">
+                        <i class="fa-solid fa-qrcode text-base"></i> Bayar dengan QRIS
+                    </button>
+                `;
+            }
+
+            let garansiHtml = '';
+            let klaimGaransiBtn = '';
+            if (item.status === 'Diambil' && item.garansi && item.garansi !== 'Tidak ada') {
+                let expiryStr = calculateGaransiExpiry(item.diambilDate, item.garansi);
+                let active = isGaransiActive(item.diambilDate, item.garansi);
+                
+                garansiHtml = `
+                    <div class="p-3 bg-neon-dark rounded-xl border border-neon-blue/30 space-y-1 text-xs">
+                        <div class="flex items-center justify-between">
+                            <span class="text-slate-400"><i class="fa-solid fa-shield-halved text-neon-blue mr-2"></i>Garansi (${item.garansi}):</span>
+                            <span class="font-bold text-neon-blue">Aktif s/d ${expiryStr || '-'}</span>
+                        </div>
+                    </div>
+                `;
+
+                if (active) {
+                    klaimGaransiBtn = `
+                        <button type="button" onclick="claimGaransi('${item.nota}')" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer">
+                            <i class="fa-solid fa-shield-check text-base"></i> Klaim Garansi Service
+                        </button>
+                    `;
+                }
+            }
+
+            let progressBar = getProgressBarHtml(item.status);
+
+            container.innerHTML = `
+                <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-4">
+                    <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+                        <div><span class="text-[11px] text-slate-400">Nomor Nota</span><h3 class="font-orbitron font-bold text-neon-blue text-lg">${item.nota}</h3></div>
+                        <div class="flex items-center gap-2">
+                            ${paymentBadge}
+                            <span class="px-3 py-1 rounded-full text-xs border ${statusColor}">${item.status}</span>
+                        </div>
+                    </div>
+                    ${progressBar}
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div><span class="text-slate-500 block">Nama Pelanggan</span><span class="font-medium text-white text-sm">${item.nama}</span></div>
+                        <div><span class="text-slate-500 block">Tanggal Masuk</span><span class="font-medium text-white text-sm">${item.date || '-'}</span></div>
+                        ${item.keluarDate ? `<div><span class="text-slate-500 block">Tanggal Keluar</span><span class="font-medium text-white text-sm">${item.keluarDate}</span></div>` : ''}
+                        <div><span class="text-slate-500 block">Merk / Tipe HP</span><span class="font-medium text-white text-sm">${item.merk}</span></div>
+                        <div><span class="text-slate-500 block">Kerusakan</span><span class="font-medium text-white text-sm">${item.kerusakan}</span></div>
+                    </div>
+                    <div class="p-3 bg-neon-dark rounded-xl border border-slate-800 text-xs space-y-1"><span class="text-slate-500 block">Keterangan Perbaikan:</span><p class="text-slate-300">${item.keterangan || 'Belum ada keterangan.'}</p></div>
+                    ${garansiHtml}
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-800"><span class="text-[11px] text-slate-400">Total Biaya:</span><span class="font-orbitron font-bold text-white text-base">Rp ${(item.biaya || 0).toLocaleString('id-ID')}</span></div>
+                    ${qrisButtonHtml}
+                    ${klaimGaransiBtn}
+                    <button type="button" onclick="contactAdminWhatsApp('${item.nota}')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2 cursor-pointer"><i class="fa-brands fa-whatsapp text-base"></i> Hubungi Admin via WhatsApp</button>
+                </div>
+            `;
+        }
+
+        function claimGaransi(nota) {
+            const item = serviceList.find(s => s.nota === nota);
+            if (!item) return;
+            let text = `Halo Admin Rovcell Smartphone, saya ingin melakukan KLAIM GARANSI untuk service dengan Nomor Nota *${item.nota}* atas nama *${item.nama}* (${item.merk}). Garansi aktif s/d ${calculateGaransiExpiry(item.diambilDate, item.garansi)}. Terima kasih!`;
+            let phoneTarget = '6288908890176';
+            window.open(`https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function contactAdminWhatsApp(nota) {
+            const item = serviceList.find(s => s.nota === nota);
+            if (!item) return;
+            let text = `Halo Admin Rovcell Smartphone, saya ingin menanyakan status service dengan Nomor Nota *${item.nota}* atas nama *${item.nama}* (${item.merk}). Status saat ini: *${item.status}*.`;
+            let phoneTarget = '6288908890176';
+            window.open(`https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function notifyCustomerWhatsApp(nota) {
+            const item = serviceList.find(s => s.nota === nota);
+            if (!item || !item.phone) {
+                alert("Nomor WhatsApp pelanggan tidak valid atau kosong!");
+                return;
+            }
+            let paidStatusText = item.isPaid ? "Sudah Lunas" : "Belum Lunas";
+            let text = `Halo ${item.nama}, informasi mengenai service HP ${item.merk} dengan Nomor Nota *${item.nota}* di Rovcell Smartphone. Status saat ini: *${item.status}* (${item.keterangan || 'Dalam proses'}). Pembayaran: *${paidStatusText}*. Total biaya: Rp ${(item.biaya || 0).toLocaleString('id-ID')}. Terima kasih!`;
+            let phoneTarget = item.phone.replace(/[^0-9]/g, '');
+            if (phoneTarget.startsWith('0')) phoneTarget = '62' + phoneTarget.substring(1);
+            window.open(`https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function saveRecentSearch(nota, pin, nama, merk) {
+            let history = JSON.parse(localStorage.getItem('rovcell_recent_searches') || '[]');
+            history = history.filter(item => item.nota !== nota);
+            history.unshift({ nota, pin, nama, merk, timestamp: new Date().toLocaleDateString('id-ID') });
+            if (history.length > 5) history.pop();
+            localStorage.setItem('rovcell_recent_searches', JSON.stringify(history));
+            renderRecentSearches();
+        }
+
+        function renderRecentSearches() {
+            let history = JSON.parse(localStorage.getItem('rovcell_recent_searches') || '[]');
+            const container = document.getElementById('recentSearchesContainer');
+            const chipsList = document.getElementById('recentChipsList');
+            if (!container || !chipsList) return;
+
+            if (history.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            chipsList.innerHTML = '';
+
+            history.forEach(item => {
+                chipsList.innerHTML += `
+                    <button type="button" onclick="fillSearchForm('${item.nota}', '${item.pin}')" class="px-3 py-1.5 bg-neon-dark hover:bg-neon-blue/10 border border-neon-border hover:border-neon-blue rounded-xl text-xs flex items-center gap-2 transition text-left group cursor-pointer">
+                        <div>
+                            <span class="font-orbitron font-bold text-neon-blue">${item.nota}</span>
+                            <span class="text-slate-400 text-[10px] ml-1">(${item.merk || item.nama})</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-[10px] text-slate-500 group-hover:text-neon-blue"></i>
+                    </button>
+                `;
+            });
+        }
+
+        function fillSearchForm(nota, pin) {
+            let cleanNota = nota.replace('ROV-', '');
+            document.getElementById('searchNotaInput').value = cleanNota;
+            document.getElementById('searchPhonePin').value = pin;
+            searchService();
+        }
+
+        function clearRecentSearches() {
+            localStorage.removeItem('rovcell_recent_searches');
+            renderRecentSearches();
+        }
+
+        async function quickUpdateStatus(nota, newStatus) {
+            const item = serviceList.find(s => s.nota === nota);
+            if (!item) return;
+
+            let date = new Date().toISOString().split('T')[0];
+            let keluarDate = item.keluarDate || null;
+            if ((newStatus === 'Diambil' || newStatus === 'Dibatalkan (Sudah Diambil)') && !keluarDate) {
+                keluarDate = date;
+            } else if (newStatus !== 'Diambil' && newStatus !== 'Dibatalkan (Sudah Diambil)') {
+                keluarDate = null;
+            }
+            let diambilDate = (newStatus === 'Diambil') ? keluarDate : null;
+
+            const updatedData = { ...item, status: newStatus, diambilDate, keluarDate };
+            try {
+                await window.setDoc(window.doc(window.db, "services", nota), updatedData);
+            } catch (err) {
+                console.error(err);
+                alert("Gagal memperbarui status secara cepat.");
+            }
+        }
+
+        function openLupaNotaModal() {
+            document.getElementById('lupaNotaModal').classList.remove('hidden');
+            document.getElementById('lupaPhoneInput').value = '';
+            document.getElementById('lupaNotaResultContainer').innerHTML = '';
+            document.getElementById('lupaNotaResultContainer').classList.add('hidden');
+        }
+
+        function closeLupaNotaModal() {
+            document.getElementById('lupaNotaModal').classList.add('hidden');
+        }
+
+        function executeLupaNotaSearch() {
+            let phoneQuery = document.getElementById('lupaPhoneInput').value.trim();
+            const resultContainer = document.getElementById('lupaNotaResultContainer');
+            resultContainer.classList.remove('hidden');
+            resultContainer.innerHTML = '';
+
+            if (!phoneQuery) {
+                resultContainer.innerHTML = `<p class="text-xs text-red-400 text-center py-2">Masukkan nomor WhatsApp terlebih dahulu.</p>`;
+                return;
+            }
+
+            let cleanQuery = phoneQuery.replace(/[^0-9]/g, '');
+            if (cleanQuery.startsWith('0')) cleanQuery = '62' + cleanQuery.substring(1);
+
+            let matches = serviceList.filter(s => {
+                let itemPhone = (s.phone || '').replace(/[^0-9]/g, '');
+                if (itemPhone.startsWith('0')) itemPhone = '62' + itemPhone.substring(1);
+                return itemPhone.includes(cleanQuery) || cleanQuery.includes(itemPhone);
+            });
+
+            if (matches.length === 0) {
+                resultContainer.innerHTML = `<p class="text-[11px] text-slate-400 text-center py-2">Tidak ditemukan data service dengan nomor WhatsApp tersebut.</p>`;
+                return;
+            }
+
+            resultContainer.innerHTML = `<p class="text-xs font-medium text-neon-blue mb-1">Ditemukan ${matches.length} nota:</p>`;
+            matches.forEach(m => {
+                let last3 = (m.phone || '').replace(/[^0-9]/g, '').slice(-3);
+                resultContainer.innerHTML += `
+                    <div class="p-3 bg-neon-dark rounded-xl border border-neon-border/60 flex justify-between items-center text-xs">
+                        <div>
+                            <span class="font-orbitron font-bold text-neon-blue text-sm">${m.nota}</span>
+                            <div class="text-slate-300 font-medium mt-0.5">${m.merk} (${m.kerusakan})</div>
+                            <div class="text-slate-400 text-[11px] mt-0.5"><i class="fa-regular fa-calendar mr-1"></i>Masuk: ${m.date || '-'}</div>
+                        </div>
+                        <button type="button" onclick="selectNotaFromLupa('${m.nota}', '${last3}')" class="px-3 py-2 bg-neon-blue/10 hover:bg-neon-blue hover:text-neon-dark border border-neon-blue text-neon-blue rounded-lg transition font-bold cursor-pointer">
+                            Pilih
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function selectNotaFromLupa(nota, last3Pin) {
+            let cleanNota = nota.replace('ROV-', '');
+            document.getElementById('searchNotaInput').value = cleanNota;
+            document.getElementById('searchPhonePin').value = last3Pin;
+            closeLupaNotaModal();
+            searchService();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderRecentSearches();
+        });
+    </script>
+</body>
+</html>
