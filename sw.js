@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rovcell-pwa-v2';
+const CACHE_NAME = 'rovcell-pwa-v1';
 const ASSETS_TO_CACHE = [
     './index.html',
     './manifest.json',
@@ -34,6 +34,8 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
             return response || fetch(event.request);
-        }).catch(() => {})
+        }).catch(() => {
+            // Optional fallback for offline if needed
+        })
     );
 });
