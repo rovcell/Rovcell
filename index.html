@@ -49,7 +49,6 @@
 <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#00f3ff">
     <link rel="apple-touch-icon" href="./icon-192.png">
-</head>
 
     <!-- PWA Service Worker Registration -->
     <script>
@@ -492,6 +491,15 @@
 
     <!-- App Logic Script -->
     <script>
+        
+        function getLocalDateStr() {
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
         let serviceList = [];
         let isAdminLoggedIn = false;
         let currentAdminUsername = "admin";
@@ -644,11 +652,11 @@
             const keterangan = document.getElementById('inputKeterangan').value;
             
             let existingItem = serviceList.find(s => s.nota === nota);
-            let date = existingItem && existingItem.date ? existingItem.date : new Date().toISOString().split('T')[0];
+            let date = existingItem && existingItem.date ? existingItem.date : getLocalDateStr();
 
             let keluarDate = existingItem && existingItem.keluarDate ? existingItem.keluarDate : null;
             if ((status === 'Diambil' || status === 'Dibatalkan (Sudah Diambil)') && !keluarDate) {
-                keluarDate = new Date().toISOString().split('T')[0];
+                keluarDate = getLocalDateStr();
             } else if (status !== 'Diambil' && status !== 'Dibatalkan (Sudah Diambil)') {
                 keluarDate = null;
             }
@@ -887,7 +895,7 @@
         }
 
         function updateFinancialStats() {
-            const today = new Date().toISOString().split('T')[0];
+            const today = getLocalDateStr();
             const monthInputVal = document.getElementById('filterMonthInput').value; // YYYY-MM
             
             let dailyProfit = 0, dailyModal = 0, dailyGross = 0;
@@ -1226,7 +1234,7 @@
             const item = serviceList.find(s => s.nota === nota);
             if (!item) return;
 
-            let date = new Date().toISOString().split('T')[0];
+            let date = getLocalDateStr();
             let keluarDate = item.keluarDate || null;
             if ((newStatus === 'Diambil' || newStatus === 'Dibatalkan (Sudah Diambil)') && !keluarDate) {
                 keluarDate = date;
