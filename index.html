@@ -33,7 +33,7 @@
       background-color: #050b14;
       color: #e2e8f0;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-image: 
+      background-image:
         radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 90% 80%, rgba(0, 102, 255, 0.05) 0%, transparent 40%);
     }
@@ -42,31 +42,48 @@
       border: 1px solid rgba(0, 243, 255, 0.3);
     }
     .circuit-bg {
-      background-image: linear-gradient(rgba(5, 11, 20, 0.9), rgba(5, 11, 20, 0.9)), 
+      background-image: linear-gradient(rgba(5, 11, 20, 0.9), rgba(5, 11, 20, 0.9)),
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300f3ff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4H-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
 
-    /* Thermal Print Styles */
+    /* Cetak Nota Thermal 1 Halaman Terisolasi & Font Tebal */
+    #printReceiptArea {
+      display: none;
+    }
     @media print {
-      body * {
-        visibility: hidden !important;
-      }
-      #thermalPrintArea, #thermalPrintArea * {
-        visibility: visible !important;
-        color: #000000 !important;
-        background: #ffffff !important;
-      }
-      #thermalPrintArea {
-        position: fixed !important;
-        left: 0 !important;
-        top: 0 !important;
-        margin: 0 !important;
-        padding: 2mm !important;
-        box-shadow: none !important;
-        border: none !important;
-      }
       @page {
-        margin: 0;
+        margin: 0mm;
+      }
+      html, body {
+        background: #ffffff !important;
+        background-image: none !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+      }
+      body > *:not(#printReceiptArea) {
+        display: none !important;
+      }
+      #printReceiptArea {
+        display: block !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 2mm 3mm !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-weight: 900 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      #printReceiptArea * {
+        color: #000000 !important;
+        font-weight: 900 !important;
+        border-color: #000000 !important;
       }
     }
   </style>
@@ -77,17 +94,16 @@
 
 <body class="circuit-bg min-h-screen flex flex-col justify-between">
 
-  <!-- Hidden Container Dedicated for Thermal Printer Output -->
-  <div id="thermalPrintArea" class="hidden print:block bg-white text-black font-mono"></div>
-
-  <!-- Header -->
+  <!-- Header Toko -->
   <header class="border-b border-neon-border bg-neon-dark/80 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col items-center justify-center text-center gap-3">
       <div class="flex flex-col items-center space-y-1.5 cursor-pointer" onclick="switchTab('home')">
         <div>
           <h1 class="font-orbitron font-bold text-xl tracking-wider text-white">ROVCELL</h1>
           <p class="text-xs text-neon-blue tracking-widest uppercase">Smartphone Service</p>
-          <p class="text-[11px] text-slate-400 mt-1 flex items-center justify-center gap-1.5"><i class="fa-solid fa-location-dot text-neon-blue"></i> Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar</p>
+          <p class="text-[11px] text-slate-400 mt-1 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-location-dot text-neon-blue"></i> Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar
+          </p>
         </div>
       </div>
       <div class="flex items-center space-x-3 pt-1">
@@ -101,9 +117,9 @@
     </div>
   </header>
 
-  <!-- Main Content -->
+  <!-- Konten Utama -->
   <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
-    
+
     <!-- SECTION: HOME / CEK STATUS -->
     <section id="tab-home" class="max-w-xl mx-auto space-y-8">
       <div class="text-center space-y-3">
@@ -116,7 +132,9 @@
           <div class="space-y-2 sm:col-span-2">
             <div class="flex justify-between items-center">
               <label class="block text-sm font-medium text-neon-blue">Nomor Nota Service</label>
-              <button type="button" onclick="openLupaNotaModal()" class="text-xs text-neon-blue hover:underline font-medium cursor-pointer"><i class="fa-solid fa-circle-question mr-1"></i>Minta Nomor Nota</button>
+              <button type="button" onclick="openLupaNotaModal()" class="text-xs text-neon-blue hover:underline font-medium cursor-pointer">
+                <i class="fa-solid fa-circle-question mr-1"></i>Minta Nomor Nota
+              </button>
             </div>
             <div class="relative w-full flex items-center">
               <span class="absolute left-4 text-neon-blue font-bold font-orbitron text-sm">ROV-</span>
@@ -132,7 +150,7 @@
         <button type="button" onclick="searchService()" class="w-full bg-neon-blue text-neon-dark font-bold py-3 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer">
           <i class="fa-solid fa-search"></i> Cek Status Service
         </button>
-        
+
         <!-- Riwayat Pengecekan Cepat -->
         <div id="recentSearchesContainer" class="hidden pt-3 border-t border-slate-800 space-y-2">
           <div class="flex justify-between items-center text-[11px] text-slate-400">
@@ -174,11 +192,11 @@
 
     <!-- SECTION: ADMIN DASHBOARD -->
     <section id="tab-admin" class="hidden space-y-6">
-      <!-- Top Admin Header -->
+      <!-- Header Admin -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow">
         <div>
           <h2 class="font-orbitron text-2xl font-bold text-white">Admin Dashboard</h2>
-          <p class="text-[11px] text-slate-400">Kelola data service, cetak nota thermal, bagi hasil teknisi 40%, dan laporan keuangan.</p>
+          <p class="text-[11px] text-slate-400">Kelola data service, bagi hasil teknisi 40%, cetak nota thermal &amp; pengaturan WA.</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
           <button type="button" onclick="openAdminProfileModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm rounded-xl border border-slate-700 transition cursor-pointer">
@@ -190,23 +208,26 @@
         </div>
       </div>
 
-      <!-- ADMIN SUB-MENU NAVIGATION -->
-      <div class="flex flex-wrap gap-2 bg-neon-card/90 p-2 rounded-2xl border border-neon-border">
-        <button type="button" id="btnSubtabService" onclick="switchAdminSubTab('service')" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-orbitron text-xs font-bold transition flex items-center justify-center gap-2 bg-neon-blue text-neon-dark shadow-lg shadow-cyan-500/20 cursor-pointer">
-          <i class="fa-solid fa-screwdriver-wrench"></i> Kelola Data Service
+      <!-- Navigasi 3 Sub-Menu Admin -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-neon-card p-2 rounded-2xl border border-neon-border">
+        <button type="button" id="subTabBtn-input" onclick="switchAdminSubTab('input')" class="px-4 py-3 rounded-xl font-orbitron text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 bg-neon-blue text-neon-dark shadow-lg shadow-cyan-500/20 cursor-pointer">
+          <i class="fa-solid fa-plus-circle"></i> Input Service
         </button>
-        <button type="button" id="btnSubtabFinance" onclick="switchAdminSubTab('finance')" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-orbitron text-xs font-bold transition flex items-center justify-center gap-2 text-slate-300 hover:text-neon-blue hover:bg-neon-blue/10 cursor-pointer">
-          <i class="fa-solid fa-chart-line"></i> Laporan Keuangan & Teknisi
+        <button type="button" id="subTabBtn-list" onclick="switchAdminSubTab('list')" class="px-4 py-3 rounded-xl font-orbitron text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-300 hover:bg-slate-800/80 cursor-pointer">
+          <i class="fa-solid fa-list-check"></i> Daftar Service Pelanggan
+          <span id="badgeTotalServices" class="px-2 py-0.5 text-[10px] rounded-full bg-neon-blue/20 text-neon-blue border border-neon-blue/40">0</span>
+        </button>
+        <button type="button" id="subTabBtn-finance" onclick="switchAdminSubTab('finance')" class="px-4 py-3 rounded-xl font-orbitron text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-300 hover:bg-slate-800/80 cursor-pointer">
+          <i class="fa-solid fa-chart-line"></i> Laporan Keuangan &amp; Teknisi
         </button>
       </div>
 
-      <!-- SUB-PAGE 1: KELOLA DATA SERVICE -->
-      <div id="admin-subtab-service" class="space-y-8">
-        <!-- Form Input Service -->
+      <!-- SUB-TAB 1: INPUT SERVICE -->
+      <div id="adminSubTab-input" class="space-y-6">
         <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-6">
           <div class="flex justify-between items-center border-b border-slate-800 pb-4">
             <h3 id="formTitle" class="font-orbitron text-lg font-bold text-white"><i class="fa-solid fa-plus-circle mr-2 text-neon-blue"></i>Tambah Service Baru</h3>
-            <button type="button" id="cancelEditBtn" onclick="resetServiceForm()" class="hidden text-[11px] text-slate-400 hover:text-white underline cursor-pointer">Batalkan Edit</button>
+            <button type="button" id="cancelEditBtn" onclick="resetServiceForm()" class="hidden text-xs text-red-400 hover:text-red-300 font-semibold underline cursor-pointer">Batalkan Edit</button>
           </div>
 
           <form id="serviceForm" onsubmit="saveServiceData(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -232,28 +253,28 @@
             </div>
             <div class="space-y-1">
               <label class="block text-xs font-medium text-slate-300">Harga Modal (Rp)</label>
-              <input type="number" id="inputModal" oninput="updateLiveFormProfitPreview()" required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+              <input type="number" id="inputModal" oninput="updateLiveFormSplit()" required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
             </div>
             <div class="space-y-1">
               <label class="block text-xs font-medium text-slate-300">Biaya Service / Jual (Rp)</label>
-              <input type="number" id="inputBiaya" oninput="updateLiveFormProfitPreview()" required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+              <input type="number" id="inputBiaya" oninput="updateLiveFormSplit()" required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
             </div>
-            <!-- Live Preview Bagi Hasil -->
-            <div class="space-y-1 md:col-span-2 bg-neon-dark/80 border border-neon-border/80 rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs">
-              <div>
-                <span class="text-slate-400">Pendapatan Bersih:</span>
-                <span id="previewNetProfit" class="font-orbitron font-bold text-emerald-400 ml-1">Rp 0</span>
-              </div>
-              <div>
-                <span class="text-slate-400">Teknisi (40%):</span>
-                <span id="previewTechShare" class="font-orbitron font-bold text-amber-400 ml-1">Rp 0</span>
-              </div>
-              <div>
-                <span class="text-slate-400">Toko (60%):</span>
-                <span id="previewShopShare" class="font-orbitron font-bold text-cyan-400 ml-1">Rp 0</span>
+            <div class="space-y-1 md:col-span-2 flex items-end">
+              <div class="w-full bg-neon-dark/90 border border-neon-border rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <div>
+                  <span class="text-slate-400">Laba Bersih:</span>
+                  <span id="liveNetProfit" class="font-orbitron font-bold text-emerald-400 ml-1">Rp 0</span>
+                </div>
+                <div>
+                  <span class="text-slate-400">Teknisi (40%):</span>
+                  <span id="liveTechShare" class="font-orbitron font-bold text-amber-400 ml-1">Rp 0</span>
+                </div>
+                <div>
+                  <span class="text-slate-400">Toko (60%):</span>
+                  <span id="liveShopShare" class="font-orbitron font-bold text-cyan-400 ml-1">Rp 0</span>
+                </div>
               </div>
             </div>
-
             <div class="space-y-1 md:col-span-2 lg:col-span-3 flex items-center pt-1">
               <label class="flex items-center space-x-3 bg-neon-dark border border-neon-border px-4 py-3 rounded-xl cursor-pointer hover:border-neon-blue w-full">
                 <input type="checkbox" id="inputLunas" class="w-4 h-4 text-neon-blue rounded focus:ring-0 bg-neon-dark border-neon-border">
@@ -326,157 +347,194 @@
               <label class="block text-xs font-medium text-slate-300">Keterangan Perbaikan</label>
               <textarea id="inputKeterangan" rows="2" placeholder="Detail pengerjaan..." class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue"></textarea>
             </div>
-            <div class="md:col-span-2 lg:col-span-3 flex justify-end pt-2">
+            <div class="md:col-span-2 lg:col-span-3 flex justify-end gap-3 pt-2">
+              <button type="button" onclick="switchAdminSubTab('list')" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition cursor-pointer">
+                Lihat Daftar Service
+              </button>
               <button type="submit" class="bg-neon-blue text-neon-dark font-bold px-6 py-3 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 text-sm cursor-pointer">
                 <i class="fa-solid fa-save mr-2"></i>Simpan Data Service
               </button>
             </div>
           </form>
         </div>
+      </div>
 
-        <!-- Tabel Data Service Pelanggan -->
+      <!-- SUB-TAB 2: DAFTAR SERVICE PELANGGAN -->
+      <div id="adminSubTab-list" class="hidden space-y-6">
         <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-4">
-          <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h3 class="font-orbitron text-lg font-bold text-white"><i class="fa-solid fa-list mr-2 text-neon-blue"></i>Daftar Service Pelanggan</h3>
-            <input type="text" id="adminSearch" oninput="renderAdminTable()" placeholder="Cari nota / nama..." class="bg-neon-dark border border-neon-border rounded-xl px-4 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-neon-blue w-full sm:w-64">
+          <div class="flex flex-col gap-4 border-b border-slate-800 pb-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <h3 class="font-orbitron text-lg font-bold text-white"><i class="fa-solid fa-list mr-2 text-neon-blue"></i>Daftar Service Pelanggan</h3>
+              <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                <input type="text" id="adminSearch" oninput="renderAdminTable()" placeholder="Cari nota / nama / HP..." class="bg-neon-dark border border-neon-border rounded-xl px-4 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-neon-blue flex-grow sm:w-64">
+                <button type="button" onclick="resetServiceForm(); switchAdminSubTab('input')" class="px-3.5 py-2 bg-neon-blue text-neon-dark font-bold rounded-xl text-xs hover:bg-cyan-400 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+                  <i class="fa-solid fa-plus"></i> Tambah Baru
+                </button>
+              </div>
+            </div>
+
+            <!-- Badge Filter Interaktif (Tanpa Dropdown Filter Box) -->
+            <div class="flex flex-wrap items-center gap-2" id="listFilterBadges">
+              <button type="button" id="filterBadge-all" onclick="setAdminListFilter('all')" class="px-3 py-1.5 rounded-full text-xs font-bold border transition flex items-center gap-1.5 cursor-pointer bg-neon-blue text-neon-dark border-neon-blue shadow-md shadow-cyan-500/20">
+                <i class="fa-solid fa-layer-group text-[11px]"></i>
+                <span>Semua</span>
+                <span id="badgeFilterCount-all" class="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-orbitron">0</span>
+              </button>
+
+              <button type="button" id="filterBadge-checking" onclick="setAdminListFilter('checking')" class="px-3 py-1.5 rounded-full text-xs font-bold border transition flex items-center gap-1.5 cursor-pointer bg-yellow-500/10 text-yellow-300 border-yellow-500/40 hover:bg-yellow-500/20">
+                <i class="fa-solid fa-clipboard-question text-[11px]"></i>
+                <span>Pengecekan</span>
+                <span id="badgeFilterCount-checking" class="px-1.5 py-0.2 rounded-full text-[10px] bg-yellow-500/20 font-orbitron">0</span>
+              </button>
+
+              <button type="button" id="filterBadge-unpaid" onclick="setAdminListFilter('unpaid')" class="px-3 py-1.5 rounded-full text-xs font-bold border transition flex items-center gap-1.5 cursor-pointer bg-red-500/10 text-red-300 border-red-500/40 hover:bg-red-500/20">
+                <i class="fa-solid fa-clock text-[11px]"></i>
+                <span>Belum Lunas</span>
+                <span id="badgeFilterCount-unpaid" class="px-1.5 py-0.2 rounded-full text-[10px] bg-red-500/20 font-orbitron">0</span>
+              </button>
+
+              <button type="button" id="filterBadge-paid" onclick="setAdminListFilter('paid')" class="px-3 py-1.5 rounded-full text-xs font-bold border transition flex items-center gap-1.5 cursor-pointer bg-emerald-500/10 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/20">
+                <i class="fa-solid fa-circle-check text-[11px]"></i>
+                <span>Lunas</span>
+                <span id="badgeFilterCount-paid" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 font-orbitron">0</span>
+              </button>
+
+              <button type="button" id="filterBadge-cancelled" onclick="setAdminListFilter('cancelled')" class="px-3 py-1.5 rounded-full text-xs font-bold border transition flex items-center gap-1.5 cursor-pointer bg-rose-500/10 text-rose-300 border-rose-500/40 hover:bg-rose-500/20">
+                <i class="fa-solid fa-ban text-[11px]"></i>
+                <span>Dibatalkan</span>
+                <span id="badgeFilterCount-cancelled" class="px-1.5 py-0.2 rounded-full text-[10px] bg-rose-500/20 font-orbitron">0</span>
+              </button>
+            </div>
           </div>
+
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="border-b border-slate-800 text-[11px] text-slate-400 font-orbitron">
-                  <th class="py-1.5 px-2 text-[11px]">Nota & Tanggal (Masuk / Keluar)</th>
-                  <th class="py-1.5 px-2 text-[11px]">Pelanggan & Kontak</th>
-                  <th class="py-1.5 px-2 text-[11px]">Unit, Keuangan & Bagi Hasil (40%)</th>
-                  <th class="py-1.5 px-2 text-[11px] text-right">Status & Aksi</th>
+                  <th class="py-2 px-3">Nota &amp; Tanggal (Masuk / Keluar)</th>
+                  <th class="py-2 px-3">Pelanggan &amp; Kontak</th>
+                  <th class="py-2 px-3">Unit, Keuangan &amp; Bagi Hasil</th>
+                  <th class="py-2 px-3 text-right">Status &amp; Aksi</th>
                 </tr>
               </thead>
-              <tbody id="adminTableBody" class="text-sm divide-y divide-slate-800/50"></tbody>
+              <tbody id="adminTableBody" class="text-sm"></tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- SUB-PAGE 2: LAPORAN KEUANGAN & PENDAPATAN TEKNISI -->
-      <div id="admin-subtab-finance" class="hidden space-y-8">
-        <!-- Ringkasan Keuangan Harian & Bulanan -->
-        <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-5">
-          <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-800 pb-4">
+      <!-- SUB-TAB 3: LAPORAN KEUANGAN & TEKNISI -->
+      <div id="adminSubTab-finance" class="hidden space-y-6">
+        <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-4">
+          <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 border-b border-slate-800 pb-4">
             <div>
-              <h3 class="font-orbitron text-lg font-bold text-white"><i class="fa-solid fa-chart-pie mr-2 text-neon-blue"></i>Laporan Keuangan & Bagi Hasil Teknisi (40%)</h3>
-              <p class="text-xs text-slate-400 mt-0.5">Pendapatan bersih otomatis dipotong 40% untuk komisi teknisi dan 60% untuk kas bersih toko.</p>
+              <h3 class="font-orbitron text-base font-bold text-white"><i class="fa-solid fa-chart-pie mr-2 text-neon-blue"></i>Ringkasan Keuangan &amp; Bagi Hasil Teknisi (40%)</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">Pendapatan bersih dipotong 40% untuk teknisi dan 60% untuk toko (transaksi dibatalkan tidak dihitung).</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
               <div class="flex items-center gap-2">
-                <label class="text-xs text-slate-300 font-medium">Filter Bayar:</label>
-                <select id="filterFinancePaid" onchange="updateFinancialStats()" class="bg-neon-dark border border-neon-border rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-neon-blue">
-                  <option value="all">Semua Transaksi</option>
-                  <option value="paid">Hanya Lunas</option>
-                </select>
-              </div>
-              <div class="flex items-center gap-2">
-                <label class="text-xs text-slate-300 font-medium">Tanggal Harian:</label>
+                <label for="filterDateInput" class="text-xs text-slate-300 font-medium">Filter Harian:</label>
                 <input type="date" id="filterDateInput" onchange="updateFinancialStats()" class="bg-neon-dark border border-neon-border rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-neon-blue font-orbitron">
               </div>
               <div class="flex items-center gap-2">
-                <label class="text-xs text-slate-300 font-medium">Bulan:</label>
+                <label for="filterMonthInput" class="text-xs text-slate-300 font-medium">Filter Bulanan:</label>
                 <input type="month" id="filterMonthInput" onchange="updateFinancialStats()" class="bg-neon-dark border border-neon-border rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-neon-blue font-orbitron">
               </div>
             </div>
           </div>
-
-          <!-- Highlight Cards Bagi Hasil Bulan Ini -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-neon-dark/90 p-4 rounded-xl border border-cyan-500/30 space-y-1">
-              <div class="text-[11px] text-slate-400 uppercase tracking-wider">Pendapatan Kotor (Bulan)</div>
-              <div id="cardMonthlyGross" class="font-orbitron font-bold text-xl text-cyan-400">Rp 0</div>
-              <div id="cardMonthlyModal" class="text-[11px] text-orange-400">Modal: Rp 0</div>
-            </div>
-            <div class="bg-neon-dark/90 p-4 rounded-xl border border-emerald-500/30 space-y-1">
-              <div class="text-[11px] text-slate-400 uppercase tracking-wider">Pendapatan Bersih Total</div>
-              <div id="cardMonthlyNet" class="font-orbitron font-bold text-xl text-emerald-400">Rp 0</div>
-              <div class="text-[11px] text-slate-400">Kotor dikurangi Modal</div>
-            </div>
-            <div class="bg-neon-dark/90 p-4 rounded-xl border border-amber-500/40 space-y-1 shadow-lg shadow-amber-500/5">
-              <div class="text-[11px] text-amber-300 font-semibold uppercase tracking-wider"><i class="fa-solid fa-user-gear mr-1"></i>Pendapatan Teknisi (40%)</div>
-              <div id="cardMonthlyTech" class="font-orbitron font-bold text-xl text-amber-400">Rp 0</div>
-              <div class="text-[11px] text-slate-400">Potongan 40% dari bersih</div>
-            </div>
-            <div class="bg-neon-dark/90 p-4 rounded-xl border border-neon-blue/40 space-y-1 shadow-lg shadow-cyan-500/5">
-              <div class="text-[11px] text-neon-blue font-semibold uppercase tracking-wider"><i class="fa-solid fa-store mr-1"></i>Laba Bersih Toko (60%)</div>
-              <div id="cardMonthlyShop" class="font-orbitron font-bold text-xl text-white">Rp 0</div>
-              <div class="text-[11px] text-slate-400">Sisa 60% setelah teknisi</div>
-            </div>
-          </div>
-
-          <!-- Tabel Perbandingan Harian & Bulanan -->
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="border-b border-slate-800 text-[11px] text-slate-400 font-orbitron">
-                  <th class="py-2.5 px-3">Metrik Keuangan & Bagi Hasil</th>
-                  <th class="py-2.5 px-3 text-right">Harian (<span id="labelSelectedDate">Hari Ini</span>)</th>
-                  <th class="py-2.5 px-3 text-right">Bulanan (<span id="labelSelectedMonth">Bulan Ini</span>)</th>
+                  <th class="py-2 px-3">Metrik Keuangan</th>
+                  <th class="py-2 px-3 text-right">Nilai / Jumlah</th>
                 </tr>
               </thead>
               <tbody class="text-sm divide-y divide-slate-800/50">
+                <tr class="bg-slate-900/40">
+                  <td id="dailySummaryHeaderLabel" colspan="2" class="py-2 px-3 font-orbitron text-xs font-bold text-neon-blue"><i class="fa-solid fa-calendar-day mr-1.5"></i>Harian</td>
+                </tr>
                 <tr>
-                  <td class="py-2.5 px-3 text-slate-300">Pendapatan Kotor (Omzet)</td>
+                  <td class="py-2.5 px-3 text-slate-300">Pendapatan Kotor Harian</td>
                   <td id="statDailyGross" class="py-2.5 px-3 text-right font-orbitron font-bold text-cyan-400">Rp 0</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 text-slate-300">Total Modal Harian</td>
+                  <td id="statDailyModal" class="py-2.5 px-3 text-right font-orbitron font-bold text-orange-400">Rp 0</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 text-slate-300">Pendapatan Bersih Harian (Sebelum Bagi Hasil)</td>
+                  <td id="statDailyProfit" class="py-2.5 px-3 text-right font-orbitron font-bold text-emerald-400">Rp 0</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 text-amber-300 font-semibold"><i class="fa-solid fa-screwdriver-wrench mr-1.5"></i>Potongan Pendapatan Teknisi Harian (40%)</td>
+                  <td id="statDailyTech" class="py-2.5 px-3 text-right font-orbitron font-bold text-amber-400">Rp 0</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 text-cyan-300 font-semibold"><i class="fa-solid fa-store mr-1.5"></i>Pendapatan Bersih Toko Harian (60%)</td>
+                  <td id="statDailyShop" class="py-2.5 px-3 text-right font-orbitron font-bold text-cyan-300">Rp 0</td>
+                </tr>
+                <tr class="bg-slate-900/40">
+                  <td colspan="2" class="py-2 px-3 font-orbitron text-xs font-bold text-neon-blue"><i class="fa-solid fa-calendar-days mr-1.5"></i>Bulanan</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 text-slate-300">Pendapatan Kotor Bulanan</td>
                   <td id="statMonthlyGross" class="py-2.5 px-3 text-right font-orbitron font-bold text-cyan-400">Rp 0</td>
                 </tr>
                 <tr>
-                  <td class="py-2.5 px-3 text-slate-300">Total Harga Modal</td>
-                  <td id="statDailyModal" class="py-2.5 px-3 text-right font-orbitron font-bold text-orange-400">Rp 0</td>
+                  <td class="py-2.5 px-3 text-slate-300">Total Modal Bulanan</td>
                   <td id="statMonthlyModal" class="py-2.5 px-3 text-right font-orbitron font-bold text-orange-400">Rp 0</td>
                 </tr>
-                <tr class="bg-slate-900/40">
-                  <td class="py-2.5 px-3 font-semibold text-emerald-300">Pendapatan Bersih (Sebelum Bagi Hasil)</td>
-                  <td id="statDailyProfit" class="py-2.5 px-3 text-right font-orbitron font-bold text-emerald-400">Rp 0</td>
+                <tr>
+                  <td class="py-2.5 px-3 text-slate-300">Pendapatan Bersih Bulanan (Sebelum Bagi Hasil)</td>
                   <td id="statMonthlyProfit" class="py-2.5 px-3 text-right font-orbitron font-bold text-emerald-400">Rp 0</td>
                 </tr>
-                <tr class="bg-amber-500/5">
-                  <td class="py-2.5 px-3 font-semibold text-amber-300"><i class="fa-solid fa-scissors mr-1.5 text-amber-400"></i>Potongan Pendapatan Teknisi (40%)</td>
-                  <td id="statDailyTech" class="py-2.5 px-3 text-right font-orbitron font-bold text-amber-400">Rp 0</td>
+                <tr>
+                  <td class="py-2.5 px-3 text-amber-300 font-semibold"><i class="fa-solid fa-screwdriver-wrench mr-1.5"></i>Potongan Pendapatan Teknisi Bulanan (40%)</td>
                   <td id="statMonthlyTech" class="py-2.5 px-3 text-right font-orbitron font-bold text-amber-400">Rp 0</td>
                 </tr>
-                <tr class="bg-cyan-500/5">
-                  <td class="py-2.5 px-3 font-bold text-white"><i class="fa-solid fa-vault mr-1.5 text-neon-blue"></i>Laba Bersih Toko (60%)</td>
-                  <td id="statDailyShop" class="py-2.5 px-3 text-right font-orbitron font-bold text-white">Rp 0</td>
-                  <td id="statMonthlyShop" class="py-2.5 px-3 text-right font-orbitron font-bold text-white">Rp 0</td>
+                <tr>
+                  <td class="py-2.5 px-3 text-cyan-300 font-semibold"><i class="fa-solid fa-store mr-1.5"></i>Pendapatan Bersih Toko Bulanan (60%)</td>
+                  <td id="statMonthlyShop" class="py-2.5 px-3 text-right font-orbitron font-bold text-cyan-300">Rp 0</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- Laporan Rincian Pendapatan Teknisi (40%) -->
-        <div class="bg-neon-card p-6 rounded-2xl border border-amber-500/30 neon-glow space-y-4">
+        <!-- Laporan Keuangan Pendapatan Teknisi Rinci -->
+        <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
             <div>
-              <h3 class="font-orbitron text-lg font-bold text-amber-400"><i class="fa-solid fa-user-gear mr-2"></i>Laporan Keuangan Pendapatan Teknisi (40%)</h3>
-              <p class="text-xs text-slate-400">Rincian bagi hasil 40% per transaksi service pada bulan terpilih.</p>
+              <h3 class="font-orbitron text-base font-bold text-amber-400"><i class="fa-solid fa-wallet mr-2"></i>Laporan Keuangan Pendapatan Teknisi (40%)</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">Rincian komisi 40% dari laba bersih setiap transaksi service aktif.</p>
             </div>
-            <div class="px-4 py-2 bg-amber-500/10 border border-amber-500/40 rounded-xl text-right">
-              <span class="text-[11px] text-amber-300 block">Total Hak Pendapatan Teknisi:</span>
-              <span id="techReportGrandTotal" class="font-orbitron font-bold text-base text-amber-400">Rp 0</span>
+            <div class="flex flex-wrap items-center gap-2">
+              <select id="techReportPeriodFilter" onchange="updateFinancialStats()" class="bg-neon-dark border border-neon-border rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-neon-blue">
+                <option value="month">Bulan Terpilih</option>
+                <option value="day">Tanggal Harian Terpilih</option>
+                <option value="all">Semua Transaksi</option>
+              </select>
+              <select id="techReportStatusFilter" onchange="updateFinancialStats()" class="bg-neon-dark border border-neon-border rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-neon-blue">
+                <option value="all">Semua Status Bayar</option>
+                <option value="paid">Hanya Sudah Lunas</option>
+              </select>
             </div>
           </div>
-
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="border-b border-slate-800 text-[11px] text-slate-400 font-orbitron">
-                  <th class="py-2 px-3">Nota & Tanggal</th>
-                  <th class="py-2 px-3">Pelanggan & Unit</th>
-                  <th class="py-2 px-3 text-right">Biaya</th>
-                  <th class="py-2 px-3 text-right">Modal</th>
-                  <th class="py-2 px-3 text-right">Pendapatan Bersih</th>
+                  <th class="py-2 px-3">Tanggal</th>
+                  <th class="py-2 px-3">Nota</th>
+                  <th class="py-2 px-3">Pelanggan &amp; Unit</th>
+                  <th class="py-2 px-3 text-right">Laba Bersih</th>
                   <th class="py-2 px-3 text-right text-amber-400">Teknisi (40%)</th>
                   <th class="py-2 px-3 text-right text-cyan-400">Toko (60%)</th>
-                  <th class="py-2 px-3 text-center">Bayar</th>
                 </tr>
               </thead>
-              <tbody id="techFinanceTableBody" class="text-xs divide-y divide-slate-800/50"></tbody>
+              <tbody id="techReportTableBody" class="text-xs divide-y divide-slate-800/50"></tbody>
+              <tfoot id="techReportTableFoot" class="bg-slate-900/70 font-orbitron text-xs font-bold border-t border-slate-700"></tfoot>
             </table>
           </div>
         </div>
@@ -505,29 +563,28 @@
     </div>
   </div>
 
-  <!-- Modal Edit Profil Admin (Dengan Tombol Edit Template WA & Setting Cetak Nota) -->
+  <!-- Modal Edit Profil Admin (Akun, Template WA + {pin}, & Setting Cetak Nota) -->
   <div id="adminProfileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow max-w-lg w-full space-y-5 my-8">
+    <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow max-w-lg w-full space-y-4 my-8">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 class="font-orbitron font-bold text-white text-lg"><i class="fa-solid fa-user-gear mr-2 text-neon-blue"></i>Edit Profil & Pengaturan Admin</h3>
+        <h3 class="font-orbitron font-bold text-white text-lg"><i class="fa-solid fa-user-gear mr-2 text-neon-blue"></i>Edit Profil &amp; Pengaturan Admin</h3>
         <button type="button" onclick="closeAdminProfileModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <!-- Tombol Navigasi Fitur Pengaturan di Area Edit Profil Admin -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-        <button type="button" id="btnProfileTabAccount" onclick="switchProfileModalSection('account')" class="px-3 py-2.5 rounded-xl text-xs font-bold border border-neon-blue bg-neon-blue/20 text-neon-blue flex items-center justify-center gap-1.5 transition cursor-pointer">
-          <i class="fa-solid fa-key"></i> Akun Admin
+      <div class="grid grid-cols-3 gap-2 bg-neon-dark p-1.5 rounded-xl border border-neon-border">
+        <button type="button" id="profTabBtn-account" onclick="switchProfileModalTab('account')" class="px-2.5 py-2 rounded-lg text-xs font-bold bg-neon-blue text-neon-dark transition cursor-pointer">
+          <i class="fa-solid fa-key mr-1"></i>Akun Admin
         </button>
-        <button type="button" id="btnProfileTabWa" onclick="switchProfileModalSection('wa')" class="px-3 py-2.5 rounded-xl text-xs font-bold border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 flex items-center justify-center gap-1.5 transition cursor-pointer">
-          <i class="fa-brands fa-whatsapp"></i> Edit Pesan WA
+        <button type="button" id="profTabBtn-wa" onclick="switchProfileModalTab('wa')" class="px-2.5 py-2 rounded-lg text-xs font-bold text-slate-300 hover:bg-slate-800 transition cursor-pointer">
+          <i class="fa-brands fa-whatsapp mr-1 text-emerald-400"></i>Edit Pesan WA
         </button>
-        <button type="button" id="btnProfileTabPrint" onclick="switchProfileModalSection('print')" class="px-3 py-2.5 rounded-xl text-xs font-bold border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 flex items-center justify-center gap-1.5 transition cursor-pointer">
-          <i class="fa-solid fa-print"></i> Setting Cetak Nota
+        <button type="button" id="profTabBtn-print" onclick="switchProfileModalTab('print')" class="px-2.5 py-2 rounded-lg text-xs font-bold text-slate-300 hover:bg-slate-800 transition cursor-pointer">
+          <i class="fa-solid fa-print mr-1 text-cyan-400"></i>Setting Cetak Nota
         </button>
       </div>
 
-      <!-- Section 1: Akun Admin -->
-      <div id="profileSectionAccount" class="space-y-3 pt-1">
+      <!-- Panel 1: Akun Admin -->
+      <div id="profPanel-account" class="space-y-3">
         <div>
           <label class="block text-xs font-medium text-slate-300 mb-1">Username Baru</label>
           <input type="text" id="newAdminUser" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
@@ -536,102 +593,111 @@
           <label class="block text-xs font-medium text-slate-300 mb-1">Password Baru</label>
           <input type="password" id="newAdminPass" placeholder="Masukkan password baru" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
         </div>
-        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeAdminProfileModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-sm rounded-xl cursor-pointer">Batal</button>
           <button type="button" onclick="updateAdminProfile()" class="px-4 py-2 bg-neon-blue text-neon-dark font-bold text-sm rounded-xl cursor-pointer">Simpan Akun</button>
         </div>
       </div>
 
-      <!-- Section 2: Edit Template Pesan WhatsApp ke Pelanggan -->
-      <div id="profileSectionWa" class="hidden space-y-3 pt-1">
-        <div class="flex justify-between items-center">
-          <label class="block text-xs font-semibold text-emerald-400">Template Pesan WhatsApp ke Pelanggan</label>
-          <button type="button" onclick="resetDefaultWaTemplate()" class="text-[11px] text-slate-400 hover:text-white underline cursor-pointer">Reset Default</button>
+      <!-- Panel 2: Edit Isi Pesan WhatsApp -->
+      <div id="profPanel-wa" class="hidden space-y-3">
+        <div class="space-y-1">
+          <label class="block text-xs font-medium text-slate-300">Template Pesan WhatsApp ke Pelanggan</label>
+          <textarea id="waTemplateInput" rows="6" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3.5 py-2.5 text-white text-xs leading-relaxed focus:outline-none focus:border-neon-blue"></textarea>
         </div>
-        <textarea id="waTemplateInput" rows="5" class="w-full bg-neon-dark border border-neon-border rounded-xl p-3 text-white text-xs leading-relaxed focus:outline-none focus:border-emerald-400"></textarea>
-        <div class="space-y-1.5">
-          <span class="text-[11px] text-slate-400 block">Klik variabel di bawah untuk menyisipkan otomatis:</span>
-          <div class="flex flex-wrap gap-1.5">
-            <button type="button" onclick="insertWaPlaceholder('{nama}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded text-[11px] font-mono cursor-pointer">{nama}</button>
-            <button type="button" onclick="insertWaPlaceholder('{nota}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded text-[11px] font-mono cursor-pointer">{nota}</button>
-            <button type="button" onclick="insertWaPlaceholder('{merk}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded text-[11px] font-mono cursor-pointer">{merk}</button>
-            <button type="button" onclick="insertWaPlaceholder('{kerusakan}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded text-[11px] font-mono cursor-pointer">{kerusakan}</button>
-            <button type="button" onclick="insertWaPlaceholder('{status}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded text-[11px] font-mono cursor-pointer">{status}</button>
-            <button type="button" onclick="insertWaPlaceholder('{keterangan}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded text-[11px] font-mono cursor-pointer">{keterangan}</button>
-            <button type="button" onclick="insertWaPlaceholder('{status_bayar}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded text-[11px] font-mono cursor-pointer">{status_bayar}</button>
-            <button type="button" onclick="insertWaPlaceholder('{biaya}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded text-[11px] font-mono cursor-pointer">{biaya}</button>
-            <button type="button" onclick="insertWaPlaceholder('{garansi}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded text-[11px] font-mono cursor-pointer">{garansi}</button>
+        <div class="bg-neon-dark/80 p-3 rounded-xl border border-slate-800 space-y-1.5">
+          <span class="block text-[11px] font-semibold text-neon-blue">Klik variabel untuk menyisipkan ke pesan:</span>
+          <div class="flex flex-wrap gap-1.5 text-[10px]">
+            <button type="button" onclick="insertWaVar('{nama}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{nama}</button>
+            <button type="button" onclick="insertWaVar('{nota}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{nota}</button>
+            <button type="button" onclick="insertWaVar('{pin}')" class="px-2 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 font-bold rounded border border-cyan-500/40 cursor-pointer">{pin} (PIN Cek Status)</button>
+            <button type="button" onclick="insertWaVar('{merk}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{merk}</button>
+            <button type="button" onclick="insertWaVar('{kerusakan}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{kerusakan}</button>
+            <button type="button" onclick="insertWaVar('{status}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{status}</button>
+            <button type="button" onclick="insertWaVar('{keterangan}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{keterangan}</button>
+            <button type="button" onclick="insertWaVar('{pembayaran}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{pembayaran}</button>
+            <button type="button" onclick="insertWaVar('{biaya}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{biaya}</button>
+            <button type="button" onclick="insertWaVar('{garansi}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{garansi}</button>
           </div>
         </div>
-        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
-          <button type="button" onclick="closeAdminProfileModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-sm rounded-xl cursor-pointer">Batal</button>
-          <button type="button" onclick="saveWaTemplateSetting()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm rounded-xl cursor-pointer">Simpan Template WA</button>
+        <div class="flex justify-between items-center pt-2">
+          <button type="button" onclick="resetDefaultWaTemplate()" class="text-xs text-slate-400 hover:text-white underline cursor-pointer">Reset Default</button>
+          <div class="flex gap-2">
+            <button type="button" onclick="closeAdminProfileModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-sm rounded-xl cursor-pointer">Batal</button>
+            <button type="button" onclick="saveWaTemplateSetting()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm rounded-xl cursor-pointer">Simpan Template WA</button>
+          </div>
         </div>
       </div>
 
-      <!-- Section 3: Setting Cetak Nota Thermal -->
-      <div id="profileSectionPrint" class="hidden space-y-3 pt-1">
+      <!-- Panel 3: Setting Cetak Nota -->
+      <div id="profPanel-print" class="hidden space-y-3">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-medium text-slate-300 mb-1">Nama Toko (Header Nota)</label>
-            <input type="text" id="printShopName" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-neon-blue">
-          </div>
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-medium text-slate-300 mb-1">Alamat & No. Telp / WA Toko</label>
-            <textarea id="printShopAddress" rows="2" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-neon-blue"></textarea>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Nama Header Toko</label>
+            <input type="text" id="printShopName" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-neon-blue">
           </div>
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1">Lebar Kertas Thermal</label>
-            <select id="printPaperWidth" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-neon-blue">
-              <option value="80mm">80mm (Standar Lebar)</option>
-              <option value="58mm">58mm (Mini Thermal)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1">Ukuran & Ketebalan Huruf</label>
-            <select id="printFontSize" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-neon-blue">
-              <option value="12px">12px - Tebal Jelas (Bold)</option>
-              <option value="13px">13px - Extra Tebal (Rekomendasi 80mm)</option>
-              <option value="14px">14px - Besar & Sangat Tebal</option>
-            </select>
-          </div>
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-medium text-slate-300 mb-1">Catatan Kaki / Footer Nota</label>
-            <textarea id="printFooterNote" rows="2" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-neon-blue"></textarea>
-          </div>
-          <div class="sm:col-span-2 flex flex-wrap gap-4 pt-1">
-            <label class="flex items-center space-x-2 text-xs text-slate-300 cursor-pointer">
-              <input type="checkbox" id="printShowGaransi" class="rounded text-neon-blue bg-neon-dark border-neon-border">
-              <span>Cetak Info Garansi</span>
-            </label>
-            <label class="flex items-center space-x-2 text-xs text-slate-300 cursor-pointer">
-              <input type="checkbox" id="printShowPin" class="rounded text-neon-blue bg-neon-dark border-neon-border">
-              <span>Cetak PIN Cek Status</span>
-            </label>
+            <label class="block text-xs font-medium text-slate-300 mb-1">No. Telp / WA Toko</label>
+            <input type="text" id="printShopPhone" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-neon-blue">
           </div>
         </div>
-        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Alamat Toko di Nota</label>
+          <input type="text" id="printShopAddress" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-neon-blue">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Ukuran Kertas Thermal</label>
+            <select id="printPaperWidth" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-neon-blue">
+              <option value="80mm">80mm (Standar Lebar - Tebal)</option>
+              <option value="58mm">58mm (Kecil / Portable - Tebal)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Ukuran Font Cetak</label>
+            <select id="printFontSize" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-neon-blue">
+              <option value="12px">Sedang (12px Bold)</option>
+              <option value="13px">Besar (13px Extra Bold)</option>
+              <option value="14px">Sangat Besar (14px Extra Bold)</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Catatan Kaki Nota (Syarat &amp; Ketentuan)</label>
+          <textarea id="printFooterNote" rows="2" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-neon-blue"></textarea>
+        </div>
+        <div class="flex flex-wrap gap-4 pt-1">
+          <label class="flex items-center space-x-2 text-xs text-slate-300 cursor-pointer">
+            <input type="checkbox" id="printShowGaransi" class="rounded text-neon-blue bg-neon-dark border-neon-border">
+            <span>Tampilkan Info Garansi</span>
+          </label>
+          <label class="flex items-center space-x-2 text-xs text-slate-300 cursor-pointer">
+            <input type="checkbox" id="printShowPin" class="rounded text-neon-blue bg-neon-dark border-neon-border">
+            <span>Tampilkan PIN Cek Status</span>
+          </label>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeAdminProfileModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-sm rounded-xl cursor-pointer">Batal</button>
-          <button type="button" onclick="savePrintSettings()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm rounded-xl cursor-pointer">Simpan Setting Nota</button>
+          <button type="button" onclick="savePrintSettings()" class="px-4 py-2 bg-neon-blue text-neon-dark font-bold text-sm rounded-xl cursor-pointer">Simpan Setting Nota</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal Preview Cetak Nota Thermal 80mm -->
+  <!-- Modal Preview & Cetak Nota Thermal 80mm -->
   <div id="thermalPreviewModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-neon-card p-5 rounded-2xl border border-neon-border neon-glow max-w-md w-full space-y-4">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
         <h3 class="font-orbitron font-bold text-white text-sm"><i class="fa-solid fa-receipt mr-2 text-neon-blue"></i>Preview Nota Thermal (<span id="previewPaperLabel">80mm</span>)</h3>
         <button type="button" onclick="closeThermalPreviewModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-      <div class="bg-slate-900/90 p-4 rounded-xl flex justify-center overflow-x-auto max-h-[65vh] overflow-y-auto">
-        <div id="thermalModalContent" class="bg-white text-black p-3 shadow-xl font-mono"></div>
+      <div class="bg-slate-200 p-3 rounded-xl overflow-x-auto flex justify-center">
+        <div id="thermalReceiptPreviewBox" class="bg-white text-black shadow-md"></div>
       </div>
-      <div class="flex justify-end gap-2 pt-2">
-        <button type="button" onclick="closeThermalPreviewModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl cursor-pointer">Tutup</button>
-        <button type="button" onclick="executeThermalPrint()" class="px-5 py-2.5 bg-neon-blue hover:bg-cyan-400 text-neon-dark font-bold text-xs rounded-xl shadow-lg shadow-cyan-500/20 flex items-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-print"></i> Cetak Sekarang
+      <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeThermalPreviewModal()" class="px-4 py-2.5 bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer">Tutup</button>
+        <button type="button" onclick="executeThermalPrint()" class="px-5 py-2.5 bg-neon-blue hover:bg-cyan-400 text-neon-dark font-bold text-xs rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer">
+          <i class="fa-solid fa-print"></i> Cetak Nota Sekarang
         </button>
       </div>
     </div>
@@ -667,7 +733,7 @@
           <div class="text-[10px] font-bold text-slate-500">A01</div>
         </div>
         <div class="w-56 h-56 mx-auto bg-white p-1 rounded-xl border-2 border-slate-200 flex items-center justify-center overflow-hidden">
-          <img src="https://lh3.googleusercontent.com/d/1HZIe5gqKrYl8mcTtbCc2UrQIJiX0Ojh1" alt="QRIS Rovcell" class="w-full h-full object-contain">
+          <img src="https://lh3.googleusercontent.com/d/1HZIe5gqKrYl8mcTtbCc2UrQIJiX0Ojh1" alt="QRIS Rovcell" onerror="this.src='https://placehold.co/224x224/ffffff/000000?text=QRIS+ROVCELL'" class="w-full h-full object-contain">
         </div>
         <div class="text-[10px] text-slate-500 font-mono">Dicetak oleh: 93600914</div>
         <button type="button" onclick="downloadQrisImage()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-md mt-2 cursor-pointer">
@@ -689,6 +755,9 @@
     </div>
   </div>
 
+  <!-- Kontainer Khusus Cetak Thermal 1 Halaman -->
+  <div id="printReceiptArea"></div>
+
   <!-- Firebase SDK & Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
@@ -704,19 +773,25 @@
       measurementId: "G-DDRHGBYHZQ"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    try {
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
-    window.db = db;
-    window.collection = collection;
-    window.getDocs = getDocs;
-    window.setDoc = setDoc;
-    window.doc = doc;
-    window.deleteDoc = deleteDoc;
-    window.getDoc = getDoc;
-    window.onSnapshot = onSnapshot;
+      window.db = db;
+      window.collection = collection;
+      window.getDocs = getDocs;
+      window.setDoc = setDoc;
+      window.doc = doc;
+      window.deleteDoc = deleteDoc;
+      window.getDoc = getDoc;
+      window.onSnapshot = onSnapshot;
+    } catch (e) {
+      console.error("Firebase init error:", e);
+    }
 
-    initAppData();
+    if (typeof window.initAppData === 'function') {
+      window.initAppData();
+    }
   </script>
 
   <!-- App Logic Script -->
@@ -725,53 +800,85 @@
     let isAdminLoggedIn = false;
     let currentAdminUsername = "admin";
     let activeQrisNotaItem = null;
+    let currentReceiptHtmlForPrint = "";
+    let isAppInitialized = false;
+    let activeListBadgeFilter = "all"; // 'all' | 'checking' | 'unpaid' | 'paid' | 'cancelled'
 
-    const DEFAULT_WA_TEMPLATE = "Halo {nama}, informasi mengenai service HP {merk} dengan Nomor Nota *{nota}* di Rovcell Smartphone.\nKerusakan: {kerusakan}\nStatus saat ini: *{status}* ({keterangan})\nPembayaran: *{status_bayar}*\nTotal biaya: Rp {biaya}\nGaransi: {garansi}\nTerima kasih!";
+    const DEFAULT_WA_TEMPLATE = "Halo {nama}, informasi mengenai service HP {merk} dengan Nomor Nota *{nota}* (PIN Cek Status: *{pin}*) di Rovcell Smartphone.\nStatus saat ini: *{status}* ({keterangan}).\nPembayaran: *{pembayaran}*.\nTotal biaya: Rp {biaya}.\nCek status online: https://rovcell.online\nTerima kasih!";
 
     let appSettings = {
       waTemplate: DEFAULT_WA_TEMPLATE,
       printShopName: "ROVCELL SMARTPHONE",
-      printShopAddress: "Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar\nWA: 0889-0889-0176",
+      printShopAddress: "Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar",
+      printShopPhone: "WA: 0889-0889-0176",
       printPaperWidth: "80mm",
       printFontSize: "13px",
-      printFooterNote: "Terima kasih atas kepercayaan Anda.\nNota wajib dibawa saat pengambilan & klaim garansi.",
+      printFooterNote: "Barang yang tidak diambil lebih dari 30 hari di luar tanggung jawab kami. Terima kasih atas kepercayaan Anda.",
       printShowGaransi: true,
       printShowPin: true
     };
 
+    // Palet 2 warna selang-seling: Cyan dan Cyan Gelap
+    const NOTA_CARD_THEMES = [
+      { bg: 'bg-[#0c2d3d]', border: 'border-l-4 border-l-cyan-400', badge: 'text-cyan-200 bg-cyan-500/25 border-cyan-400/50' },
+      { bg: 'bg-[#061824]', border: 'border-l-4 border-l-cyan-700', badge: 'text-cyan-400 bg-cyan-950/90 border-cyan-700/60' }
+    ];
+
+    function isStatusCancelled(status) {
+      return typeof status === 'string' && status.startsWith('Dibatalkan');
+    }
+
+    function isStatusChecking(status) {
+      return status === 'Menunggu Pengecekan';
+    }
+
     async function initAppData() {
+      if (isAppInitialized && window.db) {
+        await loadAppSettings();
+        loadServicesFromDB();
+        return;
+      }
+      isAppInitialized = true;
+
       const now = new Date();
       const yyyy = now.getFullYear();
       const mm = String(now.getMonth() + 1).padStart(2, '0');
       const dd = String(now.getDate()).padStart(2, '0');
-      
-      const monthInput = document.getElementById('filterMonthInput');
-      if (monthInput) monthInput.value = `${yyyy}-${mm}`;
-
       const dateInput = document.getElementById('filterDateInput');
-      if (dateInput) dateInput.value = `${yyyy}-${mm}-${dd}`;
+      if (dateInput && !dateInput.value) dateInput.value = `${yyyy}-${mm}-${dd}`;
+      const monthInput = document.getElementById('filterMonthInput');
+      if (monthInput && !monthInput.value) monthInput.value = `${yyyy}-${mm}`;
+
+      try {
+        const cachedServices = localStorage.getItem('rovcell_cached_services');
+        if (cachedServices) {
+          serviceList = JSON.parse(cachedServices);
+        }
+      } catch (e) {
+        console.error(e);
+      }
 
       await loadAppSettings();
-      await loadServicesFromDB();
+      loadServicesFromDB();
       generateNextNota();
+      updateLiveFormSplit();
+      renderRecentSearches();
     }
+    window.initAppData = initAppData;
 
     async function loadAppSettings() {
-      // Load from localStorage first for instant availability
-      const cached = localStorage.getItem('rovcell_app_settings');
-      if (cached) {
-        try {
-          appSettings = { ...appSettings, ...JSON.parse(cached) };
-        } catch (e) {}
-      }
-      // Sync with Firestore
       try {
-        if (!window.db) return;
-        const docRef = window.doc(window.db, "settings", "appConfig");
-        const docSnap = await window.getDoc(docRef);
-        if (docSnap.exists()) {
-          appSettings = { ...appSettings, ...docSnap.data() };
-          localStorage.setItem('rovcell_app_settings', JSON.stringify(appSettings));
+        const savedLocal = localStorage.getItem('rovcell_app_settings');
+        if (savedLocal) {
+          appSettings = { ...appSettings, ...JSON.parse(savedLocal) };
+        }
+        if (window.db && window.doc && window.getDoc) {
+          const docRef = window.doc(window.db, "settings", "appConfig");
+          const docSnap = await window.getDoc(docRef);
+          if (docSnap.exists()) {
+            appSettings = { ...appSettings, ...docSnap.data() };
+            localStorage.setItem('rovcell_app_settings', JSON.stringify(appSettings));
+          }
         }
       } catch (e) {
         console.error("Gagal memuat pengaturan aplikasi:", e);
@@ -780,16 +887,20 @@
 
     function loadServicesFromDB() {
       try {
-        if (!window.db) return;
+        if (!window.db || !window.onSnapshot || !window.collection) return;
         window.onSnapshot(window.collection(window.db, "services"), (querySnapshot) => {
           serviceList = [];
           querySnapshot.forEach((docSnap) => {
             serviceList.push({ id: docSnap.id, ...docSnap.data() });
           });
-          serviceList.sort((a, b) => b.nota.localeCompare(a.nota));
+          serviceList.sort((a, b) => (b.nota || '').localeCompare(a.nota || ''));
+          localStorage.setItem('rovcell_cached_services', JSON.stringify(serviceList));
+
+          const badgeEl = document.getElementById('badgeTotalServices');
+          if (badgeEl) badgeEl.innerText = serviceList.length;
           updateFinancialStats();
           if (isAdminLoggedIn) renderAdminTable();
-          
+
           const activeNotaInput = document.getElementById('searchNotaInput');
           const activePinInput = document.getElementById('searchPhonePin');
           if (activeNotaInput && activeNotaInput.value && activePinInput && activePinInput.value) {
@@ -809,7 +920,7 @@
       if (serviceList.length > 0) {
         let maxNum = 0;
         serviceList.forEach(item => {
-          let parts = item.nota.split('-');
+          let parts = (item.nota || '').split('-');
           if (parts.length === 2) {
             let num = parseInt(parts[1]);
             if (!isNaN(num) && num > maxNum) maxNum = num;
@@ -839,33 +950,28 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Sub-menu switcher inside Admin Dashboard
     function switchAdminSubTab(subTab) {
-      const secService = document.getElementById('admin-subtab-service');
-      const secFinance = document.getElementById('admin-subtab-finance');
-      const btnService = document.getElementById('btnSubtabService');
-      const btnFinance = document.getElementById('btnSubtabFinance');
+      const tabs = ['input', 'list', 'finance'];
+      tabs.forEach(t => {
+        const panel = document.getElementById(`adminSubTab-${t}`);
+        const btn = document.getElementById(`subTabBtn-${t}`);
+        if (panel) panel.classList.add('hidden');
+        if (btn) {
+          btn.classList.remove('bg-neon-blue', 'text-neon-dark', 'shadow-lg', 'shadow-cyan-500/20');
+          btn.classList.add('text-slate-300', 'hover:bg-slate-800/80');
+        }
+      });
 
-      const activeClasses = ['bg-neon-blue', 'text-neon-dark', 'shadow-lg', 'shadow-cyan-500/20'];
-      const inactiveClasses = ['text-slate-300', 'hover:text-neon-blue', 'hover:bg-neon-blue/10'];
-
-      if (subTab === 'service') {
-        secService.classList.remove('hidden');
-        secFinance.classList.add('hidden');
-        btnService.classList.add(...activeClasses);
-        btnService.classList.remove(...inactiveClasses);
-        btnFinance.classList.remove(...activeClasses);
-        btnFinance.classList.add(...inactiveClasses);
-        renderAdminTable();
-      } else {
-        secService.classList.add('hidden');
-        secFinance.classList.remove('hidden');
-        btnFinance.classList.add(...activeClasses);
-        btnFinance.classList.remove(...inactiveClasses);
-        btnService.classList.remove(...activeClasses);
-        btnService.classList.add(...inactiveClasses);
-        updateFinancialStats();
+      const activePanel = document.getElementById(`adminSubTab-${subTab}`);
+      const activeBtn = document.getElementById(`subTabBtn-${subTab}`);
+      if (activePanel) activePanel.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800/80');
+        activeBtn.classList.add('bg-neon-blue', 'text-neon-dark', 'shadow-lg', 'shadow-cyan-500/20');
       }
+
+      if (subTab === 'list') renderAdminTable();
+      if (subTab === 'finance') updateFinancialStats();
     }
 
     function checkAdminAccess() {
@@ -875,31 +981,36 @@
 
     async function handleAdminLogin(e) {
       e.preventDefault();
-      const u = document.getElementById('adminUser').value;
-      const p = document.getElementById('adminPass').value;
+      const u = document.getElementById('adminUser').value.trim();
+      const p = document.getElementById('adminPass').value.trim();
+      let validUser = localStorage.getItem('rovcell_admin_user') || "admin";
+      let validPass = localStorage.getItem('rovcell_admin_pass') || "rovcell2026";
+
       try {
-        const docRef = window.doc(window.db, "settings", "adminCredentials");
-        const docSnap = await window.getDoc(docRef);
-        let validUser = "admin";
-        let validPass = "rovcell2026";
-        if (docSnap.exists()) {
-          validUser = docSnap.data().username || "admin";
-          validPass = docSnap.data().password || "rovcell2026";
-        } else {
-          await window.setDoc(docRef, { username: validUser, password: validPass });
-        }
-        if (u === validUser && p === validPass) {
-          isAdminLoggedIn = true;
-          currentAdminUsername = validUser;
-          document.getElementById('adminUser').value = '';
-          document.getElementById('adminPass').value = '';
-          switchTab('admin');
-          switchAdminSubTab('service');
-        } else {
-          showCustomAlert("Username dan password Salah !");
+        if (window.db && window.doc && window.getDoc) {
+          const docRef = window.doc(window.db, "settings", "adminCredentials");
+          const docSnap = await window.getDoc(docRef);
+          if (docSnap.exists()) {
+            validUser = docSnap.data().username || validUser;
+            validPass = docSnap.data().password || validPass;
+            localStorage.setItem('rovcell_admin_user', validUser);
+            localStorage.setItem('rovcell_admin_pass', validPass);
+          } else {
+            await window.setDoc(docRef, { username: validUser, password: validPass });
+          }
         }
       } catch (err) {
-        console.error(err);
+        console.error("Login DB check fallback:", err);
+      }
+
+      if (u === validUser && p === validPass) {
+        isAdminLoggedIn = true;
+        currentAdminUsername = validUser;
+        document.getElementById('adminUser').value = '';
+        document.getElementById('adminPass').value = '';
+        switchTab('admin');
+        switchAdminSubTab('list');
+      } else {
         showCustomAlert("Username dan password Salah !");
       }
     }
@@ -907,14 +1018,12 @@
     function showCustomAlert(message, isSuccess = false) {
       let alertBox = document.createElement('div');
       alertBox.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4';
-      const borderColor = isSuccess ? 'border-emerald-500/50' : 'border-red-500/50';
-      const iconBg = isSuccess ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400' : 'bg-red-500/20 border-red-500/40 text-red-400';
-      const iconClass = isSuccess ? 'fa-circle-check' : 'fa-triangle-exclamation';
+      const iconHtml = isSuccess
+        ? `<div class="w-12 h-12 bg-emerald-500/20 border border-emerald-500/40 rounded-full flex items-center justify-center mx-auto text-emerald-400 text-xl"><i class="fa-solid fa-circle-check"></i></div>`
+        : `<div class="w-12 h-12 bg-red-500/20 border border-red-500/40 rounded-full flex items-center justify-center mx-auto text-red-400 text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div>`;
       alertBox.innerHTML = `
-        <div class="bg-neon-card p-6 rounded-2xl border ${borderColor} neon-glow max-w-sm w-full space-y-4 text-center">
-          <div class="w-12 h-12 ${iconBg} border rounded-full flex items-center justify-center mx-auto text-xl">
-            <i class="fa-solid ${iconClass}"></i>
-          </div>
+        <div class="bg-neon-card p-6 rounded-2xl border ${isSuccess ? 'border-emerald-500/50' : 'border-red-500/50'} neon-glow max-w-sm w-full space-y-4 text-center">
+          ${iconHtml}
           <h3 class="font-orbitron font-bold text-white text-base">${isSuccess ? 'Berhasil' : 'Pemberitahuan'}</h3>
           <p class="text-xs text-slate-300">${message}</p>
           <button type="button" onclick="this.closest('.fixed').remove()" class="w-full bg-neon-blue text-neon-dark font-bold py-2.5 rounded-xl text-xs cursor-pointer">OK</button>
@@ -923,28 +1032,45 @@
       document.body.appendChild(alertBox);
     }
 
+    function showConfirmModal(message, onConfirmCallback) {
+      let modalBox = document.createElement('div');
+      modalBox.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4';
+      modalBox.innerHTML = `
+        <div class="bg-neon-card p-6 rounded-2xl border border-amber-500/50 neon-glow max-w-sm w-full space-y-4 text-center">
+          <div class="w-12 h-12 bg-amber-500/20 border border-amber-500/40 rounded-full flex items-center justify-center mx-auto text-amber-400 text-xl">
+            <i class="fa-solid fa-circle-question"></i>
+          </div>
+          <h3 class="font-orbitron font-bold text-white text-base">Konfirmasi</h3>
+          <p class="text-xs text-slate-300">${message}</p>
+          <div class="flex gap-2 pt-1">
+            <button type="button" id="btnCancelConfirm" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer">Batal</button>
+            <button type="button" id="btnYesConfirm" class="w-1/2 bg-red-500 hover:bg-red-400 text-white font-bold py-2.5 rounded-xl text-xs cursor-pointer">Ya, Hapus</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modalBox);
+      modalBox.querySelector('#btnCancelConfirm').onclick = () => modalBox.remove();
+      modalBox.querySelector('#btnYesConfirm').onclick = () => {
+        modalBox.remove();
+        onConfirmCallback();
+      };
+    }
+
     function handleLogout() {
       isAdminLoggedIn = false;
       switchTab('home');
     }
 
-    // Helper calculation for 40% technician revenue share
-    function calculateTransactionSplit(biaya, modal) {
-      const b = parseFloat(biaya) || 0;
-      const m = parseFloat(modal) || 0;
-      const netProfit = b - m;
+    function updateLiveFormSplit() {
+      const modal = parseFloat(document.getElementById('inputModal').value) || 0;
+      const biaya = parseFloat(document.getElementById('inputBiaya').value) || 0;
+      const netProfit = biaya - modal;
       const techShare = netProfit > 0 ? Math.round(netProfit * 0.40) : 0;
-      const shopShare = netProfit - techShare;
-      return { biaya: b, modal: m, netProfit, techShare, shopShare };
-    }
+      const shopShare = netProfit > 0 ? (netProfit - techShare) : netProfit;
 
-    function updateLiveFormProfitPreview() {
-      const modal = document.getElementById('inputModal').value;
-      const biaya = document.getElementById('inputBiaya').value;
-      const split = calculateTransactionSplit(biaya, modal);
-      document.getElementById('previewNetProfit').innerText = `Rp ${split.netProfit.toLocaleString('id-ID')}`;
-      document.getElementById('previewTechShare').innerText = `Rp ${split.techShare.toLocaleString('id-ID')}`;
-      document.getElementById('previewShopShare').innerText = `Rp ${split.shopShare.toLocaleString('id-ID')}`;
+      document.getElementById('liveNetProfit').innerText = `Rp ${netProfit.toLocaleString('id-ID')}`;
+      document.getElementById('liveTechShare').innerText = `Rp ${techShare.toLocaleString('id-ID')}`;
+      document.getElementById('liveShopShare').innerText = `Rp ${shopShare.toLocaleString('id-ID')}`;
     }
 
     async function saveServiceData(e) {
@@ -956,15 +1082,16 @@
       const kerusakan = document.getElementById('inputKerusakan').value;
       const modal = parseFloat(document.getElementById('inputModal').value) || 0;
       const biaya = parseFloat(document.getElementById('inputBiaya').value) || 0;
-      const isPaid = document.getElementById('inputLunas').checked;
-      
+
       const statusEl = document.querySelector('input[name="inputStatus"]:checked');
       const status = statusEl ? statusEl.value : 'Menunggu Pengecekan';
+
+      const isPaid = isStatusCancelled(status) ? false : document.getElementById('inputLunas').checked;
 
       const garansiEl = document.querySelector('input[name="inputGaransi"]:checked');
       const garansi = garansiEl ? garansiEl.value : 'Tidak ada';
       const keterangan = document.getElementById('inputKeterangan').value;
-      
+
       let existingItem = serviceList.find(s => s.nota === nota);
       let date = existingItem && existingItem.date ? existingItem.date : new Date().toISOString().split('T')[0];
 
@@ -976,29 +1103,27 @@
       }
 
       let diambilDate = (status === 'Diambil') ? keluarDate : null;
-      const split = calculateTransactionSplit(biaya, modal);
 
-      const newData = { 
-        nota, nama, phone, merk, kerusakan, modal, biaya, 
-        netProfit: split.netProfit,
-        techShare: split.techShare,
-        shopShare: split.shopShare,
-        isPaid, status, garansi, keterangan, date, diambilDate, keluarDate 
-      };
+      const newData = { nota, nama, phone, merk, kerusakan, modal, biaya, isPaid, status, garansi, keterangan, date, diambilDate, keluarDate };
       try {
-        await window.setDoc(window.doc(window.db, "services", nota), newData);
-        showCustomAlert("Data service berhasil disimpan!", true);
-        
+        if (window.db && window.setDoc && window.doc) {
+          await window.setDoc(window.doc(window.db, "services", nota), newData);
+        }
+
         let index = serviceList.findIndex(s => s.nota === nota);
         if (index !== -1) {
           serviceList[index] = newData;
         } else {
           serviceList.unshift(newData);
         }
-        
+        localStorage.setItem('rovcell_cached_services', JSON.stringify(serviceList));
+
+        const badgeEl = document.getElementById('badgeTotalServices');
+        if (badgeEl) badgeEl.innerText = serviceList.length;
+
+        showCustomAlert("Data service berhasil disimpan!", true);
         resetServiceForm();
-        renderAdminTable();
-        updateFinancialStats();
+        switchAdminSubTab('list');
       } catch (err) {
         console.error(err);
         showCustomAlert("Gagal menyimpan data.");
@@ -1010,37 +1135,27 @@
       document.getElementById('inputLunas').checked = false;
       document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-plus-circle mr-2 text-neon-blue"></i>Tambah Service Baru';
       document.getElementById('cancelEditBtn').classList.add('hidden');
-      updateLiveFormProfitPreview();
       generateNextNota();
+      updateLiveFormSplit();
     }
 
-    async function deleteService(nota) {
-      // Custom confirmation modal instead of native confirm()
-      let confirmBox = document.createElement('div');
-      confirmBox.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4';
-      confirmBox.innerHTML = `
-        <div class="bg-neon-card p-6 rounded-2xl border border-red-500/50 neon-glow max-w-sm w-full space-y-4 text-center">
-          <div class="w-12 h-12 bg-red-500/20 border border-red-500/40 rounded-full flex items-center justify-center mx-auto text-red-400 text-xl">
-            <i class="fa-solid fa-trash"></i>
-          </div>
-          <h3 class="font-orbitron font-bold text-white text-base">Hapus Data Service?</h3>
-          <p class="text-xs text-slate-300">Anda yakin ingin menghapus nota <span class="text-neon-blue font-bold">${nota}</span>?</p>
-          <div class="flex gap-2 pt-2">
-            <button type="button" onclick="this.closest('.fixed').remove()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer">Batal</button>
-            <button type="button" id="confirmDelBtn" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded-xl text-xs cursor-pointer">Ya, Hapus</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(confirmBox);
-      confirmBox.querySelector('#confirmDelBtn').onclick = async () => {
-        confirmBox.remove();
+    function deleteService(nota) {
+      showConfirmModal(`Yakin ingin menghapus data nota ${nota}?`, async () => {
         try {
-          await window.deleteDoc(window.doc(window.db, "services", nota));
+          if (window.db && window.deleteDoc && window.doc) {
+            await window.deleteDoc(window.doc(window.db, "services", nota));
+          }
+          serviceList = serviceList.filter(s => s.nota !== nota);
+          localStorage.setItem('rovcell_cached_services', JSON.stringify(serviceList));
+          const badgeEl = document.getElementById('badgeTotalServices');
+          if (badgeEl) badgeEl.innerText = serviceList.length;
+          renderAdminTable();
+          updateFinancialStats();
         } catch (err) {
           console.error(err);
           showCustomAlert("Gagal menghapus data.");
         }
-      };
+      });
     }
 
     function calculateGaransiExpiry(diambilDateStr, garansiType) {
@@ -1048,7 +1163,7 @@
       let parts = diambilDateStr.split('-');
       if (parts.length !== 3) return null;
       let dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
-      
+
       if (garansiType.includes('minggu')) {
         let weeks = parseInt(garansiType) || 1;
         dateObj.setDate(dateObj.getDate() + (weeks * 7));
@@ -1091,7 +1206,8 @@
     function editService(nota) {
       const item = serviceList.find(s => s.nota === nota);
       if (!item) return;
-      document.getElementById('formTitle').innerHTML = `<i class="fa-solid fa-pen-to-square mr-2 text-neon-blue"></i>Edit Service (${item.nota})`;
+      switchAdminSubTab('input');
+      document.getElementById('formTitle').innerHTML = `<i class="fa-solid fa-pen-to-square mr-2 text-amber-400"></i>Edit Data Service (${item.nota})`;
       document.getElementById('cancelEditBtn').classList.remove('hidden');
       document.getElementById('inputNota').value = item.nota;
       document.getElementById('inputNama').value = item.nama;
@@ -1100,8 +1216,8 @@
       document.getElementById('inputKerusakan').value = item.kerusakan;
       document.getElementById('inputModal').value = item.modal || 0;
       document.getElementById('inputBiaya').value = item.biaya;
-      document.getElementById('inputLunas').checked = !!item.isPaid;
-      
+      document.getElementById('inputLunas').checked = !isStatusCancelled(item.status) && !!item.isPaid;
+
       const statusRadios = document.querySelectorAll('input[name="inputStatus"]');
       statusRadios.forEach(r => {
         if (r.value === (item.status || 'Menunggu Pengecekan')) {
@@ -1117,40 +1233,126 @@
       });
 
       document.getElementById('inputKeterangan').value = item.keterangan;
-      updateLiveFormProfitPreview();
-      window.scrollTo({ top: 180, behavior: 'smooth' });
+      updateLiveFormSplit();
+      window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+
+    function setAdminListFilter(filterKey) {
+      activeListBadgeFilter = filterKey;
+      updateListBadgeActiveStyles();
+      renderAdminTable();
+    }
+
+    function updateListBadgeActiveStyles() {
+      const badgeConfig = {
+        all: {
+          active: 'bg-neon-blue text-neon-dark border-neon-blue shadow-md shadow-cyan-500/20',
+          inactive: 'bg-slate-800/80 text-slate-300 border-slate-700 hover:border-neon-blue/60'
+        },
+        checking: {
+          active: 'bg-yellow-400 text-slate-950 border-yellow-300 shadow-md shadow-yellow-500/25',
+          inactive: 'bg-yellow-500/10 text-yellow-300 border-yellow-500/40 hover:bg-yellow-500/20'
+        },
+        unpaid: {
+          active: 'bg-red-500 text-white border-red-400 shadow-md shadow-red-500/25',
+          inactive: 'bg-red-500/10 text-red-300 border-red-500/40 hover:bg-red-500/20'
+        },
+        paid: {
+          active: 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/25',
+          inactive: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/20'
+        },
+        cancelled: {
+          active: 'bg-rose-500 text-white border-rose-400 shadow-md shadow-rose-500/25',
+          inactive: 'bg-rose-500/10 text-rose-300 border-rose-500/40 hover:bg-rose-500/20'
+        }
+      };
+
+      Object.keys(badgeConfig).forEach(key => {
+        const btn = document.getElementById(`filterBadge-${key}`);
+        if (!btn) return;
+        const cfg = badgeConfig[key];
+        const allClasses = (cfg.active + ' ' + cfg.inactive).split(' ');
+        btn.classList.remove(...allClasses);
+        const targetClasses = (activeListBadgeFilter === key ? cfg.active : cfg.inactive).split(' ');
+        btn.classList.add(...targetClasses);
+      });
     }
 
     function renderAdminTable() {
       const tbody = document.getElementById('adminTableBody');
-      const keyword = document.getElementById('adminSearch').value.toLowerCase();
+      if (!tbody) return;
+      const keyword = (document.getElementById('adminSearch').value || '').toLowerCase();
+
+      const countAll = serviceList.length;
+      const countChecking = serviceList.filter(s => isStatusChecking(s.status)).length;
+      const countUnpaid = serviceList.filter(s => !isStatusCancelled(s.status) && !s.isPaid).length;
+      const countPaid = serviceList.filter(s => !isStatusCancelled(s.status) && !!s.isPaid).length;
+      const countCancelled = serviceList.filter(s => isStatusCancelled(s.status)).length;
+
+      const setCount = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = val;
+      };
+      setCount('badgeFilterCount-all', countAll);
+      setCount('badgeFilterCount-checking', countChecking);
+      setCount('badgeFilterCount-unpaid', countUnpaid);
+      setCount('badgeFilterCount-paid', countPaid);
+      setCount('badgeFilterCount-cancelled', countCancelled);
+
+      updateListBadgeActiveStyles();
+
       tbody.innerHTML = '';
-      const filtered = serviceList.filter(s => s.nota.toLowerCase().includes(keyword) || s.nama.toLowerCase().includes(keyword) || s.merk.toLowerCase().includes(keyword));
+      const filtered = serviceList.filter(s => {
+        const cancelled = isStatusCancelled(s.status);
+        const checking = isStatusChecking(s.status);
+        const matchesKeyword =
+          (s.nota || '').toLowerCase().includes(keyword) ||
+          (s.nama || '').toLowerCase().includes(keyword) ||
+          (s.merk || '').toLowerCase().includes(keyword) ||
+          (s.phone || '').toLowerCase().includes(keyword);
+
+        let matchesBadge = true;
+        if (activeListBadgeFilter === 'checking') matchesBadge = checking;
+        else if (activeListBadgeFilter === 'unpaid') matchesBadge = !cancelled && !s.isPaid;
+        else if (activeListBadgeFilter === 'paid') matchesBadge = !cancelled && !!s.isPaid;
+        else if (activeListBadgeFilter === 'cancelled') matchesBadge = cancelled;
+
+        return matchesKeyword && matchesBadge;
+      });
+
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-500">Belum ada data service pelanggan yang ditemukan.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-500">Belum ada data service pelanggan yang sesuai dengan filter.</td></tr>`;
         return;
       }
-      filtered.forEach(s => {
+
+      filtered.forEach((s, idx) => {
+        const theme = NOTA_CARD_THEMES[idx % 2];
+        const cancelled = isStatusCancelled(s.status);
+
         let garansiBadge = '';
-        if (s.status === 'Diambil' && s.garansi && s.garansi !== 'Tidak ada' && s.diambilDate) {
-          let expiryStr = calculateGaransiExpiry(s.diambilDate, s.garansi);
-          let active = isGaransiActive(s.diambilDate, s.garansi);
-          if (active) {
-            garansiBadge = `<span class="inline-block px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-[10px] font-semibold rounded-md"><i class="fa-solid fa-shield-halved mr-1"></i>Garansi: ${s.garansi} (s/d ${expiryStr})</span>`;
-          } else {
-            garansiBadge = `<span class="inline-block px-2 py-0.5 bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] rounded-md"><i class="fa-solid fa-shield-xmark mr-1"></i>Garansi Habis (${expiryStr})</span>`;
+        if (!cancelled) {
+          if (s.status === 'Diambil' && s.garansi && s.garansi !== 'Tidak ada' && s.diambilDate) {
+            let expiryStr = calculateGaransiExpiry(s.diambilDate, s.garansi);
+            let active = isGaransiActive(s.diambilDate, s.garansi);
+            if (active) {
+              garansiBadge = `<span class="inline-block px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-[10px] font-semibold rounded-md"><i class="fa-solid fa-shield-halved mr-1"></i>Garansi: ${s.garansi} (s/d ${expiryStr})</span>`;
+            } else {
+              garansiBadge = `<span class="inline-block px-2 py-0.5 bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] rounded-md"><i class="fa-solid fa-shield-xmark mr-1"></i>Garansi Habis (${expiryStr})</span>`;
+            }
+          } else if (s.garansi && s.garansi !== 'Tidak ada') {
+            garansiBadge = `<span class="inline-block px-2 py-0.5 bg-slate-800 text-slate-400 text-[10px] rounded-md">Garansi: ${s.garansi}</span>`;
           }
-        } else if (s.garansi && s.garansi !== 'Tidak ada') {
-          garansiBadge = `<span class="inline-block px-2 py-0.5 bg-slate-800 text-slate-400 text-[10px] rounded-md">Garansi: ${s.garansi}</span>`;
         }
 
-        let paymentToggleHtml = `
-          <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" ${s.isPaid ? 'checked' : ''} onchange="quickTogglePaid('${s.nota}', this.checked)" class="sr-only peer">
-            <div class="relative w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500 border border-slate-700"></div>
-            <span class="ms-2 text-[11px] font-bold ${s.isPaid ? 'text-emerald-400' : 'text-red-400'}">${s.isPaid ? 'LUNAS' : 'BELUM'}</span>
-          </label>
-        `;
+        let paymentControlHtml = cancelled
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-red-500/20 border border-red-500/50 text-red-300 text-[10px] font-extrabold tracking-wide"><i class="fa-solid fa-ban"></i>DIBATALKAN</span>`
+          : `
+            <label class="inline-flex items-center cursor-pointer bg-neon-dark/60 px-2 py-0.5 rounded-lg border border-slate-700/70">
+              <input type="checkbox" ${s.isPaid ? 'checked' : ''} onchange="quickTogglePaid('${s.nota}', this.checked)" class="sr-only peer">
+              <div class="relative w-8 h-4 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500 border border-slate-700"></div>
+              <span class="ms-1.5 text-[10px] font-bold ${s.isPaid ? 'text-emerald-400' : 'text-red-400'}">${s.isPaid ? 'LUNAS' : 'BELUM'}</span>
+            </label>
+          `;
 
         const statuses = ['Menunggu Pengecekan', 'Sedang Dikerjakan', 'Menunggu Sparepart', 'Selesai', 'Diambil', 'Dibatalkan (Belum Diambil)', 'Dibatalkan (Sudah Diambil)'];
         let optionsHtml = '';
@@ -1158,61 +1360,72 @@
           optionsHtml += `<option value="${st}" ${s.status === st ? 'selected' : ''}>${st}</option>`;
         });
 
-        const split = calculateTransactionSplit(s.biaya, s.modal);
+        let profit = cancelled ? 0 : ((s.biaya || 0) - (s.modal || 0));
+        let techShare = (!cancelled && profit > 0) ? Math.round(profit * 0.40) : 0;
+        let shopShare = (!cancelled && profit > 0) ? (profit - techShare) : profit;
+        let pin3 = (s.phone || '').replace(/[^0-9]/g, '').slice(-3) || '-';
+
+        let financeSummaryHtml = cancelled
+          ? `<span class="text-[11px] font-semibold text-red-300/90 italic"><i class="fa-solid fa-circle-xmark mr-1"></i>Transaksi Dibatalkan (Tidak dihitung dalam pendapatan &amp; bagi hasil)</span>`
+          : `
+            <span>Jual: <span class="font-semibold text-cyan-400">Rp ${(s.biaya || 0).toLocaleString('id-ID')}</span></span>
+            <span>Modal: <span class="font-semibold text-orange-400">Rp ${(s.modal || 0).toLocaleString('id-ID')}</span></span>
+            <span>Bersih: <span class="font-bold text-emerald-400">Rp ${profit.toLocaleString('id-ID')}</span></span>
+            <span>Teknisi 40%: <span class="font-bold text-amber-400">Rp ${techShare.toLocaleString('id-ID')}</span></span>
+            <span>Toko 60%: <span class="font-bold text-cyan-300">Rp ${shopShare.toLocaleString('id-ID')}</span></span>
+            <div>${garansiBadge}</div>
+          `;
 
         tbody.innerHTML += `
-          <tr class="hover:bg-slate-800/40 transition border-t border-slate-800/80">
-            <td colspan="4" class="py-1.5 px-2 text-[11px]">
+          <tr class="${theme.bg} ${theme.border} hover:brightness-110 transition border-t-2 border-t-slate-700">
+            <td colspan="4" class="py-2 px-3 text-[11px]">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <div class="flex items-center gap-2">
-                  <span class="font-orbitron text-xs text-neon-blue font-bold">${s.nota}</span>
-                  <span class="text-slate-500 text-[10px]">|</span>
-                  <span class="text-slate-400"><i class="fa-regular fa-calendar mr-1"></i>Masuk: ${s.date || '-'}</span>
-                  <span class="text-slate-500 text-[10px]">|</span>
-                  <span class="text-slate-400"><i class="fa-regular fa-calendar-check mr-1"></i>Keluar: ${s.keluarDate || '-'}</span>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="font-orbitron text-xs font-extrabold px-2 py-0.5 rounded border ${theme.badge}">${s.nota}</span>
+                  ${paymentControlHtml}
+                  <span class="text-slate-400 text-[10px]">PIN: <strong class="text-white">${pin3}</strong></span>
+                  <span class="text-slate-600 text-[10px]">|</span>
+                  <span class="text-slate-300"><i class="fa-regular fa-calendar mr-1 text-neon-blue"></i>Masuk: ${s.date || '-'}</span>
+                  <span class="text-slate-600 text-[10px]">|</span>
+                  <span class="text-slate-300"><i class="fa-regular fa-calendar-check mr-1 text-emerald-400"></i>Keluar: ${s.keluarDate || '-'}</span>
                 </div>
-                <div>${garansiBadge}</div>
               </div>
             </td>
           </tr>
-          <tr class="hover:bg-slate-800/40 transition bg-slate-900/10">
-            <td colspan="4" class="py-1.5 px-2 text-[11px]">
+          <tr class="${theme.bg} ${theme.border} hover:brightness-110 transition">
+            <td colspan="4" class="py-1.5 px-3 text-[11px]">
               <div class="font-semibold text-white">
-                <i class="fa-regular fa-user text-neon-blue mr-1.5"></i>${s.nama} 
-                <span class="text-slate-400 font-normal text-[10px] ml-2">(<i class="fa-brands fa-whatsapp text-emerald-400 mr-0.5"></i>${s.phone || '-'})</span>
+                <i class="fa-regular fa-user text-neon-blue mr-1.5"></i>${s.nama}
+                <span class="text-slate-300 font-normal text-[10px] ml-2">(<i class="fa-brands fa-whatsapp text-emerald-400 mr-0.5"></i>${s.phone || '-'})</span>
               </div>
             </td>
           </tr>
-          <tr class="hover:bg-slate-800/40 transition bg-slate-900/30">
-            <td colspan="4" class="py-1.5 px-2 text-[11px]">
+          <tr class="${theme.bg} ${theme.border} hover:brightness-110 transition">
+            <td colspan="4" class="py-1.5 px-3 text-[11px]">
               <div class="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <div class="font-medium text-slate-200"><i class="fa-solid fa-mobile-screen text-slate-400 mr-1.5"></i>${s.merk}</div>
-                  <div class="text-slate-400 mt-0.5"><span class="text-slate-500">Kerusakan:</span> ${s.kerusakan}</div>
+                  <div class="font-medium text-slate-100"><i class="fa-solid fa-mobile-screen text-slate-300 mr-1.5"></i>${s.merk}</div>
+                  <div class="text-slate-300 mt-0.5"><span class="text-slate-400">Kerusakan:</span> ${s.kerusakan}</div>
                 </div>
-                <div class="flex flex-wrap items-center gap-3 text-slate-300">
-                  <div>${paymentToggleHtml}</div>
-                  <span>Kotor: <span class="font-semibold text-cyan-400">Rp ${split.biaya.toLocaleString('id-ID')}</span></span>
-                  <span>Modal: <span class="font-semibold text-orange-400">Rp ${split.modal.toLocaleString('id-ID')}</span></span>
-                  <span>Bersih: <span class="font-bold text-emerald-400">Rp ${split.netProfit.toLocaleString('id-ID')}</span></span>
-                  <span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300 font-semibold">Teknisi 40%: Rp ${split.techShare.toLocaleString('id-ID')}</span>
-                  <span class="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-semibold">Toko 60%: Rp ${split.shopShare.toLocaleString('id-ID')}</span>
+                <div class="flex flex-wrap items-center gap-3 text-slate-200">
+                  ${financeSummaryHtml}
                 </div>
               </div>
             </td>
           </tr>
-          <tr class="hover:bg-slate-800/40 transition bg-slate-900/50 border-b border-slate-800/80">
-            <td colspan="4" class="py-2 px-2 text-[11px]">
+          <tr class="${theme.bg} ${theme.border} hover:brightness-110 transition border-b-2 border-b-slate-700">
+            <td colspan="4" class="py-2.5 px-3 text-[11px]">
               <div class="flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-2">
-                  <span class="text-slate-400 font-medium">Status:</span>
-                  <select onchange="quickUpdateStatus('${s.nota}', this.value)" class="bg-neon-dark border border-neon-blue/60 text-neon-blue font-semibold text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:border-neon-blue cursor-pointer shadow-md min-w-[150px]">
+                  <span class="text-slate-300 font-medium">Status Pengerjaan:</span>
+                  <select onchange="quickUpdateStatus('${s.nota}', this.value)" class="bg-neon-dark border ${cancelled ? 'border-red-500/60 text-red-300' : 'border-neon-blue/60 text-neon-blue'} font-semibold text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:border-neon-blue cursor-pointer shadow-md min-w-[150px]">
                     ${optionsHtml}
                   </select>
                 </div>
                 <div class="inline-flex flex-wrap items-center gap-1.5">
-                  <button type="button" onclick="openThermalPrintPreview('${s.nota}')" class="px-2.5 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/50 text-cyan-300 rounded-lg transition text-[11px] font-bold shadow flex items-center gap-1 cursor-pointer" title="Cetak Nota Thermal 80mm">
-                    <i class="fa-solid fa-print text-[10px]"></i> Cetak Nota
+                  <span class="text-slate-300 font-medium mr-1">Aksi:</span>
+                  <button type="button" onclick="openThermalPreview('${s.nota}')" class="px-2.5 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/50 text-cyan-300 rounded-lg transition text-[11px] font-bold shadow flex items-center gap-1 cursor-pointer" title="Cetak Nota Thermal">
+                    <i class="fa-solid fa-print text-[10px]"></i> Nota
                   </button>
                   <button type="button" onclick="editService('${s.nota}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition text-[11px] font-semibold shadow flex items-center gap-1 cursor-pointer" title="Edit Detail">
                     <i class="fa-solid fa-pen text-[10px]"></i> Edit
@@ -1227,16 +1440,23 @@
               </div>
             </td>
           </tr>
+          <tr><td colspan="4" class="h-2 bg-transparent"></td></tr>
         `;
       });
     }
 
     async function quickTogglePaid(nota, isPaidVal) {
       const item = serviceList.find(s => s.nota === nota);
-      if (!item) return;
+      if (!item || isStatusCancelled(item.status)) return;
       const updatedData = { ...item, isPaid: isPaidVal };
       try {
-        await window.setDoc(window.doc(window.db, "services", nota), updatedData);
+        if (window.db && window.setDoc && window.doc) {
+          await window.setDoc(window.doc(window.db, "services", nota), updatedData);
+        }
+        item.isPaid = isPaidVal;
+        localStorage.setItem('rovcell_cached_services', JSON.stringify(serviceList));
+        renderAdminTable();
+        updateFinancialStats();
       } catch (err) {
         console.error(err);
         showCustomAlert("Gagal memperbarui status pembayaran.");
@@ -1244,243 +1464,128 @@
     }
 
     function updateFinancialStats() {
+      const todayStr = new Date().toISOString().split('T')[0];
       const dateInputEl = document.getElementById('filterDateInput');
+      const selectedDate = (dateInputEl && dateInputEl.value) ? dateInputEl.value : todayStr;
       const monthInputEl = document.getElementById('filterMonthInput');
-      const paidFilterEl = document.getElementById('filterFinancePaid');
+      const monthInputVal = (monthInputEl && monthInputEl.value) ? monthInputEl.value : todayStr.slice(0, 7);
 
-      const selectedDate = dateInputEl ? dateInputEl.value : new Date().toISOString().split('T')[0];
-      const monthInputVal = monthInputEl ? monthInputEl.value : '';
-      const paidFilter = paidFilterEl ? paidFilterEl.value : 'all';
+      const periodFilterEl = document.getElementById('techReportPeriodFilter');
+      const periodFilter = periodFilterEl ? periodFilterEl.value : 'month';
+      const statusFilterEl = document.getElementById('techReportStatusFilter');
+      const statusFilter = statusFilterEl ? statusFilterEl.value : 'all';
 
-      if (document.getElementById('labelSelectedDate')) document.getElementById('labelSelectedDate').innerText = selectedDate || 'Hari Ini';
-      if (document.getElementById('labelSelectedMonth')) document.getElementById('labelSelectedMonth').innerText = monthInputVal || 'Bulan Ini';
+      const dailyHeaderLabel = document.getElementById('dailySummaryHeaderLabel');
+      if (dailyHeaderLabel) {
+        dailyHeaderLabel.innerHTML = `<i class="fa-solid fa-calendar-day mr-1.5"></i>Harian (${selectedDate})`;
+      }
 
-      let dailyGross = 0, dailyModal = 0, dailyProfit = 0, dailyTech = 0, dailyShop = 0;
-      let monthlyGross = 0, monthlyModal = 0, monthlyProfit = 0, monthlyTech = 0, monthlyShop = 0;
+      let dailyProfit = 0, dailyModal = 0, dailyGross = 0, dailyTech = 0, dailyShop = 0;
+      let monthlyProfit = 0, monthlyModal = 0, monthlyGross = 0, monthlyTech = 0, monthlyShop = 0;
 
-      const techTbody = document.getElementById('techFinanceTableBody');
+      const techTbody = document.getElementById('techReportTableBody');
+      const techTfoot = document.getElementById('techReportTableFoot');
       if (techTbody) techTbody.innerHTML = '';
-      let monthlyItemsCount = 0;
+
+      let reportTotalNet = 0, reportTotalTech = 0, reportTotalShop = 0, reportCount = 0;
 
       serviceList.forEach(s => {
-        if (paidFilter === 'paid' && !s.isPaid) return;
+        if (isStatusCancelled(s.status)) return;
 
-        const split = calculateTransactionSplit(s.biaya, s.modal);
+        let modal = s.modal || 0;
+        let biaya = s.biaya || 0;
+        let profit = biaya - modal;
+        let techPart = profit > 0 ? Math.round(profit * 0.40) : 0;
+        let shopPart = profit > 0 ? (profit - techPart) : profit;
         let itemDate = s.date || '';
 
-        if (selectedDate && itemDate === selectedDate) {
-          dailyGross += split.biaya;
-          dailyModal += split.modal;
-          dailyProfit += split.netProfit;
-          dailyTech += split.techShare;
-          dailyShop += split.shopShare;
+        if (itemDate === selectedDate) {
+          dailyProfit += profit;
+          dailyModal += modal;
+          dailyGross += biaya;
+          dailyTech += techPart;
+          dailyShop += shopPart;
         }
 
         if (monthInputVal && itemDate.startsWith(monthInputVal)) {
-          monthlyGross += split.biaya;
-          monthlyModal += split.modal;
-          monthlyProfit += split.netProfit;
-          monthlyTech += split.techShare;
-          monthlyShop += split.shopShare;
-          monthlyItemsCount++;
+          monthlyProfit += profit;
+          monthlyModal += modal;
+          monthlyGross += biaya;
+          monthlyTech += techPart;
+          monthlyShop += shopPart;
+        }
 
+        let matchesPeriod = false;
+        if (periodFilter === 'all') matchesPeriod = true;
+        else if (periodFilter === 'day') matchesPeriod = (itemDate === selectedDate);
+        else matchesPeriod = (monthInputVal && itemDate.startsWith(monthInputVal));
+
+        if (matchesPeriod && (statusFilter === 'all' || (statusFilter === 'paid' && s.isPaid))) {
+          reportCount++;
+          reportTotalNet += profit;
+          reportTotalTech += techPart;
+          reportTotalShop += shopPart;
           if (techTbody) {
             techTbody.innerHTML += `
-              <tr class="hover:bg-slate-800/40 transition">
-                <td class="py-2.5 px-3">
-                  <div class="font-orbitron font-bold text-neon-blue">${s.nota}</div>
-                  <div class="text-[10px] text-slate-400">${s.date || '-'}</div>
-                </td>
-                <td class="py-2.5 px-3">
-                  <div class="font-semibold text-white">${s.nama}</div>
-                  <div class="text-[10px] text-slate-400">${s.merk} - ${s.kerusakan}</div>
-                </td>
-                <td class="py-2.5 px-3 text-right font-mono text-cyan-400">Rp ${split.biaya.toLocaleString('id-ID')}</td>
-                <td class="py-2.5 px-3 text-right font-mono text-orange-400">Rp ${split.modal.toLocaleString('id-ID')}</td>
-                <td class="py-2.5 px-3 text-right font-mono font-bold text-emerald-400">Rp ${split.netProfit.toLocaleString('id-ID')}</td>
-                <td class="py-2.5 px-3 text-right font-mono font-bold text-amber-400 bg-amber-500/5">Rp ${split.techShare.toLocaleString('id-ID')}</td>
-                <td class="py-2.5 px-3 text-right font-mono font-bold text-white">Rp ${split.shopShare.toLocaleString('id-ID')}</td>
-                <td class="py-2.5 px-3 text-center">
-                  <span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.isPaid ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">${s.isPaid ? 'LUNAS' : 'BELUM'}</span>
-                </td>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2 px-3 text-slate-300">${s.date || '-'}</td>
+                <td class="py-2 px-3 font-orbitron font-bold text-neon-blue">${s.nota}</td>
+                <td class="py-2 px-3 text-slate-200">${s.nama} <span class="text-slate-400">(${s.merk})</span> ${s.isPaid ? '<span class="text-[10px] text-emerald-400 font-bold ml-1">[LUNAS]</span>' : '<span class="text-[10px] text-red-400 ml-1">[BELUM]</span>'}</td>
+                <td class="py-2 px-3 text-right font-semibold text-emerald-400">Rp ${profit.toLocaleString('id-ID')}</td>
+                <td class="py-2 px-3 text-right font-bold text-amber-400">Rp ${techPart.toLocaleString('id-ID')}</td>
+                <td class="py-2 px-3 text-right font-semibold text-cyan-300">Rp ${shopPart.toLocaleString('id-ID')}</td>
               </tr>
             `;
           }
         }
       });
 
-      if (techTbody && monthlyItemsCount === 0) {
-        techTbody.innerHTML = `<tr><td colspan="8" class="py-6 text-center text-slate-500">Tidak ada transaksi pada periode bulan ini.</td></tr>`;
+      if (techTbody && reportCount === 0) {
+        techTbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-500">Tidak ada transaksi service aktif pada periode filter terpilih.</td></tr>`;
       }
 
-      // Update Table Metrics
-      document.getElementById('statDailyGross').innerText = `Rp ${dailyGross.toLocaleString('id-ID')}`;
-      document.getElementById('statDailyModal').innerText = `Rp ${dailyModal.toLocaleString('id-ID')}`;
-      document.getElementById('statDailyProfit').innerText = `Rp ${dailyProfit.toLocaleString('id-ID')}`;
-      document.getElementById('statDailyTech').innerText = `Rp ${dailyTech.toLocaleString('id-ID')}`;
-      document.getElementById('statDailyShop').innerText = `Rp ${dailyShop.toLocaleString('id-ID')}`;
-
-      document.getElementById('statMonthlyGross').innerText = `Rp ${monthlyGross.toLocaleString('id-ID')}`;
-      document.getElementById('statMonthlyModal').innerText = `Rp ${monthlyModal.toLocaleString('id-ID')}`;
-      document.getElementById('statMonthlyProfit').innerText = `Rp ${monthlyProfit.toLocaleString('id-ID')}`;
-      document.getElementById('statMonthlyTech').innerText = `Rp ${monthlyTech.toLocaleString('id-ID')}`;
-      document.getElementById('statMonthlyShop').innerText = `Rp ${monthlyShop.toLocaleString('id-ID')}`;
-
-      // Update Summary Cards & Technician Grand Total
-      document.getElementById('cardMonthlyGross').innerText = `Rp ${monthlyGross.toLocaleString('id-ID')}`;
-      document.getElementById('cardMonthlyModal').innerText = `Modal: Rp ${monthlyModal.toLocaleString('id-ID')}`;
-      document.getElementById('cardMonthlyNet').innerText = `Rp ${monthlyProfit.toLocaleString('id-ID')}`;
-      document.getElementById('cardMonthlyTech').innerText = `Rp ${monthlyTech.toLocaleString('id-ID')}`;
-      document.getElementById('cardMonthlyShop').innerText = `Rp ${monthlyShop.toLocaleString('id-ID')}`;
-      document.getElementById('techReportGrandTotal').innerText = `Rp ${monthlyTech.toLocaleString('id-ID')}`;
-    }
-
-    // ==========================================
-    // THERMAL 80MM RECEIPT GENERATOR & PRINTER
-    // ==========================================
-    function buildThermalReceiptHtml(item) {
-      const width = appSettings.printPaperWidth || '80mm';
-      const fontSize = appSettings.printFontSize || '13px';
-      const shopName = appSettings.printShopName || 'ROVCELL SMARTPHONE';
-      const shopAddressHtml = (appSettings.printShopAddress || '').replace(/\n/g, '<br>');
-      const footerNoteHtml = (appSettings.printFooterNote || '').replace(/\n/g, '<br>');
-      const cleanPhone = (item.phone || '').replace(/[^0-9]/g, '');
-      const pinCode = cleanPhone.slice(-3) || '-';
-
-      let garansiRow = '';
-      if (appSettings.printShowGaransi) {
-        garansiRow = `
+      if (techTfoot) {
+        techTfoot.innerHTML = `
           <tr>
-            <td style="padding:2px 0;">GARANSI</td>
-            <td style="padding:2px 0; text-align:right;">${item.garansi || 'Tidak ada'}</td>
+            <td colspan="3" class="py-2.5 px-3 text-slate-200">TOTAL (${reportCount} Transaksi)</td>
+            <td class="py-2.5 px-3 text-right text-emerald-400">Rp ${reportTotalNet.toLocaleString('id-ID')}</td>
+            <td class="py-2.5 px-3 text-right text-amber-400">Rp ${reportTotalTech.toLocaleString('id-ID')}</td>
+            <td class="py-2.5 px-3 text-right text-cyan-300">Rp ${reportTotalShop.toLocaleString('id-ID')}</td>
           </tr>
         `;
       }
 
-      let pinRow = '';
-      if (appSettings.printShowPin) {
-        pinRow = `
-          <div style="margin-top:6px; padding:4px; border:2px dashed #000; text-align:center; font-size:11px;">
-            CEK STATUS ONLINE:<br>
-            NOTA: ${item.nota} | PIN: ${pinCode}
-          </div>
-        `;
-      }
+      const setTxt = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = `Rp ${val.toLocaleString('id-ID')}`;
+      };
 
-      return `
-        <div style="width:${width}; max-width:${width}; color:#000000; background:#ffffff; font-family:'Courier New', Courier, monospace; font-size:${fontSize}; font-weight:800; line-height:1.35; padding:4px; box-sizing:border-box;">
-          <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:6px; margin-bottom:6px;">
-            <div style="font-size:16px; font-weight:900; letter-spacing:0.5px;">${shopName}</div>
-            <div style="font-size:11px; font-weight:700; margin-top:2px;">${shopAddressHtml}</div>
-          </div>
+      setTxt('statDailyProfit', dailyProfit);
+      setTxt('statDailyModal', dailyModal);
+      setTxt('statDailyGross', dailyGross);
+      setTxt('statDailyTech', dailyTech);
+      setTxt('statDailyShop', dailyShop);
 
-          <div style="text-align:center; font-size:13px; font-weight:900; margin-bottom:6px; text-decoration:underline;">
-            NOTA TANDA TERIMA SERVICE
-          </div>
-
-          <table style="width:100%; border-collapse:collapse; font-size:${fontSize}; font-weight:800;">
-            <tr>
-              <td style="padding:2px 0;">NO. NOTA</td>
-              <td style="padding:2px 0; text-align:right;">${item.nota}</td>
-            </tr>
-            <tr>
-              <td style="padding:2px 0;">TGL MASUK</td>
-              <td style="padding:2px 0; text-align:right;">${item.date || '-'}</td>
-            </tr>
-            ${item.keluarDate ? `
-            <tr>
-              <td style="padding:2px 0;">TGL KELUAR</td>
-              <td style="padding:2px 0; text-align:right;">${item.keluarDate}</td>
-            </tr>` : ''}
-            <tr>
-              <td style="padding:2px 0;">PELANGGAN</td>
-              <td style="padding:2px 0; text-align:right;">${item.nama}</td>
-            </tr>
-            <tr>
-              <td style="padding:2px 0;">NO. WA</td>
-              <td style="padding:2px 0; text-align:right;">${item.phone || '-'}</td>
-            </tr>
-          </table>
-
-          <div style="border-top:2px dashed #000; border-bottom:2px dashed #000; margin:6px 0; padding:6px 0;">
-            <div style="margin-bottom:4px;">
-              <div style="font-size:11px;">UNIT / TIPE HP:</div>
-              <div style="font-size:14px; font-weight:900;">${item.merk}</div>
-            </div>
-            <div style="margin-bottom:4px;">
-              <div style="font-size:11px;">KERUSAKAN / KELUHAN:</div>
-              <div>${item.kerusakan}</div>
-            </div>
-            ${item.keterangan ? `
-            <div>
-              <div style="font-size:11px;">KETERANGAN:</div>
-              <div>${item.keterangan}</div>
-            </div>` : ''}
-          </div>
-
-          <table style="width:100%; border-collapse:collapse; font-size:${fontSize}; font-weight:800;">
-            <tr>
-              <td style="padding:2px 0;">STATUS</td>
-              <td style="padding:2px 0; text-align:right;">${item.status}</td>
-            </tr>
-            ${garansiRow}
-            <tr>
-              <td style="padding:2px 0;">PEMBAYARAN</td>
-              <td style="padding:2px 0; text-align:right;">${item.isPaid ? 'LUNAS' : 'BELUM LUNAS'}</td>
-            </tr>
-            <tr style="border-top:2px solid #000;">
-              <td style="padding:6px 0 2px 0; font-size:14px; font-weight:900;">TOTAL BIAYA</td>
-              <td style="padding:6px 0 2px 0; text-align:right; font-size:15px; font-weight:900;">Rp ${(item.biaya || 0).toLocaleString('id-ID')}</td>
-            </tr>
-          </table>
-
-          ${pinRow}
-
-          <div style="border-top:2px solid #000; margin-top:8px; padding-top:6px; text-align:center; font-size:11px; font-weight:700;">
-            ${footerNoteHtml}
-          </div>
-        </div>
-      `;
+      setTxt('statMonthlyProfit', monthlyProfit);
+      setTxt('statMonthlyModal', monthlyModal);
+      setTxt('statMonthlyGross', monthlyGross);
+      setTxt('statMonthlyTech', monthlyTech);
+      setTxt('statMonthlyShop', monthlyShop);
     }
 
-    function openThermalPrintPreview(nota) {
-      const item = serviceList.find(s => s.nota === nota);
-      if (!item) return;
-      const receiptHtml = buildThermalReceiptHtml(item);
-      document.getElementById('previewPaperLabel').innerText = appSettings.printPaperWidth || '80mm';
-      document.getElementById('thermalModalContent').innerHTML = receiptHtml;
-      document.getElementById('thermalPrintArea').innerHTML = receiptHtml;
-      document.getElementById('thermalPreviewModal').classList.remove('hidden');
-    }
-
-    function closeThermalPreviewModal() {
-      document.getElementById('thermalPreviewModal').classList.add('hidden');
-    }
-
-    function executeThermalPrint() {
-      window.print();
-    }
-
-    // ==========================================
-    // ADMIN PROFILE, WA TEMPLATE & PRINT SETTINGS
-    // ==========================================
     function openAdminProfileModal() {
       document.getElementById('newAdminUser').value = currentAdminUsername;
       document.getElementById('newAdminPass').value = '';
-      
-      // Populate WA Template
       document.getElementById('waTemplateInput').value = appSettings.waTemplate || DEFAULT_WA_TEMPLATE;
-
-      // Populate Print Settings
-      document.getElementById('printShopName').value = appSettings.printShopName || 'ROVCELL SMARTPHONE';
-      document.getElementById('printShopAddress').value = appSettings.printShopAddress || '';
-      document.getElementById('printPaperWidth').value = appSettings.printPaperWidth || '80mm';
-      document.getElementById('printFontSize').value = appSettings.printFontSize || '13px';
-      document.getElementById('printFooterNote').value = appSettings.printFooterNote || '';
+      document.getElementById('printShopName').value = appSettings.printShopName || "ROVCELL SMARTPHONE";
+      document.getElementById('printShopPhone').value = appSettings.printShopPhone || "WA: 0889-0889-0176";
+      document.getElementById('printShopAddress').value = appSettings.printShopAddress || "Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar";
+      document.getElementById('printPaperWidth').value = appSettings.printPaperWidth || "80mm";
+      document.getElementById('printFontSize').value = appSettings.printFontSize || "13px";
+      document.getElementById('printFooterNote').value = appSettings.printFooterNote || "";
       document.getElementById('printShowGaransi').checked = appSettings.printShowGaransi !== false;
       document.getElementById('printShowPin').checked = appSettings.printShowPin !== false;
-
-      switchProfileModalSection('account');
+      switchProfileModalTab('account');
       document.getElementById('adminProfileModal').classList.remove('hidden');
     }
 
@@ -1488,24 +1593,27 @@
       document.getElementById('adminProfileModal').classList.add('hidden');
     }
 
-    function switchProfileModalSection(section) {
-      document.getElementById('profileSectionAccount').classList.add('hidden');
-      document.getElementById('profileSectionWa').classList.add('hidden');
-      document.getElementById('profileSectionPrint').classList.add('hidden');
-
-      if (section === 'account') document.getElementById('profileSectionAccount').classList.remove('hidden');
-      else if (section === 'wa') document.getElementById('profileSectionWa').classList.remove('hidden');
-      else if (section === 'print') document.getElementById('profileSectionPrint').classList.remove('hidden');
+    function switchProfileModalTab(tabName) {
+      ['account', 'wa', 'print'].forEach(t => {
+        document.getElementById(`profPanel-${t}`).classList.add('hidden');
+        const btn = document.getElementById(`profTabBtn-${t}`);
+        btn.classList.remove('bg-neon-blue', 'text-neon-dark');
+        btn.classList.add('text-slate-300', 'hover:bg-slate-800');
+      });
+      document.getElementById(`profPanel-${tabName}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`profTabBtn-${tabName}`);
+      activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800');
+      activeBtn.classList.add('bg-neon-blue', 'text-neon-dark');
     }
 
-    function insertWaPlaceholder(tag) {
+    function insertWaVar(varText) {
       const textarea = document.getElementById('waTemplateInput');
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const text = textarea.value;
-      textarea.value = text.substring(0, start) + tag + text.substring(end);
+      textarea.value = text.substring(0, start) + varText + text.substring(end);
       textarea.focus();
-      textarea.selectionStart = textarea.selectionEnd = start + tag.length;
+      textarea.selectionStart = textarea.selectionEnd = start + varText.length;
     }
 
     function resetDefaultWaTemplate() {
@@ -1521,32 +1629,39 @@
       appSettings.waTemplate = tpl;
       localStorage.setItem('rovcell_app_settings', JSON.stringify(appSettings));
       try {
-        await window.setDoc(window.doc(window.db, "settings", "appConfig"), { waTemplate: tpl }, { merge: true });
+        if (window.db && window.setDoc && window.doc) {
+          await window.setDoc(window.doc(window.db, "settings", "appConfig"), { waTemplate: tpl }, { merge: true });
+        }
+        closeAdminProfileModal();
         showCustomAlert("Template pesan WhatsApp berhasil disimpan!", true);
-      } catch (err) {
-        console.error(err);
-        showCustomAlert("Tersimpan lokal, namun gagal sinkron ke server.");
+      } catch (e) {
+        console.error(e);
+        closeAdminProfileModal();
+        showCustomAlert("Template pesan tersimpan di perangkat lokal.", true);
       }
     }
 
     async function savePrintSettings() {
-      const updatedPrint = {
-        printShopName: document.getElementById('printShopName').value.trim() || 'ROVCELL SMARTPHONE',
-        printShopAddress: document.getElementById('printShopAddress').value.trim(),
-        printPaperWidth: document.getElementById('printPaperWidth').value,
-        printFontSize: document.getElementById('printFontSize').value,
-        printFooterNote: document.getElementById('printFooterNote').value.trim(),
-        printShowGaransi: document.getElementById('printShowGaransi').checked,
-        printShowPin: document.getElementById('printShowPin').checked
-      };
-      appSettings = { ...appSettings, ...updatedPrint };
+      appSettings.printShopName = document.getElementById('printShopName').value.trim() || "ROVCELL SMARTPHONE";
+      appSettings.printShopPhone = document.getElementById('printShopPhone').value.trim() || "WA: 0889-0889-0176";
+      appSettings.printShopAddress = document.getElementById('printShopAddress').value.trim() || "Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar";
+      appSettings.printPaperWidth = document.getElementById('printPaperWidth').value;
+      appSettings.printFontSize = document.getElementById('printFontSize').value;
+      appSettings.printFooterNote = document.getElementById('printFooterNote').value.trim();
+      appSettings.printShowGaransi = document.getElementById('printShowGaransi').checked;
+      appSettings.printShowPin = document.getElementById('printShowPin').checked;
+
       localStorage.setItem('rovcell_app_settings', JSON.stringify(appSettings));
       try {
-        await window.setDoc(window.doc(window.db, "settings", "appConfig"), updatedPrint, { merge: true });
+        if (window.db && window.setDoc && window.doc) {
+          await window.setDoc(window.doc(window.db, "settings", "appConfig"), appSettings, { merge: true });
+        }
+        closeAdminProfileModal();
         showCustomAlert("Setting cetak nota thermal berhasil disimpan!", true);
-      } catch (err) {
-        console.error(err);
-        showCustomAlert("Tersimpan lokal, namun gagal sinkron ke server.");
+      } catch (e) {
+        console.error(e);
+        closeAdminProfileModal();
+        showCustomAlert("Setting cetak tersimpan di perangkat lokal.", true);
       }
     }
 
@@ -1557,21 +1672,157 @@
         showCustomAlert("Username dan password tidak boleh kosong!");
         return;
       }
+      localStorage.setItem('rovcell_admin_user', u);
+      localStorage.setItem('rovcell_admin_pass', p);
       try {
-        const docRef = window.doc(window.db, "settings", "adminCredentials");
-        await window.setDoc(docRef, { username: u, password: p }, { merge: true });
+        if (window.db && window.setDoc && window.doc) {
+          const docRef = window.doc(window.db, "settings", "adminCredentials");
+          await window.setDoc(docRef, { username: u, password: p }, { merge: true });
+        }
         currentAdminUsername = u;
-        showCustomAlert("Profil admin berhasil diperbarui!", true);
         closeAdminProfileModal();
+        showCustomAlert("Profil admin berhasil diperbarui!", true);
       } catch (err) {
         console.error(err);
-        showCustomAlert("Gagal memperbarui profil admin.");
+        currentAdminUsername = u;
+        closeAdminProfileModal();
+        showCustomAlert("Profil admin tersimpan secara lokal!", true);
       }
     }
 
-    function openQrisModal(nota) {
+    // Cetak Nota Thermal 80mm / 58mm (1 Halaman Penuh Font Tebal)
+    function buildThermalReceiptHtml(item) {
+      const width = appSettings.printPaperWidth || "80mm";
+      const fontSize = appSettings.printFontSize || "13px";
+      const cleanPhone = (item.phone || '').replace(/[^0-9]/g, '');
+      const pin3 = cleanPhone.slice(-3) || '-';
+      const cancelled = isStatusCancelled(item.status);
+      const paidText = cancelled ? 'DIBATALKAN' : (item.isPaid ? 'LUNAS' : 'BELUM LUNAS');
+
+      let garansiLine = '';
+      if (!cancelled && appSettings.printShowGaransi !== false) {
+        let garansiVal = item.garansi || 'Tidak ada';
+        if (item.status === 'Diambil' && item.diambilDate && garansiVal !== 'Tidak ada') {
+          const exp = calculateGaransiExpiry(item.diambilDate, garansiVal);
+          garansiVal += ` (s/d ${exp})`;
+        }
+        garansiLine = `
+          <div style="display:flex; justify-content:space-between; margin-top:2px;">
+            <span>GARANSI:</span>
+            <span>${garansiVal}</span>
+          </div>
+        `;
+      }
+
+      let pinLine = '';
+      if (appSettings.printShowPin !== false) {
+        pinLine = `
+          <div style="margin-top:6px; padding:4px; border:2px dashed #000; text-align:center;">
+            <div style="font-size:11px;">CEK STATUS ONLINE: rovcell.online</div>
+            <div>NOTA: ${item.nota} | PIN: ${pin3}</div>
+          </div>
+        `;
+      }
+
+      return `
+        <div style="width:${width}; max-width:${width}; background:#fff; color:#000; font-family:'Courier New', Courier, monospace; font-size:${fontSize}; font-weight:900; line-height:1.35; padding:4px 6px; box-sizing:border-box;">
+          <div style="text-align:center; border-bottom:2px dashed #000; padding-bottom:6px; margin-bottom:6px;">
+            <div style="font-size:16px; letter-spacing:0.5px;">${appSettings.printShopName}</div>
+            <div style="font-size:11px; margin-top:2px;">${appSettings.printShopAddress}</div>
+            <div style="font-size:11px;">${appSettings.printShopPhone}</div>
+          </div>
+
+          <div style="border-bottom:2px dashed #000; padding-bottom:5px; margin-bottom:5px;">
+            <div style="display:flex; justify-content:space-between;">
+              <span>NO NOTA:</span>
+              <span>${item.nota}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>TGL MASUK:</span>
+              <span>${item.date || '-'}</span>
+            </div>
+            ${item.keluarDate ? `<div style="display:flex; justify-content:space-between;"><span>TGL KELUAR:</span><span>${item.keluarDate}</span></div>` : ''}
+            <div style="display:flex; justify-content:space-between;">
+              <span>PELANGGAN:</span>
+              <span>${item.nama}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>NO WA:</span>
+              <span>${item.phone || '-'}</span>
+            </div>
+          </div>
+
+          <div style="border-bottom:2px dashed #000; padding-bottom:5px; margin-bottom:5px;">
+            <div>UNIT HP : ${item.merk}</div>
+            <div>KELUHAN : ${item.kerusakan}</div>
+            <div>STATUS  : ${item.status}</div>
+            ${item.keterangan ? `<div>KET     : ${item.keterangan}</div>` : ''}
+            ${garansiLine}
+          </div>
+
+          <div style="border-bottom:2px dashed #000; padding-bottom:6px; margin-bottom:6px;">
+            ${cancelled ? '' : `
+            <div style="display:flex; justify-content:space-between; font-size:15px;">
+              <span>TOTAL BIAYA:</span>
+              <span>Rp ${(item.biaya || 0).toLocaleString('id-ID')}</span>
+            </div>
+            `}
+            <div style="display:flex; justify-content:space-between; margin-top:2px;">
+              <span>STATUS BAYAR:</span>
+              <span>${paidText}</span>
+            </div>
+          </div>
+
+          ${pinLine}
+
+          <div style="text-align:center; font-size:11px; margin-top:6px;">
+            ${appSettings.printFooterNote || ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function openThermalPreview(nota) {
       const item = serviceList.find(s => s.nota === nota);
       if (!item) return;
+      const html = buildThermalReceiptHtml(item);
+      currentReceiptHtmlForPrint = html;
+      document.getElementById('previewPaperLabel').innerText = appSettings.printPaperWidth || "80mm";
+      document.getElementById('thermalReceiptPreviewBox').innerHTML = html;
+      document.getElementById('thermalPreviewModal').classList.remove('hidden');
+    }
+
+    function closeThermalPreviewModal() {
+      document.getElementById('thermalPreviewModal').classList.add('hidden');
+    }
+
+    function executeThermalPrint() {
+      const printArea = document.getElementById('printReceiptArea');
+      const width = appSettings.printPaperWidth || "80mm";
+      let dynamicPageStyle = document.getElementById('dynamicThermalPageStyle');
+      if (!dynamicPageStyle) {
+        dynamicPageStyle = document.createElement('style');
+        dynamicPageStyle.id = 'dynamicThermalPageStyle';
+        document.head.appendChild(dynamicPageStyle);
+      }
+      dynamicPageStyle.innerHTML = `@media print { @page { size: ${width} auto; margin: 0mm; } }`;
+
+      printArea.innerHTML = currentReceiptHtmlForPrint;
+      closeThermalPreviewModal();
+
+      setTimeout(() => {
+        window.print();
+      }, 120);
+    }
+
+    window.addEventListener('afterprint', () => {
+      const printArea = document.getElementById('printReceiptArea');
+      if (printArea) printArea.innerHTML = '';
+    });
+
+    function openQrisModal(nota) {
+      const item = serviceList.find(s => s.nota === nota);
+      if (!item || isStatusCancelled(item.status)) return;
       activeQrisNotaItem = item;
       document.getElementById('qrisTotalCost').innerText = `Rp ${(item.biaya || 0).toLocaleString('id-ID')}`;
       document.getElementById('qrisModal').classList.remove('hidden');
@@ -1610,7 +1861,7 @@
     }
 
     function getProgressBarHtml(currentStatus) {
-      if (currentStatus && currentStatus.startsWith('Dibatalkan')) {
+      if (isStatusCancelled(currentStatus)) {
         return `
           <div class="py-4 px-4 bg-red-500/10 rounded-2xl border border-red-500/30 my-2 text-center space-y-2">
             <div class="w-12 h-12 bg-red-500/20 border border-red-500/40 rounded-full flex items-center justify-center mx-auto text-red-400 text-xl">
@@ -1637,11 +1888,11 @@
 
       let html = '<div class="py-4 px-2 bg-neon-dark/60 rounded-2xl border border-neon-border/60 my-2"><div class="flex items-center justify-between relative max-w-md mx-auto px-4">';
       html += '<div class="absolute left-10 right-10 top-5 h-1 bg-slate-800 -z-0"></div>';
-      
+
       steps.forEach((step, idx) => {
         let isCompleted = idx <= activeIdx;
         let isCurrent = idx === activeIdx;
-        
+
         let circleClass = isCompleted ? 'bg-neon-blue text-neon-dark neon-glow border-neon-blue scale-110 shadow-lg shadow-cyan-500/50' : 'bg-slate-900 text-slate-500 border-slate-700';
         if (isCurrent) circleClass += ' ring-4 ring-neon-blue/40 font-black animate-pulse';
 
@@ -1693,17 +1944,21 @@
 
       saveRecentSearch(item.nota, pinInput, item.nama, item.merk);
 
+      const cancelled = isStatusCancelled(item.status);
+
       let statusColor = 'text-yellow-400 border-yellow-500/30 bg-yellow-500/10';
       if (item.status === 'Selesai') statusColor = 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10';
       if (item.status === 'Diambil') statusColor = 'text-blue-400 border-blue-500/30 bg-blue-500/10';
-      if (item.status && item.status.startsWith('Dibatalkan')) statusColor = 'text-red-400 border-red-500/30 bg-red-500/10';
+      if (cancelled) statusColor = 'text-red-400 border-red-500/30 bg-red-500/10';
 
-      let paymentBadge = item.isPaid 
-        ? `<span class="px-3 py-1 rounded-full text-xs border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>LUNAS</span>`
-        : `<span class="px-3 py-1 rounded-full text-xs border border-red-500/30 bg-red-500/10 text-red-400 font-bold"><i class="fa-solid fa-clock mr-1"></i>BELUM LUNAS</span>`;
+      let paymentBadge = cancelled
+        ? ''
+        : (item.isPaid
+            ? `<span class="px-3 py-1 rounded-full text-xs border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>LUNAS</span>`
+            : `<span class="px-3 py-1 rounded-full text-xs border border-red-500/30 bg-red-500/10 text-red-400 font-bold"><i class="fa-solid fa-clock mr-1"></i>BELUM LUNAS</span>`);
 
       let qrisButtonHtml = '';
-      if (!item.isPaid) {
+      if (!cancelled && !item.isPaid) {
         qrisButtonHtml = `
           <button type="button" onclick="openQrisModal('${item.nota}')" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer">
             <i class="fa-solid fa-qrcode text-base"></i> Bayar dengan QRIS
@@ -1713,10 +1968,10 @@
 
       let garansiHtml = '';
       let klaimGaransiBtn = '';
-      if (item.status === 'Diambil' && item.garansi && item.garansi !== 'Tidak ada') {
+      if (!cancelled && item.status === 'Diambil' && item.garansi && item.garansi !== 'Tidak ada') {
         let expiryStr = calculateGaransiExpiry(item.diambilDate, item.garansi);
         let active = isGaransiActive(item.diambilDate, item.garansi);
-        
+
         garansiHtml = `
           <div class="p-3 bg-neon-dark rounded-xl border border-neon-blue/30 space-y-1 text-xs">
             <div class="flex items-center justify-between">
@@ -1737,11 +1992,15 @@
 
       let progressBar = getProgressBarHtml(item.status);
 
+      let totalCostSection = cancelled
+        ? ''
+        : `<div class="flex justify-between items-center pt-2 border-t border-slate-800"><span class="text-[11px] text-slate-400">Total Biaya:</span><span class="font-orbitron font-bold text-white text-base">Rp ${(item.biaya || 0).toLocaleString('id-ID')}</span></div>`;
+
       container.innerHTML = `
         <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow space-y-4">
           <div class="flex justify-between items-start border-b border-slate-800 pb-3">
             <div><span class="text-[11px] text-slate-400">Nomor Nota</span><h3 class="font-orbitron font-bold text-neon-blue text-lg">${item.nota}</h3></div>
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center justify-end gap-2">
               ${paymentBadge}
               <span class="px-3 py-1 rounded-full text-xs border ${statusColor}">${item.status}</span>
             </div>
@@ -1756,7 +2015,7 @@
           </div>
           <div class="p-3 bg-neon-dark rounded-xl border border-slate-800 text-xs space-y-1"><span class="text-slate-500 block">Keterangan Perbaikan:</span><p class="text-slate-300">${item.keterangan || 'Belum ada keterangan.'}</p></div>
           ${garansiHtml}
-          <div class="flex justify-between items-center pt-2 border-t border-slate-800"><span class="text-[11px] text-slate-400">Total Biaya:</span><span class="font-orbitron font-bold text-white text-base">Rp ${(item.biaya || 0).toLocaleString('id-ID')}</span></div>
+          ${totalCostSection}
           ${qrisButtonHtml}
           ${klaimGaransiBtn}
           <button type="button" onclick="contactAdminWhatsApp('${item.nota}')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2 cursor-pointer"><i class="fa-brands fa-whatsapp text-base"></i> Hubungi Admin via WhatsApp</button>
@@ -1786,21 +2045,25 @@
         showCustomAlert("Nomor WhatsApp pelanggan tidak valid atau kosong!");
         return;
       }
-      let paidStatusText = item.isPaid ? "Sudah Lunas" : "Belum Lunas";
-      let template = appSettings.waTemplate || DEFAULT_WA_TEMPLATE;
-      
-      let text = template
+      const cancelled = isStatusCancelled(item.status);
+      let paidStatusText = cancelled ? "Dibatalkan" : (item.isPaid ? "Sudah Lunas" : "Belum Lunas");
+      let cleanPhone = item.phone.replace(/[^0-9]/g, '');
+      let pin3 = cleanPhone.slice(-3) || '-';
+      let tpl = appSettings.waTemplate || DEFAULT_WA_TEMPLATE;
+
+      let text = tpl
         .replace(/\{nama\}/g, item.nama || '')
         .replace(/\{nota\}/g, item.nota || '')
+        .replace(/\{pin\}/g, pin3)
         .replace(/\{merk\}/g, item.merk || '')
         .replace(/\{kerusakan\}/g, item.kerusakan || '')
         .replace(/\{status\}/g, item.status || '')
         .replace(/\{keterangan\}/g, item.keterangan || 'Dalam proses')
-        .replace(/\{status_bayar\}/g, paidStatusText)
+        .replace(/\{pembayaran\}/g, paidStatusText)
         .replace(/\{biaya\}/g, (item.biaya || 0).toLocaleString('id-ID'))
         .replace(/\{garansi\}/g, item.garansi || 'Tidak ada');
 
-      let phoneTarget = item.phone.replace(/[^0-9]/g, '');
+      let phoneTarget = cleanPhone;
       if (phoneTarget.startsWith('0')) phoneTarget = '62' + phoneTarget.substring(1);
       window.open(`https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`, '_blank');
     }
@@ -1865,10 +2128,20 @@
         keluarDate = null;
       }
       let diambilDate = (newStatus === 'Diambil') ? keluarDate : null;
+      let isPaid = isStatusCancelled(newStatus) ? false : item.isPaid;
 
-      const updatedData = { ...item, status: newStatus, diambilDate, keluarDate };
+      const updatedData = { ...item, status: newStatus, isPaid, diambilDate, keluarDate };
       try {
-        await window.setDoc(window.doc(window.db, "services", nota), updatedData);
+        if (window.db && window.setDoc && window.doc) {
+          await window.setDoc(window.doc(window.db, "services", nota), updatedData);
+        }
+        item.status = newStatus;
+        item.isPaid = isPaid;
+        item.diambilDate = diambilDate;
+        item.keluarDate = keluarDate;
+        localStorage.setItem('rovcell_cached_services', JSON.stringify(serviceList));
+        renderAdminTable();
+        updateFinancialStats();
       } catch (err) {
         console.error(err);
         showCustomAlert("Gagal memperbarui status secara cepat.");
@@ -1903,7 +2176,7 @@
       let matches = serviceList.filter(s => {
         let itemPhone = (s.phone || '').replace(/[^0-9]/g, '');
         if (itemPhone.startsWith('0')) itemPhone = '62' + itemPhone.substring(1);
-        return itemPhone.includes(cleanQuery) || cleanQuery.includes(itemPhone);
+        return itemPhone && (itemPhone.includes(cleanQuery) || cleanQuery.includes(itemPhone));
       });
 
       if (matches.length === 0) {
@@ -1938,7 +2211,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      renderRecentSearches();
+      initAppData();
     });
   </script>
 </body>
