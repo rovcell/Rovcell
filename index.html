@@ -95,28 +95,19 @@
 
 <body class="circuit-bg min-h-screen flex flex-col justify-between">
 
-  <!-- Header Toko (Sticky Centered dengan Icon Logo) -->
+  <!-- Header Toko (Sticky Centered - Tanpa Logo Icon Box) -->
   <header class="border-b border-neon-border bg-neon-dark/85 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col items-center justify-center text-center gap-3">
       <div class="flex flex-col items-center space-y-1.5 w-full">
         <div class="cursor-pointer flex flex-col items-center text-center group" onclick="switchTab('home')">
-          <!-- Badge Icon Logo Rovcell -->
-          <div class="w-12 h-12 sm:w-14 sm:h-14 mb-1.5 rounded-2xl bg-neon-card border-2 border-neon-blue/80 flex items-center justify-center neon-glow shadow-[0_0_20px_rgba(0,243,255,0.28)] group-hover:scale-105 transition-transform duration-200 overflow-hidden relative">
-            <img src="./icon-192.png" alt="Logo Rovcell Smartphone" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-full object-cover">
-            <svg class="hidden w-8 h-8 sm:w-9 sm:h-9" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect x="16" y="6" width="32" height="52" rx="6" stroke="#00f3ff" stroke-width="3.5" fill="#050b14"/>
-              <line x1="27" y1="12" x2="37" y2="12" stroke="#00f3ff" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="32" cy="51" r="2.5" fill="#00f3ff"/>
-              <path d="M25 29L30 34L40 23" stroke="#00f3ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h1 class="font-orbitron font-extrabold text-3xl sm:text-4xl tracking-widest text-white drop-shadow-[0_0_12px_rgba(0,243,255,0.45)]">ROVCELL</h1>
+          <h1 class="font-orbitron font-extrabold text-3xl sm:text-4xl tracking-widest text-white drop-shadow-[0_0_12px_rgba(0,243,255,0.45)] group-hover:text-neon-blue transition duration-200">ROVCELL</h1>
           <p class="text-xs sm:text-sm font-semibold text-neon-blue tracking-[0.22em] uppercase mt-0.5">Smartphone Service Center</p>
           <p class="text-[11px] text-slate-400 mt-1 flex items-center justify-center gap-1.5">
             <i class="fa-solid fa-location-dot text-neon-blue"></i>
             <span>Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar</span>
           </p>
         </div>
+
         <!-- Urutan Full-Width Kiri-Kanan: 1. Facebook, 2. WhatsApp, 3. Google Maps -->
         <div class="w-full grid grid-cols-3 gap-1 sm:gap-2 pt-0.5">
           <a href="https://www.facebook.com/share/1FNzNQF7K6/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook Rovcell Smartphone" class="w-full inline-flex items-center justify-center gap-1 px-1.5 py-1 rounded-full bg-blue-500/15 border border-blue-500/35 text-white hover:bg-blue-500/25 text-[8px] sm:text-[9.5px] font-semibold tracking-tight transition whitespace-nowrap">
@@ -156,18 +147,19 @@
     <!-- SECTION: HOME / CEK STATUS -->
     <section id="tab-home" class="max-w-xl mx-auto space-y-6">
       <div class="text-center space-y-2.5">
-        <!-- Indikator Animasi Live Time Auto-Sinkron -->
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[10px] font-semibold shadow-sm shadow-emerald-500/10">
-          <span class="relative flex h-2 w-2">
+        <!-- Indikator Animasi Live Time & Sync Berdetak Real-Time -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold shadow-sm shadow-emerald-500/10 flex-wrap justify-center">
+          <span class="relative flex h-2.5 w-2.5">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" id="liveSyncDot"></span>
           </span>
-          <i class="fa-solid fa-arrows-rotate animate-spin text-emerald-400 text-[10px]" style="animation-duration: 3s;"></i>
-          <span class="tracking-wide">Live Auto-Sync Real-Time</span>
+          <i class="fa-solid fa-arrows-rotate animate-spin text-emerald-400 text-xs" id="liveSyncSpinner" style="animation-duration: 3s;"></i>
+          <span class="tracking-wide" id="liveSyncText">Live Auto-Sync Real-Time</span>
+          <span class="text-cyan-300 font-mono text-xs font-bold border-l border-emerald-500/30 pl-2 tracking-wider" id="liveClockDisplay">00:00:00 WIB</span>
         </div>
 
         <h2 class="font-orbitron text-[22px] sm:text-3xl md:text-4xl font-extrabold text-cyan-400 drop-shadow-[0_0_12px_rgba(0,243,255,0.45)] whitespace-nowrap tracking-tight">Lacak Status Service HP</h2>
-        <p class="text-slate-400 text-xs sm:text-sm">Masukkan nomor nota dan PIN 3 digit nomor HP Anda untuk melihat progres perbaikan.</p>
+        <p class="text-slate-400 text-xs sm:text-sm">Masukkan nomor nota dan PIN 3 digit nomor HP Anda untuk melihat progres perbaikan secara real-time.</p>
       </div>
 
       <div class="bg-neon-card p-6 rounded-2xl neon-glow border border-neon-border space-y-4">
@@ -212,8 +204,7 @@
       <div class="bg-neon-card p-8 rounded-2xl neon-glow border border-neon-border space-y-6">
         <div class="text-center space-y-3">
           <div class="w-20 h-20 bg-neon-dark border-2 border-neon-blue rounded-2xl flex items-center justify-center mx-auto p-1.5 neon-glow shadow-lg shadow-cyan-500/20 overflow-hidden relative">
-            <img src="./icon-192.png" alt="Logo Admin Rovcell" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-full object-cover rounded-xl">
-            <div class="hidden flex flex-col items-center justify-center text-neon-blue">
+            <div class="flex flex-col items-center justify-center text-neon-blue">
               <svg class="w-10 h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="16" y="6" width="32" height="52" rx="6" stroke="#00f3ff" stroke-width="3.5" fill="#050b14"/>
                 <line x1="27" y1="12" x2="37" y2="12" stroke="#00f3ff" stroke-width="2.5" stroke-linecap="round"/>
@@ -257,7 +248,7 @@
               <h2 class="font-orbitron text-xl sm:text-2xl font-extrabold text-white tracking-wide">Admin Dashboard</h2>
               <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/35 text-emerald-300 text-[10px] font-bold">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>Aktif</span>
+                <span>Real-Time Sync</span>
               </span>
             </div>
             <p class="text-[11px] sm:text-xs text-slate-300/85 mt-1">Kelola service HP, bagi hasil teknisi 40%, cetak nota thermal &amp; WhatsApp.</p>
@@ -275,7 +266,7 @@
         </div>
       </div>
 
-      <!-- Navigasi 3 Sub-Menu Admin (Glassmorphic Icon-Only Dock 1 Baris) -->
+      <!-- Navigasi 3 Sub-Menu Admin -->
       <div class="grid grid-cols-3 gap-2 bg-slate-950/85 p-1.5 rounded-2xl border border-cyan-500/25 shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-md">
         <button type="button" id="subTabBtn-input" onclick="switchAdminSubTab('input')" title="Input Service Baru" aria-label="Input Service Baru" class="group relative py-3 px-3 rounded-xl font-orbitron text-sm font-bold transition-all duration-200 flex items-center justify-center bg-gradient-to-r from-cyan-400 to-neon-blue text-neon-dark shadow-[0_0_16px_rgba(0,243,255,0.35)] cursor-pointer">
           <i class="fa-solid fa-plus-circle text-lg transition-transform duration-200 group-hover:scale-110"></i>
@@ -444,7 +435,7 @@
               </div>
             </div>
 
-            <!-- Badge Filter Interaktif Ukuran Compact & Rapi -->
+            <!-- Badge Filter Interaktif -->
             <div class="flex flex-wrap items-center gap-1.5 pt-0.5" id="listFilterBadges">
               <button type="button" id="filterBadge-all" onclick="setAdminListFilter('all')" class="px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-150 inline-flex items-center gap-1.5 cursor-pointer bg-neon-blue text-neon-dark border-neon-blue shadow-[0_0_12px_rgba(0,243,255,0.35)]">
                 <i class="fa-solid fa-layer-group text-[9px]"></i>
@@ -489,7 +480,6 @@
 
       <!-- SUB-TAB 3: LAPORAN KEUANGAN & TEKNISI -->
       <div id="adminSubTab-finance" class="hidden space-y-5">
-        <!-- Header & Quick Period Filter Card -->
         <div class="bg-gradient-to-b from-neon-card to-[#071324] p-4 sm:p-6 rounded-2xl border border-cyan-500/25 shadow-[0_8px_25px_rgba(0,0,0,0.35)] space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800/90 pb-4">
             <div class="space-y-1">
@@ -518,7 +508,7 @@
             </div>
           </div>
 
-          <!-- Preset Periode 1-Tap & Rentang Tanggal -->
+          <!-- Preset Periode & Rentang Tanggal -->
           <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
             <div class="flex flex-wrap items-center gap-1.5" id="financePresetGroup">
               <button type="button" id="finPreset-all" onclick="applyFinancePreset('all')" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer bg-neon-dark text-slate-300 border-slate-700/80 hover:border-cyan-500/50">
@@ -557,7 +547,6 @@
 
         <!-- Hero KPI & Split Cards -->
         <div class="bg-gradient-to-br from-[#0c233a] via-neon-card to-[#061222] p-5 sm:p-6 rounded-2xl border border-cyan-500/35 shadow-[0_10px_30px_rgba(0,243,255,0.12)] space-y-5">
-          <!-- Primary Hero: Laba Bersih -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800/80">
             <div>
               <div class="flex items-center gap-2 text-xs font-semibold text-emerald-300 uppercase tracking-wider">
@@ -589,7 +578,7 @@
             </div>
           </div>
 
-          <!-- Two Side-by-Side Breakdown Cards: Hak Teknisi 40% & Kas Toko 60% -->
+          <!-- Breakdown Cards: Hak Teknisi 40% & Kas Toko 60% -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div class="p-4 rounded-2xl bg-gradient-to-br from-cyan-500/15 to-emerald-500/5 border border-cyan-400/40 flex items-center justify-between gap-3">
               <div class="space-y-1">
@@ -622,7 +611,7 @@
             </div>
           </div>
 
-          <!-- Secondary 2-Column Compact Metric Strip: Omzet & Modal -->
+          <!-- Strip Omzet & Modal -->
           <div class="grid grid-cols-2 gap-3 pt-1">
             <div class="px-3.5 py-3 rounded-xl bg-neon-dark/80 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1.5">
@@ -639,7 +628,7 @@
           </div>
         </div>
 
-        <!-- Ringkasan Cepat Hari Ini vs Bulan Ini (Compact Reference Bar) -->
+        <!-- Ringkasan Hari Ini vs Bulan Ini -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-neon-card/90 p-4 rounded-2xl border border-slate-800 space-y-2.5">
             <div class="flex items-center justify-between border-b border-slate-800 pb-2">
@@ -692,7 +681,7 @@
           </div>
         </div>
 
-        <!-- Rincian Perhitungan Transaksi (Scannable Mobile & Desktop Cards) -->
+        <!-- Rincian Transaksi -->
         <div class="bg-gradient-to-b from-neon-card to-[#071324] p-4 sm:p-6 rounded-2xl border border-cyan-500/25 shadow-[0_8px_25px_rgba(0,0,0,0.35)] space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800/90 pb-3">
             <div>
@@ -735,7 +724,7 @@
     </div>
   </div>
 
-  <!-- Modal Edit Profil & Pengaturan Admin (2 Sub-Menu Utama: Profil Toko & Edit Tabel Dashboard) -->
+  <!-- Modal Edit Profil & Pengaturan Admin -->
   <div id="adminProfileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-neon-card p-5 sm:p-6 rounded-2xl border border-neon-border neon-glow max-w-xl w-full space-y-4 my-8">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -743,7 +732,7 @@
         <button type="button" onclick="closeAdminProfileModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <!-- 2 Sub-Tab Utama: Profil Toko vs Edit Tabel Dashboard -->
+      <!-- Sub-Tab Utama Settings -->
       <div class="grid grid-cols-2 gap-2 bg-slate-950/90 p-1.5 rounded-2xl border border-cyan-500/30">
         <button type="button" id="mainSettingsSubBtn-profile" onclick="switchMainSettingsSubTab('profile')" class="px-3 py-2.5 rounded-xl text-xs font-orbitron font-bold bg-gradient-to-r from-cyan-400 to-neon-blue text-neon-dark shadow-[0_0_12px_rgba(0,243,255,0.3)] transition flex items-center justify-center gap-2 cursor-pointer">
           <i class="fa-solid fa-store"></i>
@@ -755,7 +744,7 @@
         </button>
       </div>
 
-      <!-- GROUP 1: PROFIL TOKO (Akun, Template WA, Cetak Nota) -->
+      <!-- GROUP 1: PROFIL TOKO -->
       <div id="mainSettingsGroup-profile" class="space-y-4">
         <div class="grid grid-cols-3 gap-1.5 bg-neon-dark p-1.5 rounded-xl border border-neon-border">
           <button type="button" id="profTabBtn-account" onclick="switchProfileModalTab('account')" class="px-2 py-2 rounded-lg text-[11px] font-bold bg-neon-blue text-neon-dark transition cursor-pointer">
@@ -785,7 +774,7 @@
           </div>
         </div>
 
-        <!-- Panel 2: Edit Isi Pesan WhatsApp -->
+        <!-- Panel 2: WhatsApp Template -->
         <div id="profPanel-wa" class="hidden space-y-3">
           <div class="space-y-1">
             <label class="block text-xs font-medium text-slate-300">Template Pesan WhatsApp ke Pelanggan</label>
@@ -951,7 +940,7 @@
     </div>
   </div>
 
-  <!-- Modal Preview & Cetak Nota Thermal 80mm -->
+  <!-- Modal Preview & Cetak Nota Thermal -->
   <div id="thermalPreviewModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-neon-card p-5 rounded-2xl border border-neon-border neon-glow max-w-md w-full space-y-4">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -1025,7 +1014,7 @@
   <!-- Kontainer Khusus Cetak Thermal 1 Halaman -->
   <div id="printReceiptArea"></div>
 
-  <!-- Synchronous App Logic Script (Guaranteed Immediate Availability) -->
+  <!-- Synchronous Logic Script & Real-Time Sync Engine -->
   <script>
     let serviceList = [];
     let isAdminLoggedIn = false;
@@ -1037,6 +1026,9 @@
     let activeFinancePreset = "month";
     let latestFinanceSummarySnapshot = null;
     let cachedPreviousFormAmounts = { modal: "", biaya: "" };
+
+    // BroadcastChannel untuk Sinkronisasi Instan Antar-Tab Browser
+    const broadcastSync = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('rovcell_realtime_sync') : null;
 
     const DEFAULT_WA_TEMPLATE = "Halo {nama}, informasi mengenai service HP {merk} dengan Nomor Nota *{nota}* (PIN Cek Status: *{pin}*) di Rovcell Smartphone.\nStatus saat ini: *{status}* ({keterangan}).\nPembayaran: *{pembayaran}*.\nTotal biaya: {biaya}.\nCek status online: https://rovcell.online\nTerima kasih!";
     const DEFAULT_TABLE_CONFIG = {
@@ -1171,9 +1163,105 @@
       updateLiveFormSplit();
     }
 
+    // Penjadwalan Waktu Real-Time (WIB)
+    function startRealTimeClock() {
+      function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const clockEl = document.getElementById('liveClockDisplay');
+        if (clockEl) {
+          clockEl.innerText = `${hours}:${minutes}:${seconds} WIB`;
+        }
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    }
+
+    // Monitoring Status Koneksi Live
+    function updateConnectionStatusIndicator() {
+      const textEl = document.getElementById("liveSyncText");
+      const dotEl = document.getElementById("liveSyncDot");
+      if (navigator.onLine) {
+        if (textEl) textEl.innerText = "Live Auto-Sync Real-Time";
+        if (dotEl) dotEl.className = "relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400";
+      } else {
+        if (textEl) textEl.innerText = "Offline Mode (Lokal)";
+        if (dotEl) dotEl.className = "relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400";
+      }
+    }
+
+    window.addEventListener('online', updateConnectionStatusIndicator);
+    window.addEventListener('offline', updateConnectionStatusIndicator);
+
+    // Broadcast Notifikasi Antar-Tab
+    function notifyBroadcastSync(type = 'UPDATE_DATA') {
+      if (broadcastSync) {
+        try {
+          broadcastSync.postMessage({ type, timestamp: Date.now() });
+        } catch(e) {}
+      }
+    }
+
+    if (broadcastSync) {
+      broadcastSync.onmessage = (event) => {
+        if (event.data && event.data.type === 'UPDATE_DATA') {
+          reloadAppFromLocalStorage();
+        }
+      };
+    }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'rovcell_cached_services' || e.key === 'rovcell_app_settings') {
+        reloadAppFromLocalStorage();
+      }
+    });
+
+    function reloadAppFromLocalStorage() {
+      const cachedServicesStr = localStorage.getItem("rovcell_cached_services");
+      if (cachedServicesStr) {
+        try {
+          serviceList = JSON.parse(cachedServicesStr) || [];
+        } catch (e) {
+          serviceList = [];
+        }
+      }
+      refreshAllUIComponents();
+    }
+
+    function refreshAllUIComponents() {
+      const badgeEl = document.getElementById("badgeTotalServices");
+      if (badgeEl) badgeEl.innerText = serviceList.length;
+      generateNextNota();
+
+      if (isAdminLoggedIn) {
+        renderAdminTable();
+        updateFinancialStats();
+      }
+
+      // Auto-refresh live status jika pelanggan sedang melihat nota tertentu di Cek Status
+      refreshActiveCustomerStatusView();
+    }
+
+    function refreshActiveCustomerStatusView() {
+      const homeTab = document.getElementById("tab-home");
+      const resCont = document.getElementById("searchResultContainer");
+      if (homeTab && !homeTab.classList.contains("hidden") && resCont && !resCont.classList.contains("hidden")) {
+        const rawNotaEl = document.getElementById("searchNotaInput");
+        const pinValEl = document.getElementById("searchPhonePin");
+        if (rawNotaEl && pinValEl && rawNotaEl.value.trim() && pinValEl.value.trim().length === 3) {
+          searchService(false); // don't scroll page during live background auto-refresh
+        }
+      }
+    }
+
     function initAppData() {
       if (isAppInitialized) return;
       isAppInitialized = true;
+
+      startRealTimeClock();
+      updateConnectionStatusIndicator();
 
       const todayStr = new Date().toISOString().split("T")[0];
       const dateInput = document.getElementById("filterDateInput");
@@ -1203,20 +1291,9 @@
         }
       }
 
-      const cachedServicesStr = localStorage.getItem("rovcell_cached_services");
-      if (cachedServicesStr) {
-        try {
-          serviceList = JSON.parse(cachedServicesStr) || [];
-        } catch (e) {
-          serviceList = [];
-        }
-      }
-
+      reloadAppFromLocalStorage();
       renderRecentSearches();
-      generateNextNota();
       handleFormStatusChange("Menunggu Pengecekan");
-      const badgeEl = document.getElementById("badgeTotalServices");
-      if (badgeEl) badgeEl.innerText = serviceList.length;
 
       syncFirebaseLive();
     }
@@ -1255,23 +1332,8 @@
               snapshot.forEach((d) => serviceList.push(d.data()));
               serviceList.sort((a, b) => (b.nota || "").localeCompare(a.nota || ""));
               localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
-
-              const badge = document.getElementById("badgeTotalServices");
-              if (badge) badge.innerText = serviceList.length;
-              generateNextNota();
-              if (isAdminLoggedIn) {
-                renderAdminTable();
-                updateFinancialStats();
-              }
-              const homeTab = document.getElementById("tab-home");
-              const resCont = document.getElementById("searchResultContainer");
-              if (homeTab && !homeTab.classList.contains("hidden") && resCont && !resCont.classList.contains("hidden")) {
-                const rawNotaEl = document.getElementById("searchNotaInput");
-                const pinValEl = document.getElementById("searchPhonePin");
-                if (rawNotaEl && pinValEl && rawNotaEl.value.trim() && pinValEl.value.trim().length === 3) {
-                  searchService(false);
-                }
-              }
+              notifyBroadcastSync('UPDATE_DATA');
+              refreshAllUIComponents();
             },
             (err) => {
               console.warn("Firestore snapshot listener fallback to local:", err);
@@ -1603,10 +1665,9 @@
       }
       serviceList.sort((a, b) => (b.nota || "").localeCompare(a.nota || ""));
       localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
+      notifyBroadcastSync('UPDATE_DATA');
 
-      const badgeEl = document.getElementById("badgeTotalServices");
-      if (badgeEl) badgeEl.innerText = serviceList.length;
-
+      refreshAllUIComponents();
       showCustomAlert("Data service berhasil disimpan!", true);
       resetServiceForm();
       switchAdminSubTab("list");
@@ -1637,10 +1698,8 @@
         }
         serviceList = serviceList.filter((s) => s.nota !== nota);
         localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
-        const badgeEl = document.getElementById("badgeTotalServices");
-        if (badgeEl) badgeEl.innerText = serviceList.length;
-        renderAdminTable();
-        updateFinancialStats();
+        notifyBroadcastSync('UPDATE_DATA');
+        refreshAllUIComponents();
       });
     }
 
@@ -2092,8 +2151,8 @@
       }
       item.isPaid = isPaidVal;
       localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
-      renderAdminTable();
-      updateFinancialStats();
+      notifyBroadcastSync('UPDATE_DATA');
+      refreshAllUIComponents();
     }
 
     function applyFinancePreset(preset, skipRender = false) {
@@ -2193,7 +2252,7 @@
 
       const dailyHeaderLabel = document.getElementById("dailySummaryHeaderLabel");
       if (dailyHeaderLabel) {
-        dailyHeaderLabel.innerHTML = `<i class="fa-solid fa-calendar-day mr-1.5"></i>Hari Ini (${formatDateDDMMYYYY(todayStr)})`;
+        dailyHeaderLabel.innerHTML = `<i class="fa-solid fa-calendar-day mr-1.5"></i>Ringkasan Hari Ini (${formatDateDDMMYYYY(todayStr)})`;
       }
 
       let dailyProfit = 0, dailyModal = 0, dailyGross = 0, dailyTech = 0, dailyShop = 0;
@@ -2666,7 +2725,7 @@
           garansiVal += ` (s/d ${exp})`;
         }
         garansiLine = `
-          <div style="display:flex; justify-content:space-between; margin-top:2px;">
+          <div style="display:flex; justify-space-between; margin-top:2px;">
             <span>GARANSI:</span>
             <span>${garansiVal}</span>
           </div>
@@ -3251,8 +3310,8 @@
       item.diambilDate = diambilDate;
       item.keluarDate = keluarDate;
       localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
-      renderAdminTable();
-      updateFinancialStats();
+      notifyBroadcastSync('UPDATE_DATA');
+      refreshAllUIComponents();
     }
 
     function openLupaNotaModal() {
@@ -3322,7 +3381,7 @@
     });
   </script>
 
-  <!-- Firebase SDK (Optional Live Cloud Sync Module) -->
+  <!-- Firebase SDK (Live Cloud Synchronization Module) -->
   <script type="module">
     try {
       const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js");
