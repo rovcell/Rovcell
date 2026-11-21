@@ -41,6 +41,24 @@
       box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
       border: 1px solid rgba(0, 243, 255, 0.3);
     }
+    .admin-logo-badge {
+      width: 92px;
+      height: 92px;
+      min-width: 92px;
+      min-height: 92px;
+      background: radial-gradient(circle at 50% 35%, rgba(0, 243, 255, 0.22) 0%, #050b14 78%);
+      border: 2px solid #00f3ff;
+      box-shadow: 0 0 22px rgba(0, 243, 255, 0.38), inset 0 0 14px rgba(0, 243, 255, 0.18);
+    }
+    .admin-logo-svg {
+      width: 48px !important;
+      height: 48px !important;
+      min-width: 48px;
+      min-height: 48px;
+      display: block !important;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 8px rgba(0, 243, 255, 0.75));
+    }
     .circuit-bg {
       background-image: linear-gradient(rgba(5, 11, 20, 0.9), rgba(5, 11, 20, 0.9)),
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300f3ff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4H-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
@@ -204,7 +222,8 @@
       <div class="bg-neon-card p-8 rounded-2xl neon-glow border border-neon-border space-y-6">
         <div class="text-center space-y-3">
           <div class="w-20 h-20 bg-neon-dark border-2 border-neon-blue rounded-2xl flex items-center justify-center mx-auto p-1.5 neon-glow shadow-lg shadow-cyan-500/20 overflow-hidden relative">
-            <div class="flex flex-col items-center justify-center text-neon-blue">
+            <img src="./icon-192.png" alt="Logo Admin Rovcell" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-full object-cover rounded-xl">
+            <div class="hidden flex flex-col items-center justify-center text-neon-blue">
               <svg class="w-10 h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="16" y="6" width="32" height="52" rx="6" stroke="#00f3ff" stroke-width="3.5" fill="#050b14"/>
                 <line x1="27" y1="12" x2="37" y2="12" stroke="#00f3ff" stroke-width="2.5" stroke-linecap="round"/>
@@ -1251,7 +1270,7 @@
         const rawNotaEl = document.getElementById("searchNotaInput");
         const pinValEl = document.getElementById("searchPhonePin");
         if (rawNotaEl && pinValEl && rawNotaEl.value.trim() && pinValEl.value.trim().length === 3) {
-          searchService(false); // don't scroll page during live background auto-refresh
+          searchService(false);
         }
       }
     }
