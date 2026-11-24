@@ -29,26 +29,130 @@
     };
   </script>
   <style>
+    :root {
+      --theme-bg: #050b14;
+      --theme-card: #0a192f;
+      --theme-card-alt: #071324;
+      --theme-card-top: #0c223b;
+      --theme-input-bg: #050b14;
+      --theme-header-bg: rgba(5, 11, 20, 0.88);
+      --theme-footer-bg: rgba(5, 11, 20, 0.85);
+      --theme-accent: #00f3ff;
+      --theme-accent-hover: #22d3ee;
+      --theme-accent-rgb: 0, 243, 255;
+      --theme-accent-contrast: #050b14;
+      --theme-border: #1e3a8a;
+      --theme-text: #e2e8f0;
+      --theme-heading: #ffffff;
+      --theme-muted: #94a3b8;
+      --theme-grad-1: #22d3ee;
+      --theme-grad-2: #00f3ff;
+    }
+
     body {
-      background-color: #050b14;
-      color: #e2e8f0;
+      background-color: var(--theme-bg) !important;
+      color: var(--theme-text) !important;
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-image:
-        radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(0, 102, 255, 0.05) 0%, transparent 40%);
+        radial-gradient(circle at 10% 20%, rgba(var(--theme-accent-rgb), 0.07) 0%, transparent 42%),
+        radial-gradient(circle at 90% 80%, rgba(var(--theme-accent-rgb), 0.06) 0%, transparent 42%) !important;
+      transition: background-color 0.28s ease, color 0.28s ease;
     }
+
+    /* Dynamic Theme Overrides for Tailwind & Custom Surfaces */
+    .bg-neon-dark {
+      background-color: var(--theme-bg) !important;
+    }
+    .bg-neon-dark\/85 {
+      background-color: var(--theme-header-bg) !important;
+    }
+    .bg-neon-dark\/80 {
+      background-color: var(--theme-footer-bg) !important;
+    }
+    .bg-neon-dark\/90,
+    .bg-neon-dark\/75,
+    .bg-neon-dark\/60 {
+      background-color: var(--theme-input-bg) !important;
+    }
+    .bg-neon-card,
+    .bg-neon-card\/90 {
+      background-color: var(--theme-card) !important;
+    }
+    .from-neon-card {
+      --tw-gradient-from: var(--theme-card) var(--tw-gradient-from-position) !important;
+      --tw-gradient-to: rgba(var(--theme-accent-rgb), 0) var(--tw-gradient-to-position) !important;
+      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    .via-neon-card {
+      --tw-gradient-to: rgba(var(--theme-accent-rgb), 0) var(--tw-gradient-to-position) !important;
+      --tw-gradient-stops: var(--tw-gradient-from), var(--theme-card) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+    }
+    .to-\[\#071324\] {
+      --tw-gradient-to: var(--theme-card-alt) var(--tw-gradient-to-position) !important;
+    }
+    .from-\[\#0c223b\],
+    .from-\[\#0c233a\] {
+      --tw-gradient-from: var(--theme-card-top) var(--tw-gradient-from-position) !important;
+      --tw-gradient-to: rgba(var(--theme-accent-rgb), 0) var(--tw-gradient-to-position) !important;
+      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    .to-\[\#061222\] {
+      --tw-gradient-to: var(--theme-card-alt) var(--tw-gradient-to-position) !important;
+    }
+
+    .text-neon-blue,
+    .group:hover .group-hover\:text-neon-blue,
+    .hover\:text-neon-blue:hover {
+      color: var(--theme-accent) !important;
+    }
+    .text-neon-dark {
+      color: var(--theme-accent-contrast) !important;
+    }
+    .bg-neon-blue {
+      background-color: var(--theme-accent) !important;
+    }
+    .hover\:bg-cyan-400:hover,
+    .hover\:bg-neon-blue:hover {
+      background-color: var(--theme-accent-hover) !important;
+    }
+    .from-cyan-400 {
+      --tw-gradient-from: var(--theme-grad-1) var(--tw-gradient-from-position) !important;
+      --tw-gradient-to: rgba(var(--theme-accent-rgb), 0) var(--tw-gradient-to-position) !important;
+      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    .to-neon-blue {
+      --tw-gradient-to: var(--theme-grad-2) var(--tw-gradient-to-position) !important;
+    }
+
+    .border-neon-border,
+    .border-neon-border\/60 {
+      border-color: var(--theme-border) !important;
+    }
+    .border-neon-blue,
+    .focus\:border-neon-blue:focus,
+    .hover\:border-neon-blue:hover {
+      border-color: var(--theme-accent) !important;
+    }
+    .border-cyan-500\/25,
+    .border-cyan-500\/30,
+    .border-cyan-500\/35,
+    .border-cyan-500\/40 {
+      border-color: rgba(var(--theme-accent-rgb), 0.35) !important;
+    }
+
     .neon-glow {
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
-      border: 1px solid rgba(0, 243, 255, 0.3);
+      box-shadow: 0 0 18px rgba(var(--theme-accent-rgb), 0.22) !important;
+      border: 1px solid rgba(var(--theme-accent-rgb), 0.36) !important;
     }
+
     .admin-logo-badge {
       width: 92px;
       height: 92px;
       min-width: 92px;
       min-height: 92px;
-      background: radial-gradient(circle at 50% 35%, rgba(0, 243, 255, 0.22) 0%, #050b14 78%);
-      border: 2px solid #00f3ff;
-      box-shadow: 0 0 22px rgba(0, 243, 255, 0.38), inset 0 0 14px rgba(0, 243, 255, 0.18);
+      background: radial-gradient(circle at 50% 35%, rgba(var(--theme-accent-rgb), 0.22) 0%, var(--theme-bg) 78%);
+      border: 2px solid var(--theme-accent);
+      box-shadow: 0 0 22px rgba(var(--theme-accent-rgb), 0.38), inset 0 0 14px rgba(var(--theme-accent-rgb), 0.18);
     }
     .admin-logo-svg {
       width: 48px !important;
@@ -57,11 +161,135 @@
       min-height: 48px;
       display: block !important;
       flex-shrink: 0;
-      filter: drop-shadow(0 0 8px rgba(0, 243, 255, 0.75));
+      filter: drop-shadow(0 0 8px rgba(var(--theme-accent-rgb), 0.75));
     }
     .circuit-bg {
-      background-image: linear-gradient(rgba(5, 11, 20, 0.9), rgba(5, 11, 20, 0.9)),
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300f3ff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4H-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(var(--theme-accent-rgb), 0.08) 0%, transparent 42%),
+        radial-gradient(circle at 88% 82%, rgba(var(--theme-accent-rgb), 0.07) 0%, transparent 42%) !important;
+    }
+
+    /* Mode Terang (Light Mode) Adaptation untuk keterbacaan optimal */
+    html.theme-light-mode .text-white {
+      color: #0f172a !important;
+    }
+    html.theme-light-mode .bg-neon-blue.text-white,
+    html.theme-light-mode .bg-emerald-500.text-white,
+    html.theme-light-mode .bg-emerald-600.text-white,
+    html.theme-light-mode .bg-red-500.text-white,
+    html.theme-light-mode .bg-rose-500.text-white,
+    html.theme-light-mode .bg-cyan-600.text-white,
+    html.theme-light-mode .bg-slate-900.text-white {
+      color: #ffffff !important;
+    }
+    html.theme-light-mode .text-slate-100,
+    html.theme-light-mode .text-slate-200 {
+      color: #1e293b !important;
+    }
+    html.theme-light-mode .text-slate-300 {
+      color: #334155 !important;
+    }
+    html.theme-light-mode .text-slate-400 {
+      color: #475569 !important;
+    }
+    html.theme-light-mode .text-slate-500 {
+      color: #64748b !important;
+    }
+    html.theme-light-mode .text-cyan-400,
+    html.theme-light-mode .text-cyan-300 {
+      color: var(--theme-accent) !important;
+    }
+    html.theme-light-mode .text-emerald-300,
+    html.theme-light-mode .text-emerald-400 {
+      color: #047857 !important;
+    }
+    html.theme-light-mode .text-amber-300,
+    html.theme-light-mode .text-amber-400 {
+      color: #b45309 !important;
+    }
+    html.theme-light-mode .text-sky-300 {
+      color: #0369a1 !important;
+    }
+    html.theme-light-mode .text-rose-300,
+    html.theme-light-mode .text-red-300,
+    html.theme-light-mode .text-red-400 {
+      color: #be123c !important;
+    }
+    html.theme-light-mode .text-yellow-300,
+    html.theme-light-mode .text-yellow-400 {
+      color: #a16207 !important;
+    }
+    html.theme-light-mode .bg-slate-950\/85,
+    html.theme-light-mode .bg-slate-950\/90,
+    html.theme-light-mode .bg-slate-900\/80,
+    html.theme-light-mode .bg-slate-900\/90,
+    html.theme-light-mode .bg-slate-900\/95 {
+      background-color: #e2e8f0 !important;
+    }
+    html.theme-light-mode .bg-slate-800 {
+      background-color: #cbd5e1 !important;
+    }
+    html.theme-light-mode .hover\:bg-slate-700:hover,
+    html.theme-light-mode .hover\:bg-slate-800:hover {
+      background-color: #94a3b8 !important;
+    }
+    html.theme-light-mode .border-slate-800,
+    html.theme-light-mode .border-slate-800\/90,
+    html.theme-light-mode .border-slate-800\/80,
+    html.theme-light-mode .border-slate-700,
+    html.theme-light-mode .border-slate-700\/80 {
+      border-color: #cbd5e1 !important;
+    }
+    html.theme-light-mode input,
+    html.theme-light-mode textarea,
+    html.theme-light-mode select {
+      color: #0f172a !important;
+    }
+    html.theme-light-mode .nota-theme-row-0 {
+      background-color: #f8fafc !important;
+    }
+    html.theme-light-mode .nota-theme-row-1 {
+      background-color: #f1f5f9 !important;
+    }
+
+    /* Animasi Ikon Progres Service Pelanggan */
+    @keyframes progress-float {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-3.5px) scale(1.1);
+      }
+    }
+    @keyframes wrench-swing {
+      0%, 100% {
+        transform: rotate(-18deg) scale(1.06);
+      }
+      50% {
+        transform: rotate(24deg) scale(1.14);
+      }
+    }
+    @keyframes progress-line {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 200% 50%;
+      }
+    }
+    .animate-progress-float {
+      display: inline-block;
+      animation: progress-float 1.7s ease-in-out infinite;
+    }
+    .animate-wrench-swing {
+      display: inline-block;
+      transform-origin: 70% 70%;
+      animation: wrench-swing 1.15s ease-in-out infinite;
+    }
+    .animate-progress-line {
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-grad-1), #ffffff, var(--theme-accent));
+      background-size: 200% 100%;
+      animation: progress-line 2s linear infinite;
     }
 
     /* Cetak Nota Thermal 1 Halaman Terisolasi & Font Tebal */
@@ -105,15 +333,12 @@
       }
     }
   </style>
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#00f3ff">
-  <link rel="icon" type="image/png" href="./icon-192.png">
-  <link rel="apple-touch-icon" href="./icon-192.png">
+  <meta name="theme-color" id="metaThemeColor" content="#00f3ff">
 </head>
 
 <body class="circuit-bg min-h-screen flex flex-col justify-between">
 
-  <!-- Header Toko (Sticky Centered - Tanpa Logo Icon Box) -->
+  <!-- Header Toko (Sticky Centered) -->
   <header class="border-b border-neon-border bg-neon-dark/85 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col items-center justify-center text-center gap-3">
       <div class="flex flex-col items-center space-y-1.5 w-full">
@@ -172,11 +397,11 @@
             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" id="liveSyncDot"></span>
           </span>
           <i class="fa-solid fa-arrows-rotate animate-spin text-emerald-400 text-xs" id="liveSyncSpinner" style="animation-duration: 3s;"></i>
-          <span class="tracking-wide" id="liveSyncText">Real-Time</span>
+          <span class="tracking-wide" id="liveSyncText">Live Auto-Sync Real-Time</span>
           <span class="text-cyan-300 font-mono text-xs font-bold border-l border-emerald-500/30 pl-2 tracking-wider" id="liveClockDisplay">00:00:00 WIB</span>
         </div>
 
-        <h2 class="font-orbitron text-[22px] sm:text-3xl md:text-4xl font-extrabold text-cyan-400 drop-shadow-[0_0_12px_rgba(0,243,255,0.45)] whitespace-nowrap tracking-tight">Lacak Status Service HP</h2>
+        <h2 class="font-orbitron text-[22px] sm:text-3xl md:text-4xl font-extrabold text-neon-blue drop-shadow-[0_0_12px_rgba(0,243,255,0.45)] whitespace-nowrap tracking-tight">Lacak Status Service HP</h2>
         <p class="text-slate-400 text-xs sm:text-sm">Masukkan nomor nota dan PIN 3 digit nomor HP Anda untuk melihat progres perbaikan secara real-time.</p>
       </div>
 
@@ -221,14 +446,13 @@
     <section id="tab-login" class="max-w-md mx-auto hidden">
       <div class="bg-neon-card p-8 rounded-2xl neon-glow border border-neon-border space-y-6">
         <div class="text-center space-y-3">
-          <div class="w-20 h-20 bg-neon-dark border-2 border-neon-blue rounded-2xl flex items-center justify-center mx-auto p-1.5 neon-glow shadow-lg shadow-cyan-500/20 overflow-hidden relative">
-            <img src="./icon-192.png" alt="Logo Admin Rovcell" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-full object-cover rounded-xl">
-            <div class="hidden flex flex-col items-center justify-center text-neon-blue">
-              <svg class="w-10 h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="16" y="6" width="32" height="52" rx="6" stroke="#00f3ff" stroke-width="3.5" fill="#050b14"/>
-                <line x1="27" y1="12" x2="37" y2="12" stroke="#00f3ff" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="32" cy="51" r="2.5" fill="#00f3ff"/>
-                <path d="M26 27L31 32L39 23" stroke="#00f3ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <div class="admin-logo-badge rounded-2xl flex items-center justify-center mx-auto p-1.5 shadow-lg shadow-cyan-500/20 overflow-hidden relative">
+            <div class="flex flex-col items-center justify-center text-neon-blue">
+              <svg class="admin-logo-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="16" y="6" width="32" height="52" rx="6" stroke="currentColor" stroke-width="3.5" fill="#050b14"/>
+                <line x1="27" y1="12" x2="37" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="32" cy="51" r="2.5" fill="currentColor"/>
+                <path d="M26 27L31 32L39 23" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <span class="font-orbitron font-extrabold text-[8px] tracking-widest text-white mt-0.5">ROVCELL</span>
             </div>
@@ -273,7 +497,7 @@
             <p class="text-[11px] sm:text-xs text-slate-300/85 mt-1">Kelola service Hp Rovcell Smartphone cetak nota thermal &amp; WhatsApp.</p>
           </div>
         </div>
-        <div class="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-end">
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
           <button type="button" onclick="openAdminProfileModal('profile')" class="px-3.5 py-2 bg-slate-900/80 hover:bg-cyan-500/15 text-slate-200 hover:text-cyan-200 text-xs font-semibold rounded-xl border border-cyan-500/30 hover:border-cyan-400/60 transition flex items-center gap-2 shadow-sm cursor-pointer">
             <i class="fa-solid fa-sliders text-neon-blue"></i>
             <span>Profil &amp; Pengaturan</span>
@@ -454,36 +678,54 @@
               </div>
             </div>
 
-            <!-- Badge Filter Interaktif -->
-            <div class="flex flex-wrap items-center gap-1.5 pt-0.5" id="listFilterBadges">
-              <button type="button" id="filterBadge-all" onclick="setAdminListFilter('all')" class="px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-150 inline-flex items-center gap-1.5 cursor-pointer bg-neon-blue text-neon-dark border-neon-blue shadow-[0_0_12px_rgba(0,243,255,0.35)]">
-                <i class="fa-solid fa-layer-group text-[9px]"></i>
-                <span>Semua</span>
-                <span id="badgeFilterCount-all" class="px-1.5 py-0.2 rounded-full text-[9px] bg-black/25 font-orbitron">0</span>
+            <!-- Badge Filter Interaktif (Susunan Rapi 2 Baris x 3 Kolom) -->
+            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 w-full pt-0.5" id="listFilterBadges">
+              <button type="button" id="filterBadge-today" onclick="setAdminListFilter('today')" class="w-full px-2 sm:px-3 py-2 rounded-xl text-[10px] sm:text-[11px] font-bold border transition-all duration-150 flex items-center justify-between gap-1 cursor-pointer bg-neon-blue text-neon-dark border-neon-blue shadow-[0_0_12px_rgba(0,243,255,0.35)]">
+                <span class="inline-flex items-center gap-1 min-w-0">
+                  <i class="fa-solid fa-calendar-day text-[9px] sm:text-[10px] shrink-0"></i>
+                  <span class="truncate">Hari Ini</span>
+                </span>
+                <span id="badgeFilterCount-today" class="px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] bg-black/25 font-orbitron shrink-0">0</span>
               </button>
 
-              <button type="button" id="filterBadge-checking" onclick="setAdminListFilter('checking')" class="px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-150 inline-flex items-center gap-1.5 cursor-pointer bg-yellow-500/10 text-yellow-300 border-yellow-500/35 hover:bg-yellow-500/20">
-                <i class="fa-solid fa-clipboard-question text-[9px]"></i>
-                <span>Pengecekan</span>
-                <span id="badgeFilterCount-checking" class="px-1.5 py-0.2 rounded-full text-[9px] bg-yellow-500/20 font-orbitron">0</span>
+              <button type="button" id="filterBadge-all" onclick="setAdminListFilter('all')" class="w-full px-2 sm:px-3 py-2 rounded-xl text-[10px] sm:text-[11px] font-bold border transition-all duration-150 flex items-center justify-between gap-1 cursor-pointer bg-slate-900/80 text-slate-300 border-slate-700/80 hover:border-neon-blue/60">
+                <span class="inline-flex items-center gap-1 min-w-0">
+                  <i class="fa-solid fa-layer-group text-[9px] sm:text-[10px] shrink-0"></i>
+                  <span class="truncate">Semua</span>
+                </span>
+                <span id="badgeFilterCount-all" class="px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] bg-white/10 font-orbitron shrink-0">0</span>
               </button>
 
-              <button type="button" id="filterBadge-unpaid" onclick="setAdminListFilter('unpaid')" class="px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-150 inline-flex items-center gap-1.5 cursor-pointer bg-red-500/10 text-red-300 border-red-500/35 hover:bg-red-500/20">
-                <i class="fa-solid fa-clock text-[9px]"></i>
-                <span>Belum Lunas</span>
-                <span id="badgeFilterCount-unpaid" class="px-1.5 py-0.2 rounded-full text-[9px] bg-red-500/20 font-orbitron">0</span>
+              <button type="button" id="filterBadge-checking" onclick="setAdminListFilter('checking')" class="w-full px-2 sm:px-3 py-2 rounded-xl text-[10px] sm:text-[11px] font-bold border transition-all duration-150 flex items-center justify-between gap-1 cursor-pointer bg-yellow-500/10 text-yellow-300 border-yellow-500/35 hover:bg-yellow-500/20">
+                <span class="inline-flex items-center gap-1 min-w-0">
+                  <i class="fa-solid fa-clipboard-question text-[9px] sm:text-[10px] shrink-0"></i>
+                  <span class="truncate">Pengecekan</span>
+                </span>
+                <span id="badgeFilterCount-checking" class="px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] bg-yellow-500/20 font-orbitron shrink-0">0</span>
               </button>
 
-              <button type="button" id="filterBadge-paid" onclick="setAdminListFilter('paid')" class="px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-150 inline-flex items-center gap-1.5 cursor-pointer bg-emerald-500/10 text-emerald-300 border-emerald-500/35 hover:bg-emerald-500/20">
-                <i class="fa-solid fa-circle-check text-[9px]"></i>
-                <span>Lunas</span>
-                <span id="badgeFilterCount-paid" class="px-1.5 py-0.2 rounded-full text-[9px] bg-emerald-500/20 font-orbitron">0</span>
+              <button type="button" id="filterBadge-unpaid" onclick="setAdminListFilter('unpaid')" class="w-full px-2 sm:px-3 py-2 rounded-xl text-[10px] sm:text-[11px] font-bold border transition-all duration-150 flex items-center justify-between gap-1 cursor-pointer bg-red-500/10 text-red-300 border-red-500/35 hover:bg-red-500/20">
+                <span class="inline-flex items-center gap-1 min-w-0">
+                  <i class="fa-solid fa-clock text-[9px] sm:text-[10px] shrink-0"></i>
+                  <span class="truncate">Belum Lunas</span>
+                </span>
+                <span id="badgeFilterCount-unpaid" class="px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] bg-red-500/20 font-orbitron shrink-0">0</span>
               </button>
 
-              <button type="button" id="filterBadge-cancelled" onclick="setAdminListFilter('cancelled')" class="px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-150 inline-flex items-center gap-1.5 cursor-pointer bg-rose-500/10 text-rose-300 border-rose-500/35 hover:bg-rose-500/20">
-                <i class="fa-solid fa-ban text-[9px]"></i>
-                <span>Dibatalkan</span>
-                <span id="badgeFilterCount-cancelled" class="px-1.5 py-0.2 rounded-full text-[9px] bg-rose-500/20 font-orbitron">0</span>
+              <button type="button" id="filterBadge-paid" onclick="setAdminListFilter('paid')" class="w-full px-2 sm:px-3 py-2 rounded-xl text-[10px] sm:text-[11px] font-bold border transition-all duration-150 flex items-center justify-between gap-1 cursor-pointer bg-emerald-500/10 text-emerald-300 border-emerald-500/35 hover:bg-emerald-500/20">
+                <span class="inline-flex items-center gap-1 min-w-0">
+                  <i class="fa-solid fa-circle-check text-[9px] sm:text-[10px] shrink-0"></i>
+                  <span class="truncate">Lunas</span>
+                </span>
+                <span id="badgeFilterCount-paid" class="px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] bg-emerald-500/20 font-orbitron shrink-0">0</span>
+              </button>
+
+              <button type="button" id="filterBadge-cancelled" onclick="setAdminListFilter('cancelled')" class="w-full px-2 sm:px-3 py-2 rounded-xl text-[10px] sm:text-[11px] font-bold border transition-all duration-150 flex items-center justify-between gap-1 cursor-pointer bg-rose-500/10 text-rose-300 border-rose-500/35 hover:bg-rose-500/20">
+                <span class="inline-flex items-center gap-1 min-w-0">
+                  <i class="fa-solid fa-ban text-[9px] sm:text-[10px] shrink-0"></i>
+                  <span class="truncate">Dibatalkan</span>
+                </span>
+                <span id="badgeFilterCount-cancelled" class="px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] bg-rose-500/20 font-orbitron shrink-0">0</span>
               </button>
             </div>
           </div>
@@ -745,32 +987,39 @@
 
   <!-- Modal Edit Profil & Pengaturan Admin -->
   <div id="adminProfileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-neon-card p-5 sm:p-6 rounded-2xl border border-neon-border neon-glow max-w-xl w-full space-y-4 my-8">
+    <div class="bg-neon-card p-5 sm:p-6 rounded-2xl border border-neon-border neon-glow max-w-2xl w-full space-y-4 my-8">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
         <h3 class="font-orbitron font-bold text-white text-base sm:text-lg"><i class="fa-solid fa-sliders mr-2 text-neon-blue"></i>Profil &amp; Pengaturan</h3>
         <button type="button" onclick="closeAdminProfileModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <!-- Sub-Tab Utama Settings -->
-      <div class="grid grid-cols-2 gap-2 bg-slate-950/90 p-1.5 rounded-2xl border border-cyan-500/30">
-        <button type="button" id="mainSettingsSubBtn-profile" onclick="switchMainSettingsSubTab('profile')" class="px-3 py-2.5 rounded-xl text-xs font-orbitron font-bold bg-gradient-to-r from-cyan-400 to-neon-blue text-neon-dark shadow-[0_0_12px_rgba(0,243,255,0.3)] transition flex items-center justify-center gap-2 cursor-pointer">
+      <!-- Sub-Tab Utama Settings (3 Tab: Profil Toko, Edit Tabel Dashboard, Tema Website) -->
+      <div class="grid grid-cols-3 gap-1.5 sm:gap-2 bg-slate-950/90 p-1.5 rounded-2xl border border-cyan-500/30">
+        <button type="button" id="mainSettingsSubBtn-profile" onclick="switchMainSettingsSubTab('profile')" class="px-2 sm:px-3 py-2.5 rounded-xl text-[11px] sm:text-xs font-orbitron font-bold bg-gradient-to-r from-cyan-400 to-neon-blue text-neon-dark shadow-[0_0_12px_rgba(0,243,255,0.3)] transition flex items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-store"></i>
-          <span>Profil Toko</span>
+          <span class="truncate">Profil Toko</span>
         </button>
-        <button type="button" id="mainSettingsSubBtn-table" onclick="switchMainSettingsSubTab('table')" class="px-3 py-2.5 rounded-xl text-xs font-orbitron font-bold text-slate-300 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-table-columns text-cyan-400"></i>
-          <span>Edit Tabel Dashboard</span>
+        <button type="button" id="mainSettingsSubBtn-table" onclick="switchMainSettingsSubTab('table')" class="px-2 sm:px-3 py-2.5 rounded-xl text-[11px] sm:text-xs font-orbitron font-bold text-slate-300 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-table-columns text-neon-blue"></i>
+          <span class="truncate">Edit Tabel</span>
+        </button>
+        <button type="button" id="mainSettingsSubBtn-theme" onclick="switchMainSettingsSubTab('theme')" class="px-2 sm:px-3 py-2.5 rounded-xl text-[11px] sm:text-xs font-orbitron font-bold text-slate-300 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-palette text-neon-blue"></i>
+          <span class="truncate">Tema (15)</span>
         </button>
       </div>
 
       <!-- GROUP 1: PROFIL TOKO -->
       <div id="mainSettingsGroup-profile" class="space-y-4">
-        <div class="grid grid-cols-3 gap-1.5 bg-neon-dark p-1.5 rounded-xl border border-neon-border">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-neon-dark p-1.5 rounded-xl border border-neon-border">
           <button type="button" id="profTabBtn-account" onclick="switchProfileModalTab('account')" class="px-2 py-2 rounded-lg text-[11px] font-bold bg-neon-blue text-neon-dark transition cursor-pointer">
             <i class="fa-solid fa-key mr-1"></i>Akun Admin
           </button>
           <button type="button" id="profTabBtn-wa" onclick="switchProfileModalTab('wa')" class="px-2 py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:bg-slate-800 transition cursor-pointer">
             <i class="fa-brands fa-whatsapp mr-1 text-emerald-400"></i>Template WA
+          </button>
+          <button type="button" id="profTabBtn-share" onclick="switchProfileModalTab('share')" class="px-2 py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:bg-slate-800 transition cursor-pointer">
+            <i class="fa-solid fa-share-nodes mr-1 text-cyan-400"></i>Template Bagikan
           </button>
           <button type="button" id="profTabBtn-print" onclick="switchProfileModalTab('print')" class="px-2 py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:bg-slate-800 transition cursor-pointer">
             <i class="fa-solid fa-print mr-1 text-cyan-400"></i>Cetak Nota
@@ -823,7 +1072,58 @@
           </div>
         </div>
 
-        <!-- Panel 3: Setting Cetak Nota -->
+        <!-- Panel 3: Template Bagikan Hasil Cek Status -->
+        <div id="profPanel-share" class="hidden space-y-3">
+          <div class="bg-neon-dark/80 p-3 rounded-xl border border-slate-800 space-y-2">
+            <label class="block text-xs font-bold text-neon-blue uppercase tracking-wider">Mode Format Bagikan</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-cyan-500/40 bg-slate-900/90 cursor-pointer hover:border-neon-blue transition">
+                <input type="radio" name="shareFormatMode" value="text" class="text-neon-blue focus:ring-0">
+                <div>
+                  <div class="text-xs font-bold text-white flex items-center gap-1.5"><i class="fa-solid fa-align-left text-cyan-400"></i> Teks Saja</div>
+                  <div class="text-[10px] text-slate-400">Kirim ringkasan teks pesan saja</div>
+                </div>
+              </label>
+              <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-cyan-500/40 bg-slate-900/90 cursor-pointer hover:border-neon-blue transition">
+                <input type="radio" name="shareFormatMode" value="image" class="text-neon-blue focus:ring-0">
+                <div>
+                  <div class="text-xs font-bold text-white flex items-center gap-1.5"><i class="fa-solid fa-image text-emerald-400"></i> Kartu Gambar + Teks</div>
+                  <div class="text-[10px] text-slate-400">Buat kartu gambar status + teks</div>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="block text-xs font-medium text-slate-300">Template Pesan Bagikan Hasil Cek Status Service</label>
+            <textarea id="shareTemplateInput" rows="5" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3.5 py-2.5 text-white text-xs leading-relaxed focus:outline-none focus:border-neon-blue"></textarea>
+          </div>
+          <div class="bg-neon-dark/80 p-3 rounded-xl border border-slate-800 space-y-1.5">
+            <span class="block text-[11px] font-semibold text-neon-blue">Klik variabel untuk menyisipkan ke template bagikan:</span>
+            <div class="flex flex-wrap gap-1.5 text-[10px]">
+              <button type="button" onclick="insertShareVar('{nama}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{nama}</button>
+              <button type="button" onclick="insertShareVar('{nota}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{nota}</button>
+              <button type="button" onclick="insertShareVar('{pin}')" class="px-2 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 font-bold rounded border border-cyan-500/40 cursor-pointer">{pin}</button>
+              <button type="button" onclick="insertShareVar('{tanggal_masuk}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{tanggal_masuk}</button>
+              <button type="button" onclick="insertShareVar('{tanggal_keluar}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{tanggal_keluar}</button>
+              <button type="button" onclick="insertShareVar('{merk}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{merk}</button>
+              <button type="button" onclick="insertShareVar('{kerusakan}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{kerusakan}</button>
+              <button type="button" onclick="insertShareVar('{status}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{status}</button>
+              <button type="button" onclick="insertShareVar('{keterangan}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{keterangan}</button>
+              <button type="button" onclick="insertShareVar('{pembayaran}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{pembayaran}</button>
+              <button type="button" onclick="insertShareVar('{biaya}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{biaya}</button>
+              <button type="button" onclick="insertShareVar('{garansi}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 cursor-pointer">{garansi}</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center pt-2">
+            <button type="button" onclick="resetDefaultShareTemplate()" class="text-xs text-slate-400 hover:text-white underline cursor-pointer">Reset Default</button>
+            <div class="flex gap-2">
+              <button type="button" onclick="closeAdminProfileModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer">Batal</button>
+              <button type="button" onclick="saveShareTemplateSetting()" class="px-4 py-2 bg-neon-blue hover:bg-cyan-400 text-neon-dark font-bold text-xs rounded-xl cursor-pointer">Simpan Template Bagikan</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 4: Setting Cetak Nota -->
         <div id="profPanel-print" class="hidden space-y-3">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
@@ -956,6 +1256,36 @@
           </div>
         </div>
       </div>
+
+      <!-- GROUP 3: 15 PILIHAN TEMA WEBSITE -->
+      <div id="mainSettingsGroup-theme" class="hidden space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-neon-dark/80 p-3 rounded-xl border border-slate-800">
+          <div>
+            <div class="text-xs font-bold text-neon-blue flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>15 Pilihan Tema Website (Dark &amp; Light Mode)</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Klik kartu tema untuk pratinjau langsung seluruh halaman pelanggan &amp; admin.</p>
+          </div>
+          <span id="modalSelectedThemeBadge" class="px-2.5 py-1 rounded-lg bg-neon-blue/15 border border-neon-blue/40 text-neon-blue text-[11px] font-bold">
+            Aktif: Cyber Neon Cyan
+          </span>
+        </div>
+
+        <div id="websiteThemeGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-[52vh] overflow-y-auto pr-1"></div>
+
+        <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="resetDefaultWebsiteTheme()" class="text-xs text-slate-400 hover:text-white underline cursor-pointer">
+            <i class="fa-solid fa-rotate-left mr-1"></i>Reset Default (Cyber Cyan)
+          </button>
+          <div class="flex gap-2">
+            <button type="button" onclick="closeAdminProfileModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer">Tutup</button>
+            <button type="button" onclick="saveWebsiteThemeSetting()" class="px-4 py-2 bg-neon-blue hover:bg-cyan-400 text-neon-dark font-bold text-xs rounded-xl shadow-lg shadow-cyan-500/20 cursor-pointer">
+              <i class="fa-solid fa-check mr-1"></i>Terapkan &amp; Simpan Tema
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1041,15 +1371,359 @@
     let activeQrisNotaItem = null;
     let currentReceiptHtmlForPrint = "";
     let isAppInitialized = false;
-    let activeListBadgeFilter = "all";
+    let activeListBadgeFilter = "today";
     let activeFinancePreset = "month";
     let latestFinanceSummarySnapshot = null;
     let cachedPreviousFormAmounts = { modal: "", biaya: "" };
 
+    // 15 Pilihan Tema Website Lengkap (12 Dark Mode + 3 Light Mode)
+    const WEBSITE_THEMES = [
+      {
+        id: "cyber-cyan",
+        name: "Cyber Neon Cyan",
+        shortName: "Cyber Cyan",
+        mode: "dark",
+        desc: "Dark Navy & Electric Cyan",
+        bg: "#050b14",
+        card: "#0a192f",
+        cardAlt: "#071324",
+        cardTop: "#0c223b",
+        inputBg: "#050b14",
+        headerBg: "rgba(5, 11, 20, 0.88)",
+        footerBg: "rgba(5, 11, 20, 0.85)",
+        accent: "#00f3ff",
+        accentHover: "#22d3ee",
+        accentRgb: "0, 243, 255",
+        accentContrast: "#050b14",
+        border: "#1e3a8a",
+        text: "#e2e8f0",
+        grad1: "#22d3ee",
+        grad2: "#00f3ff"
+      },
+      {
+        id: "emerald-matrix",
+        name: "Emerald Matrix",
+        shortName: "Emerald",
+        mode: "dark",
+        desc: "Dark Forest & Neon Green",
+        bg: "#04120c",
+        card: "#092117",
+        cardAlt: "#061810",
+        cardTop: "#0d2e20",
+        inputBg: "#04120c",
+        headerBg: "rgba(4, 18, 12, 0.88)",
+        footerBg: "rgba(4, 18, 12, 0.85)",
+        accent: "#10b981",
+        accentHover: "#34d399",
+        accentRgb: "16, 185, 129",
+        accentContrast: "#02100a",
+        border: "#065f46",
+        text: "#e2e8f0",
+        grad1: "#34d399",
+        grad2: "#10b981"
+      },
+      {
+        id: "crimson-blaze",
+        name: "Crimson Blaze",
+        shortName: "Crimson",
+        mode: "dark",
+        desc: "Obsidian Black & Neon Red",
+        bg: "#120609",
+        card: "#220c12",
+        cardAlt: "#18080c",
+        cardTop: "#2e1018",
+        inputBg: "#120609",
+        headerBg: "rgba(18, 6, 9, 0.88)",
+        footerBg: "rgba(18, 6, 9, 0.85)",
+        accent: "#f43f5e",
+        accentHover: "#fb7185",
+        accentRgb: "244, 63, 94",
+        accentContrast: "#ffffff",
+        border: "#881337",
+        text: "#f1f5f9",
+        grad1: "#fb7185",
+        grad2: "#f43f5e"
+      },
+      {
+        id: "royal-amethyst",
+        name: "Royal Amethyst",
+        shortName: "Amethyst",
+        mode: "dark",
+        desc: "Deep Violet & Electric Purple",
+        bg: "#0d0618",
+        card: "#190d2e",
+        cardAlt: "#120921",
+        cardTop: "#241342",
+        inputBg: "#0d0618",
+        headerBg: "rgba(13, 6, 24, 0.88)",
+        footerBg: "rgba(13, 6, 24, 0.85)",
+        accent: "#a855f7",
+        accentHover: "#c084fc",
+        accentRgb: "168, 85, 247",
+        accentContrast: "#ffffff",
+        border: "#581c87",
+        text: "#f3e8ff",
+        grad1: "#c084fc",
+        grad2: "#a855f7"
+      },
+      {
+        id: "solar-amber",
+        name: "Solar Amber Gold",
+        shortName: "Amber Gold",
+        mode: "dark",
+        desc: "Charcoal Black & Amber Gold",
+        bg: "#120d05",
+        card: "#21180a",
+        cardAlt: "#171107",
+        cardTop: "#2e220e",
+        inputBg: "#120d05",
+        headerBg: "rgba(18, 13, 5, 0.88)",
+        footerBg: "rgba(18, 13, 5, 0.85)",
+        accent: "#f59e0b",
+        accentHover: "#fbbf24",
+        accentRgb: "245, 158, 11",
+        accentContrast: "#0f0a02",
+        border: "#78350f",
+        text: "#fef3c7",
+        grad1: "#fbbf24",
+        grad2: "#f59e0b"
+      },
+      {
+        id: "sunset-magenta",
+        name: "Sunset Magenta",
+        shortName: "Magenta",
+        mode: "dark",
+        desc: "Midnight Plum & Hot Pink",
+        bg: "#140611",
+        card: "#260b20",
+        cardAlt: "#1b0817",
+        cardTop: "#330f2b",
+        inputBg: "#140611",
+        headerBg: "rgba(20, 6, 17, 0.88)",
+        footerBg: "rgba(20, 6, 17, 0.85)",
+        accent: "#ec4899",
+        accentHover: "#f472b6",
+        accentRgb: "236, 72, 153",
+        accentContrast: "#ffffff",
+        border: "#831843",
+        text: "#fce7f3",
+        grad1: "#f472b6",
+        grad2: "#ec4899"
+      },
+      {
+        id: "arctic-cobalt",
+        name: "Arctic Cobalt",
+        shortName: "Cobalt",
+        mode: "dark",
+        desc: "Deep Slate & Sky Cobalt",
+        bg: "#070f1c",
+        card: "#0f1e36",
+        cardAlt: "#0a1526",
+        cardTop: "#162a4a",
+        inputBg: "#070f1c",
+        headerBg: "rgba(7, 15, 28, 0.88)",
+        footerBg: "rgba(7, 15, 28, 0.85)",
+        accent: "#38bdf8",
+        accentHover: "#7dd3fc",
+        accentRgb: "56, 189, 248",
+        accentContrast: "#04101c",
+        border: "#0369a1",
+        text: "#e0f2fe",
+        grad1: "#7dd3fc",
+        grad2: "#38bdf8"
+      },
+      {
+        id: "toxic-lime",
+        name: "Toxic Lime",
+        shortName: "Toxic Lime",
+        mode: "dark",
+        desc: "Dark Carbon & Volt Lime",
+        bg: "#0a1006",
+        card: "#141f0c",
+        cardAlt: "#0e1608",
+        cardTop: "#1d2c12",
+        inputBg: "#0a1006",
+        headerBg: "rgba(10, 16, 6, 0.88)",
+        footerBg: "rgba(10, 16, 6, 0.85)",
+        accent: "#84cc16",
+        accentHover: "#a3e635",
+        accentRgb: "132, 204, 22",
+        accentContrast: "#070c04",
+        border: "#3f6212",
+        text: "#ecfccb",
+        grad1: "#a3e635",
+        grad2: "#84cc16"
+      },
+      {
+        id: "copper-bronze",
+        name: "Copper Bronze",
+        shortName: "Copper",
+        mode: "dark",
+        desc: "Espresso Dark & Warm Copper",
+        bg: "#140b06",
+        card: "#24140c",
+        cardAlt: "#1a0e08",
+        cardTop: "#301b10",
+        inputBg: "#140b06",
+        headerBg: "rgba(20, 11, 6, 0.88)",
+        footerBg: "rgba(20, 11, 6, 0.85)",
+        accent: "#f97316",
+        accentHover: "#fb923c",
+        accentRgb: "249, 115, 22",
+        accentContrast: "#0f0703",
+        border: "#7c2d12",
+        text: "#ffedd5",
+        grad1: "#fb923c",
+        grad2: "#f97316"
+      },
+      {
+        id: "titanium-mono",
+        name: "Titanium Mono",
+        shortName: "Titanium",
+        mode: "dark",
+        desc: "Stealth Graphite & Silver White",
+        bg: "#0b0d10",
+        card: "#161920",
+        cardAlt: "#101318",
+        cardTop: "#1f242e",
+        inputBg: "#0b0d10",
+        headerBg: "rgba(11, 13, 16, 0.88)",
+        footerBg: "rgba(11, 13, 16, 0.85)",
+        accent: "#e2e8f0",
+        accentHover: "#ffffff",
+        accentRgb: "226, 232, 240",
+        accentContrast: "#090b0e",
+        border: "#334155",
+        text: "#f8fafc",
+        grad1: "#ffffff",
+        grad2: "#cbd5e1"
+      },
+      {
+        id: "deep-ocean-teal",
+        name: "Deep Ocean Teal",
+        shortName: "Ocean Teal",
+        mode: "dark",
+        desc: "Abyssal Blue & Aqua Teal",
+        bg: "#041214",
+        card: "#082226",
+        cardAlt: "#06191c",
+        cardTop: "#0c3036",
+        inputBg: "#041214",
+        headerBg: "rgba(4, 18, 20, 0.88)",
+        footerBg: "rgba(4, 18, 20, 0.85)",
+        accent: "#14b8a6",
+        accentHover: "#2dd4bf",
+        accentRgb: "20, 184, 166",
+        accentContrast: "#031012",
+        border: "#115e59",
+        text: "#ccfbf1",
+        grad1: "#2dd4bf",
+        grad2: "#14b8a6"
+      },
+      {
+        id: "sakura-rose",
+        name: "Sakura Rose",
+        shortName: "Sakura",
+        mode: "dark",
+        desc: "Dark Berry & Soft Rose",
+        bg: "#14080e",
+        card: "#240f1a",
+        cardAlt: "#1b0b13",
+        cardTop: "#301423",
+        inputBg: "#14080e",
+        headerBg: "rgba(20, 8, 14, 0.88)",
+        footerBg: "rgba(20, 8, 14, 0.85)",
+        accent: "#fb7185",
+        accentHover: "#fda4af",
+        accentRgb: "251, 113, 133",
+        accentContrast: "#14050a",
+        border: "#9f1239",
+        text: "#ffe4e6",
+        grad1: "#fda4af",
+        grad2: "#fb7185"
+      },
+      {
+        id: "clean-light-sky",
+        name: "Clean Light Sky",
+        shortName: "Light Sky",
+        mode: "light",
+        desc: "Crisp White & Ocean Blue",
+        bg: "#f1f5f9",
+        card: "#ffffff",
+        cardAlt: "#f8fafc",
+        cardTop: "#e0f2fe",
+        inputBg: "#f8fafc",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(248, 250, 252, 0.92)",
+        accent: "#0284c7",
+        accentHover: "#0369a1",
+        accentRgb: "2, 132, 199",
+        accentContrast: "#ffffff",
+        border: "#bae6fd",
+        text: "#0f172a",
+        grad1: "#0ea5e9",
+        grad2: "#0284c7"
+      },
+      {
+        id: "warm-ivory-gold",
+        name: "Warm Ivory Gold",
+        shortName: "Ivory Gold",
+        mode: "light",
+        desc: "Cream Ivory & Bronze Amber",
+        bg: "#faf6ef",
+        card: "#ffffff",
+        cardAlt: "#fdfbf7",
+        cardTop: "#fef3c7",
+        inputBg: "#faf6ef",
+        headerBg: "rgba(255, 253, 249, 0.92)",
+        footerBg: "rgba(250, 246, 239, 0.92)",
+        accent: "#d97706",
+        accentHover: "#b45309",
+        accentRgb: "217, 119, 6",
+        accentContrast: "#ffffff",
+        border: "#fde68a",
+        text: "#1c1917",
+        grad1: "#f59e0b",
+        grad2: "#d97706"
+      },
+      {
+        id: "mint-daylight",
+        name: "Mint Daylight",
+        shortName: "Mint Light",
+        mode: "light",
+        desc: "Soft Mint White & Emerald",
+        bg: "#eff7f3",
+        card: "#ffffff",
+        cardAlt: "#f6fbf8",
+        cardTop: "#d1fae5",
+        inputBg: "#f2f9f5",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(239, 247, 243, 0.92)",
+        accent: "#059669",
+        accentHover: "#047857",
+        accentRgb: "5, 150, 105",
+        accentContrast: "#ffffff",
+        border: "#a7f3d0",
+        text: "#064e3b",
+        grad1: "#10b981",
+        grad2: "#059669"
+      }
+    ];
+
+    let selectedDraftThemeId = "cyber-cyan";
+
     // BroadcastChannel untuk Sinkronisasi Instan Antar-Tab Browser
-    const broadcastSync = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('rovcell_realtime_sync') : null;
+    let broadcastSync = null;
+    try {
+      if (typeof BroadcastChannel !== "undefined") {
+        broadcastSync = new BroadcastChannel("rovcell_realtime_sync");
+      }
+    } catch (e) {
+      broadcastSync = null;
+    }
 
     const DEFAULT_WA_TEMPLATE = "Halo {nama}, informasi mengenai service HP {merk} dengan Nomor Nota *{nota}* (PIN Cek Status: *{pin}*) di Rovcell Smartphone.\nStatus saat ini: *{status}* ({keterangan}).\nPembayaran: *{pembayaran}*.\nTotal biaya: {biaya}.\nCek status online: https://rovcell.online\nTerima kasih!";
+    const DEFAULT_SHARE_TEMPLATE = "*STATUS SERVICE HP - ROVCELL SMARTPHONE*\nNo. Nota : *{nota}*\nNama Pelanggan : {nama}\nTanggal Masuk : {tanggal_masuk}\nUnit HP : {merk}\nKerusakan : {kerusakan}\nStatus Pengerjaan : *{status}*\nKeterangan : {keterangan}\nStatus Pembayaran : *{pembayaran}*\nTotal Biaya : *{biaya}*\nGaransi : {garansi}\nCek status online: https://rovcell.online";
     const DEFAULT_TABLE_CONFIG = {
       viewMode: "card",
       columns: {
@@ -1066,7 +1740,10 @@
     };
 
     let appSettings = {
+      websiteTheme: "cyber-cyan",
       waTemplate: DEFAULT_WA_TEMPLATE,
+      shareTemplate: DEFAULT_SHARE_TEMPLATE,
+      shareFormatMode: "image",
       printShopName: "ROVCELL SMARTPHONE",
       printShopAddress: "Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar",
       printShopPhone: "WA: 0889-0889-0176",
@@ -1079,9 +1756,126 @@
     };
 
     const NOTA_CARD_THEMES = [
-      { bg: "bg-[#0c2d3d]", border: "border-l-4 border-l-cyan-400 shadow-[inset_0_1px_0_rgba(34,211,238,0.18)]", badge: "text-cyan-100 bg-cyan-500/25 border-cyan-400/50 shadow-sm" },
-      { bg: "bg-[#061824]", border: "border-l-4 border-l-cyan-700 shadow-[inset_0_1px_0_rgba(14,116,144,0.15)]", badge: "text-cyan-300 bg-cyan-950/90 border-cyan-700/60 shadow-sm" }
+      { bg: "nota-theme-row-0 bg-[#0c2d3d]", border: "border-l-4 border-l-cyan-400 shadow-[inset_0_1px_0_rgba(34,211,238,0.18)]", badge: "text-cyan-100 bg-cyan-500/25 border-cyan-400/50 shadow-sm" },
+      { bg: "nota-theme-row-1 bg-[#061824]", border: "border-l-4 border-l-cyan-700 shadow-[inset_0_1px_0_rgba(14,116,144,0.15)]", badge: "text-cyan-300 bg-cyan-950/90 border-cyan-700/60 shadow-sm" }
     ];
+
+    function getThemeById(themeId) {
+      return WEBSITE_THEMES.find((t) => t.id === themeId) || WEBSITE_THEMES[0];
+    }
+
+    function applyWebsiteTheme(themeId) {
+      const theme = getThemeById(themeId);
+      const root = document.documentElement;
+      root.style.setProperty("--theme-bg", theme.bg);
+      root.style.setProperty("--theme-card", theme.card);
+      root.style.setProperty("--theme-card-alt", theme.cardAlt);
+      root.style.setProperty("--theme-card-top", theme.cardTop);
+      root.style.setProperty("--theme-input-bg", theme.inputBg);
+      root.style.setProperty("--theme-header-bg", theme.headerBg);
+      root.style.setProperty("--theme-footer-bg", theme.footerBg);
+      root.style.setProperty("--theme-accent", theme.accent);
+      root.style.setProperty("--theme-accent-hover", theme.accentHover);
+      root.style.setProperty("--theme-accent-rgb", theme.accentRgb);
+      root.style.setProperty("--theme-accent-contrast", theme.accentContrast);
+      root.style.setProperty("--theme-border", theme.border);
+      root.style.setProperty("--theme-text", theme.text);
+      root.style.setProperty("--theme-grad-1", theme.grad1);
+      root.style.setProperty("--theme-grad-2", theme.grad2);
+
+      if (theme.mode === "light") {
+        root.classList.add("theme-light-mode");
+      } else {
+        root.classList.remove("theme-light-mode");
+      }
+
+      const metaTheme = document.getElementById("metaThemeColor");
+      if (metaTheme) {
+        metaTheme.setAttribute("content", theme.accent);
+      }
+
+      const headerPill = document.getElementById("headerActiveThemePill");
+      if (headerPill) {
+        headerPill.innerText = theme.shortName;
+      }
+
+      const modalBadge = document.getElementById("modalSelectedThemeBadge");
+      if (modalBadge) {
+        modalBadge.innerText = `Aktif: ${theme.name}`;
+      }
+    }
+
+    function renderWebsiteThemeGrid(activeId) {
+      const grid = document.getElementById("websiteThemeGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      WEBSITE_THEMES.forEach((t, index) => {
+        const isSelected = t.id === activeId;
+        const modeBadge = t.mode === "light"
+          ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40"><i class="fa-solid fa-sun mr-0.5"></i>Terang</span>`
+          : `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-slate-800 text-slate-300 border border-slate-700"><i class="fa-solid fa-moon mr-0.5"></i>Gelap</span>`;
+
+        const activeIndicator = isSelected
+          ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold" style="background:${t.accent}; color:${t.accentContrast};"><i class="fa-solid fa-check"></i>Aktif</span>`
+          : `<span class="text-[10px] text-slate-500 font-mono">#${String(index + 1).padStart(2, "0")}</span>`;
+
+        grid.innerHTML += `
+          <button type="button" onclick="previewWebsiteTheme('${t.id}')" class="text-left p-3 rounded-2xl border transition-all duration-150 flex flex-col justify-between gap-2.5 cursor-pointer ${isSelected ? "ring-2 ring-neon-blue border-neon-blue bg-slate-900/95 shadow-lg" : "border-slate-800 bg-neon-dark/80 hover:border-slate-600"}">
+            <div class="flex items-center justify-between gap-1.5 w-full">
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full border border-white/25 shadow-sm" style="background:${t.bg};" title="Background"></span>
+                <span class="w-4 h-4 rounded-full border border-white/25 shadow-sm" style="background:${t.card};" title="Card"></span>
+                <span class="w-4 h-4 rounded-full border border-white/30 shadow-sm" style="background:${t.accent};" title="Accent"></span>
+              </div>
+              ${activeIndicator}
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white leading-snug">${index + 1}. ${t.name}</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">${t.desc}</div>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/70 w-full">
+              ${modeBadge}
+              <span class="text-[10px] font-mono font-bold" style="color:${t.accent};">${t.accent.toUpperCase()}</span>
+            </div>
+          </button>
+        `;
+      });
+    }
+
+    function previewWebsiteTheme(themeId) {
+      selectedDraftThemeId = themeId;
+      applyWebsiteTheme(themeId);
+      renderWebsiteThemeGrid(themeId);
+    }
+
+    function resetDefaultWebsiteTheme() {
+      selectedDraftThemeId = "cyber-cyan";
+      applyWebsiteTheme("cyber-cyan");
+      renderWebsiteThemeGrid("cyber-cyan");
+    }
+
+    async function saveWebsiteThemeSetting() {
+      const theme = getThemeById(selectedDraftThemeId);
+      appSettings.websiteTheme = theme.id;
+      applyWebsiteTheme(theme.id);
+
+      try {
+        localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+      } catch (e) {}
+
+      try {
+        if (window.db && window.setDoc && window.doc) {
+          await window.setDoc(window.doc(window.db, "settings", "appConfig"), { websiteTheme: theme.id }, { merge: true });
+        }
+      } catch (e) {
+        console.warn("Save websiteTheme fallback to local:", e);
+      }
+
+      notifyBroadcastSync("UPDATE_DATA");
+      closeAdminProfileModal();
+      showCustomAlert(`Tema website "${theme.name}" berhasil diterapkan dan disimpan!`, true);
+    }
 
     function getTableConfig() {
       if (!appSettings.tableConfig) {
@@ -1186,10 +1980,10 @@
     function startRealTimeClock() {
       function updateClock() {
         const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        const clockEl = document.getElementById('liveClockDisplay');
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        const clockEl = document.getElementById("liveClockDisplay");
         if (clockEl) {
           clockEl.innerText = `${hours}:${minutes}:${seconds} WIB`;
         }
@@ -1211,40 +2005,49 @@
       }
     }
 
-    window.addEventListener('online', updateConnectionStatusIndicator);
-    window.addEventListener('offline', updateConnectionStatusIndicator);
+    window.addEventListener("online", updateConnectionStatusIndicator);
+    window.addEventListener("offline", updateConnectionStatusIndicator);
 
     // Broadcast Notifikasi Antar-Tab
-    function notifyBroadcastSync(type = 'UPDATE_DATA') {
+    function notifyBroadcastSync(type = "UPDATE_DATA") {
       if (broadcastSync) {
         try {
           broadcastSync.postMessage({ type, timestamp: Date.now() });
-        } catch(e) {}
+        } catch (e) {}
       }
     }
 
     if (broadcastSync) {
       broadcastSync.onmessage = (event) => {
-        if (event.data && event.data.type === 'UPDATE_DATA') {
+        if (event.data && event.data.type === "UPDATE_DATA") {
           reloadAppFromLocalStorage();
         }
       };
     }
 
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'rovcell_cached_services' || e.key === 'rovcell_app_settings') {
+    window.addEventListener("storage", (e) => {
+      if (e.key === "rovcell_cached_services" || e.key === "rovcell_app_settings") {
         reloadAppFromLocalStorage();
       }
     });
 
     function reloadAppFromLocalStorage() {
-      const cachedServicesStr = localStorage.getItem("rovcell_cached_services");
-      if (cachedServicesStr) {
-        try {
+      try {
+        const cachedServicesStr = localStorage.getItem("rovcell_cached_services");
+        if (cachedServicesStr) {
           serviceList = JSON.parse(cachedServicesStr) || [];
-        } catch (e) {
-          serviceList = [];
         }
+        const savedSettingsStr = localStorage.getItem("rovcell_app_settings");
+        if (savedSettingsStr) {
+          const parsedSettings = JSON.parse(savedSettingsStr);
+          appSettings = { ...appSettings, ...parsedSettings };
+          if (appSettings.websiteTheme) {
+            selectedDraftThemeId = appSettings.websiteTheme;
+            applyWebsiteTheme(appSettings.websiteTheme);
+          }
+        }
+      } catch (e) {
+        serviceList = [];
       }
       refreshAllUIComponents();
     }
@@ -1259,7 +2062,6 @@
         updateFinancialStats();
       }
 
-      // Auto-refresh live status jika pelanggan sedang melihat nota tertentu di Cek Status
       refreshActiveCustomerStatusView();
     }
 
@@ -1290,9 +2092,9 @@
 
       applyFinancePreset("month", true);
 
-      const savedLocal = localStorage.getItem("rovcell_app_settings");
-      if (savedLocal) {
-        try {
+      try {
+        const savedLocal = localStorage.getItem("rovcell_app_settings");
+        if (savedLocal) {
           const parsed = JSON.parse(savedLocal);
           appSettings = {
             ...appSettings,
@@ -1305,12 +2107,18 @@
               }
             }
           };
-        } catch (e) {
-          console.error(e);
         }
+      } catch (e) {
+        console.warn("Settings load fallback to defaults:", e);
       }
 
+      selectedDraftThemeId = appSettings.websiteTheme || "cyber-cyan";
+      applyWebsiteTheme(selectedDraftThemeId);
+
       reloadAppFromLocalStorage();
+      renderAdminTable();
+      updateFinancialStats();
+      generateNextNota();
       renderRecentSearches();
       handleFormStatusChange("Menunggu Pengecekan");
 
@@ -1335,7 +2143,13 @@
                 }
               }
             };
-            localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+            if (appSettings.websiteTheme) {
+              selectedDraftThemeId = appSettings.websiteTheme;
+              applyWebsiteTheme(appSettings.websiteTheme);
+            }
+            try {
+              localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+            } catch (e) {}
           }
         }
       } catch (e) {
@@ -1350,8 +2164,10 @@
               serviceList = [];
               snapshot.forEach((d) => serviceList.push(d.data()));
               serviceList.sort((a, b) => (b.nota || "").localeCompare(a.nota || ""));
-              localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
-              notifyBroadcastSync('UPDATE_DATA');
+              try {
+                localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
+              } catch (e) {}
+              notifyBroadcastSync("UPDATE_DATA");
               refreshAllUIComponents();
             },
             (err) => {
@@ -1413,8 +2229,8 @@
         adminBtn.classList.add(...inactiveClasses);
         if (adminIcon) {
           adminIcon.className = isAdminLoggedIn
-            ? "fa-solid fa-gauge-high text-xs text-cyan-400"
-            : "fa-solid fa-lock text-xs text-cyan-400";
+            ? "fa-solid fa-gauge-high text-xs text-neon-blue"
+            : "fa-solid fa-lock text-xs text-neon-blue";
         }
       } else {
         adminBtn.classList.add(...activeClasses);
@@ -1494,7 +2310,7 @@
         if (subTab === "list") {
           listBadge.className = "px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-slate-950/25 text-neon-dark border border-slate-950/30";
         } else {
-          listBadge.className = "px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/40";
+          listBadge.className = "px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-cyan-500/20 text-neon-blue border border-cyan-400/40";
         }
       }
 
@@ -1513,8 +2329,12 @@
       const passEl = document.getElementById("adminPass");
       const u = userEl ? userEl.value.trim() : "";
       const p = passEl ? passEl.value.trim() : "";
-      let validUser = localStorage.getItem("rovcell_admin_user") || "admin";
-      let validPass = localStorage.getItem("rovcell_admin_pass") || "rovcell2025";
+      let validUser = "admin";
+      let validPass = "rovcell2025";
+      try {
+        validUser = localStorage.getItem("rovcell_admin_user") || validUser;
+        validPass = localStorage.getItem("rovcell_admin_pass") || validPass;
+      } catch (err) {}
 
       try {
         if (window.db && window.doc && window.getDoc) {
@@ -1523,8 +2343,10 @@
           if (docSnap.exists()) {
             validUser = docSnap.data().username || validUser;
             validPass = docSnap.data().password || validPass;
-            localStorage.setItem("rovcell_admin_user", validUser);
-            localStorage.setItem("rovcell_admin_pass", validPass);
+            try {
+              localStorage.setItem("rovcell_admin_user", validUser);
+              localStorage.setItem("rovcell_admin_pass", validPass);
+            } catch (e) {}
           } else {
             await window.setDoc(docRef, { username: validUser, password: validPass });
           }
@@ -1683,8 +2505,10 @@
         serviceList.unshift(newData);
       }
       serviceList.sort((a, b) => (b.nota || "").localeCompare(a.nota || ""));
-      localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
-      notifyBroadcastSync('UPDATE_DATA');
+      try {
+        localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
+      } catch (e) {}
+      notifyBroadcastSync("UPDATE_DATA");
 
       refreshAllUIComponents();
       showCustomAlert("Data service berhasil disimpan!", true);
@@ -1716,8 +2540,10 @@
           console.warn("Firestore delete fallback to local cache:", err);
         }
         serviceList = serviceList.filter((s) => s.nota !== nota);
-        localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
-        notifyBroadcastSync('UPDATE_DATA');
+        try {
+          localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
+        } catch (e) {}
+        notifyBroadcastSync("UPDATE_DATA");
         refreshAllUIComponents();
       });
     }
@@ -1823,6 +2649,10 @@
 
     function updateListBadgeActiveStyles() {
       const badgeConfig = {
+        today: {
+          active: "bg-neon-blue text-neon-dark border-neon-blue shadow-[0_0_12px_rgba(0,243,255,0.35)]",
+          inactive: "bg-cyan-500/10 text-cyan-300 border-cyan-500/35 hover:bg-cyan-500/20"
+        },
         all: {
           active: "bg-neon-blue text-neon-dark border-neon-blue shadow-[0_0_12px_rgba(0,243,255,0.35)]",
           inactive: "bg-slate-900/80 text-slate-300 border-slate-700/80 hover:border-neon-blue/60"
@@ -1867,7 +2697,9 @@
 
       const searchEl = document.getElementById("adminSearch");
       const keyword = (searchEl ? searchEl.value : "").toLowerCase();
+      const todayStr = new Date().toISOString().split("T")[0];
 
+      const countToday = serviceList.filter((s) => s.date === todayStr || s.keluarDate === todayStr).length;
       const countAll = serviceList.length;
       const countChecking = serviceList.filter((s) => isStatusChecking(s.status)).length;
       const countUnpaid = serviceList.filter((s) => !isStatusCancelled(s.status) && !s.isPaid).length;
@@ -1878,6 +2710,7 @@
         const el = document.getElementById(id);
         if (el) el.innerText = val;
       };
+      setCount("badgeFilterCount-today", countToday);
       setCount("badgeFilterCount-all", countAll);
       setCount("badgeFilterCount-checking", countChecking);
       setCount("badgeFilterCount-unpaid", countUnpaid);
@@ -1917,7 +2750,8 @@
           (s.phone || "").toLowerCase().includes(keyword);
 
         let matchesBadge = true;
-        if (activeListBadgeFilter === "checking") matchesBadge = checking;
+        if (activeListBadgeFilter === "today") matchesBadge = s.date === todayStr || s.keluarDate === todayStr;
+        else if (activeListBadgeFilter === "checking") matchesBadge = checking;
         else if (activeListBadgeFilter === "unpaid") matchesBadge = !cancelled && !s.isPaid;
         else if (activeListBadgeFilter === "paid") matchesBadge = !cancelled && !!s.isPaid;
         else if (activeListBadgeFilter === "cancelled") matchesBadge = cancelled;
@@ -1926,7 +2760,10 @@
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-500">Belum ada data service pelanggan yang sesuai dengan filter.</td></tr>`;
+        const emptyMsg = activeListBadgeFilter === "today"
+          ? "Belum ada transaksi service masuk atau keluar hari ini."
+          : "Belum ada data service pelanggan yang sesuai dengan filter.";
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-500">${emptyMsg}</td></tr>`;
         return;
       }
 
@@ -1982,63 +2819,63 @@
           tbody.innerHTML += `
             <tr class="${theme.bg} ${theme.border} border-b border-slate-800 hover:brightness-110 transition text-xs">
               ${cols.nota ? `
-                <td class="py-2.5 px-3 align-top whitespace-nowrap">
-                  <div class="flex flex-col gap-1.5">
-                    <div class="flex items-center gap-1.5">
-                      <span class="font-orbitron text-xs font-extrabold px-2 py-0.5 rounded border ${theme.badge}">${s.nota}</span>
-                      <span class="text-[10px] text-slate-400">PIN: <strong class="text-white">${pin3}</strong></span>
-                    </div>
-                    <div>${paymentControlHtml}</div>
+              <td class="py-2.5 px-3 align-top whitespace-nowrap">
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-orbitron text-xs font-extrabold px-2 py-0.5 rounded border ${theme.badge}">${s.nota}</span>
+                    <span class="text-[10px] text-slate-400">PIN: <strong class="text-white">${pin3}</strong></span>
                   </div>
-                </td>
+                  <div>${paymentControlHtml}</div>
+                </div>
+              </td>
               ` : ""}
               ${cols.customer ? `
-                <td class="py-2.5 px-3 align-top">
-                  <div class="font-bold text-white">${s.nama}</div>
-                  <div class="text-[11px] text-slate-400 mt-0.5"><i class="fa-brands fa-whatsapp text-emerald-400 mr-1"></i>${s.phone || "-"}</div>
-                </td>
+              <td class="py-2.5 px-3 align-top">
+                <div class="font-bold text-white">${s.nama}</div>
+                <div class="text-[11px] text-slate-400 mt-0.5"><i class="fa-brands fa-whatsapp text-emerald-400 mr-1"></i>${s.phone || "-"}</div>
+              </td>
               ` : ""}
               ${cols.device || cols.issue ? `
-                <td class="py-2.5 px-3 align-top">
-                  ${cols.device ? `<div class="font-semibold text-slate-100">${s.merk}</div>` : ""}
-                  ${cols.issue ? `<div class="text-[11px] text-slate-300 mt-0.5">${s.kerusakan}</div>` : ""}
-                </td>
+              <td class="py-2.5 px-3 align-top">
+                ${cols.device ? `<div class="font-semibold text-slate-100">${s.merk}</div>` : ""}
+                ${cols.issue ? `<div class="text-[11px] text-slate-300 mt-0.5">${s.kerusakan}</div>` : ""}
+              </td>
               ` : ""}
               ${cols.dates ? `
-                <td class="py-2.5 px-3 align-top whitespace-nowrap text-[11px] text-slate-300">
-                  <div><span class="text-slate-500">Msk:</span> ${formatDateDDMMYYYY(s.date)}</div>
-                  <div><span class="text-slate-500">Klr:</span> ${formatDateDDMMYYYY(s.keluarDate)}</div>
-                </td>
+              <td class="py-2.5 px-3 align-top whitespace-nowrap text-[11px] text-slate-300">
+                <div><span class="text-slate-500">Msk:</span> ${formatDateDDMMYYYY(s.date)}</div>
+                <div><span class="text-slate-500">Klr:</span> ${formatDateDDMMYYYY(s.keluarDate)}</div>
+              </td>
               ` : ""}
               ${cols.finance || cols.warranty ? `
-                <td class="py-2.5 px-3 align-top whitespace-nowrap text-[11px]">
-                  ${cols.finance ? (cancelled
-                    ? `<span class="text-red-300 italic text-[10px]">Dibatalkan</span>`
-                    : checking
-                    ? `<div class="font-bold text-yellow-300">Modal: - | Jual: -</div><div class="text-[10px] text-slate-400">Menunggu estimasi</div>`
-                    : `
-                      <div class="font-bold text-cyan-300">Jual: ${formatCurrencyDisplay(s.biaya, isBiayaDash)}</div>
-                      <div class="text-[10px] text-emerald-400">Bersih: Rp ${profit.toLocaleString("id-ID")} (T40%: Rp ${techShare.toLocaleString("id-ID")})</div>
-                    `) : ""}
-                  ${cols.warranty && garansiBadge ? `<div class="mt-1">${garansiBadge}</div>` : ""}
-                </td>
+              <td class="py-2.5 px-3 align-top whitespace-nowrap text-[11px]">
+                ${cols.finance ? (cancelled
+                  ? `<span class="text-red-300 italic text-[10px]">Dibatalkan</span>`
+                  : checking
+                  ? `<div class="font-bold text-yellow-300">Modal: - | Jual: -</div><div class="text-[10px] text-slate-400">Menunggu estimasi</div>`
+                  : `
+                    <div class="font-bold text-cyan-300">Jual: ${formatCurrencyDisplay(s.biaya, isBiayaDash)}</div>
+                    <div class="text-[10px] text-emerald-400">Bersih: Rp ${profit.toLocaleString("id-ID")} (T40%: Rp ${techShare.toLocaleString("id-ID")})</div>
+                  `) : ""}
+                ${cols.warranty && garansiBadge ? `<div class="mt-1">${garansiBadge}</div>` : ""}
+              </td>
               ` : ""}
               ${cols.status ? `
-                <td class="py-2.5 px-3 align-top">
-                  <select onchange="quickUpdateStatus('${s.nota}', this.value)" class="bg-neon-dark border ${cancelled ? "border-red-500/60 text-red-300" : "border-neon-blue/60 text-neon-blue"} font-semibold text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:border-neon-blue cursor-pointer">
-                    ${optionsHtml}
-                  </select>
-                </td>
+              <td class="py-2.5 px-3 align-top">
+                <select onchange="quickUpdateStatus('${s.nota}', this.value)" class="bg-neon-dark border ${cancelled ? "border-red-500/60 text-red-300" : "border-neon-blue/60 text-neon-blue"} font-semibold text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:border-neon-blue cursor-pointer">
+                  ${optionsHtml}
+                </select>
+              </td>
               ` : ""}
               ${cols.actions ? `
-                <td class="py-2.5 px-3 align-top text-right whitespace-nowrap">
-                  <div class="inline-flex items-center gap-1">
-                    <button type="button" onclick="openThermalPreview('${s.nota}')" class="p-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/50 text-cyan-300 rounded-lg transition text-xs cursor-pointer" title="Cetak Nota"><i class="fa-solid fa-print"></i></button>
-                    <button type="button" onclick="editService('${s.nota}')" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition text-xs cursor-pointer" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                    <button type="button" onclick="notifyCustomerWhatsApp('${s.nota}')" class="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 rounded-lg transition text-xs cursor-pointer" title="Kirim WA"><i class="fa-brands fa-whatsapp"></i></button>
-                    <button type="button" onclick="deleteService('${s.nota}')" class="p-1.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 rounded-lg transition text-xs cursor-pointer" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                  </div>
-                </td>
+              <td class="py-2.5 px-3 align-top text-right whitespace-nowrap">
+                <div class="inline-flex items-center gap-1">
+                  <button type="button" onclick="openThermalPreview('${s.nota}')" class="p-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/50 text-cyan-300 rounded-lg transition text-xs cursor-pointer" title="Cetak Nota"><i class="fa-solid fa-print"></i></button>
+                  <button type="button" onclick="editService('${s.nota}')" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition text-xs cursor-pointer" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                  <button type="button" onclick="notifyCustomerWhatsApp('${s.nota}')" class="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 rounded-lg transition text-xs cursor-pointer" title="Kirim WA"><i class="fa-brands fa-whatsapp"></i></button>
+                  <button type="button" onclick="deleteService('${s.nota}')" class="p-1.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 rounded-lg transition text-xs cursor-pointer" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
               ` : ""}
             </tr>
           `;
@@ -2169,8 +3006,10 @@
         console.warn("Firestore toggle paid fallback to local cache:", err);
       }
       item.isPaid = isPaidVal;
-      localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
-      notifyBroadcastSync('UPDATE_DATA');
+      try {
+        localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
+      } catch (e) {}
+      notifyBroadcastSync("UPDATE_DATA");
       refreshAllUIComponents();
     }
 
@@ -2524,6 +3363,11 @@
       document.getElementById("newAdminUser").value = currentAdminUsername;
       document.getElementById("newAdminPass").value = "";
       document.getElementById("waTemplateInput").value = appSettings.waTemplate || DEFAULT_WA_TEMPLATE;
+      document.getElementById("shareTemplateInput").value = appSettings.shareTemplate || DEFAULT_SHARE_TEMPLATE;
+      const currentShareMode = appSettings.shareFormatMode || "image";
+      document.querySelectorAll('input[name="shareFormatMode"]').forEach((r) => {
+        r.checked = r.value === currentShareMode;
+      });
       document.getElementById("printShopName").value = appSettings.printShopName || "ROVCELL SMARTPHONE";
       document.getElementById("printShopPhone").value = appSettings.printShopPhone || "WA: 0889-0889-0176";
       document.getElementById("printShopAddress").value = appSettings.printShopAddress || "Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar";
@@ -2543,17 +3387,28 @@
         if (cb) cb.checked = tblCfg.columns[colKey] !== false;
       });
 
+      selectedDraftThemeId = appSettings.websiteTheme || "cyber-cyan";
+      renderWebsiteThemeGrid(selectedDraftThemeId);
+      const activeThemeObj = getThemeById(selectedDraftThemeId);
+      const modalBadge = document.getElementById("modalSelectedThemeBadge");
+      if (modalBadge) modalBadge.innerText = `Aktif: ${activeThemeObj.name}`;
+
       switchMainSettingsSubTab(initialMainSub);
       switchProfileModalTab("account");
       document.getElementById("adminProfileModal").classList.remove("hidden");
     }
 
     function closeAdminProfileModal() {
+      // Kembalikan ke tema tersimpan jika batal saat pratinjau
+      if (appSettings.websiteTheme && selectedDraftThemeId !== appSettings.websiteTheme) {
+        selectedDraftThemeId = appSettings.websiteTheme;
+        applyWebsiteTheme(appSettings.websiteTheme);
+      }
       document.getElementById("adminProfileModal").classList.add("hidden");
     }
 
     function switchMainSettingsSubTab(mainSub) {
-      const groups = ["profile", "table"];
+      const groups = ["profile", "table", "theme"];
       const activeMainClasses = [
         "bg-gradient-to-r",
         "from-cyan-400",
@@ -2574,6 +3429,8 @@
         if (btnEl) {
           btnEl.classList.remove(...activeMainClasses, ...inactiveMainClasses);
           btnEl.classList.add(...inactiveMainClasses);
+          const icon = btnEl.querySelector("i");
+          if (icon) icon.classList.add("text-neon-blue");
         }
       });
 
@@ -2583,6 +3440,12 @@
       if (targetBtn) {
         targetBtn.classList.remove(...inactiveMainClasses);
         targetBtn.classList.add(...activeMainClasses);
+        const icon = targetBtn.querySelector("i");
+        if (icon) icon.classList.remove("text-neon-blue");
+      }
+
+      if (mainSub === "theme") {
+        renderWebsiteThemeGrid(selectedDraftThemeId);
       }
     }
 
@@ -2614,7 +3477,9 @@
       }
 
       appSettings.tableConfig = { viewMode, columns };
-      localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+      try {
+        localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+      } catch (e) {}
 
       try {
         if (window.db && window.setDoc && window.doc) {
@@ -2630,7 +3495,7 @@
     }
 
     function switchProfileModalTab(tabName) {
-      ["account", "wa", "print"].forEach((t) => {
+      ["account", "wa", "share", "print"].forEach((t) => {
         document.getElementById(`profPanel-${t}`).classList.add("hidden");
         const btn = document.getElementById(`profTabBtn-${t}`);
         btn.classList.remove("bg-neon-blue", "text-neon-dark");
@@ -2663,7 +3528,9 @@
         return;
       }
       appSettings.waTemplate = tpl;
-      localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+      try {
+        localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+      } catch (e) {}
       try {
         if (window.db && window.setDoc && window.doc) {
           await window.setDoc(window.doc(window.db, "settings", "appConfig"), { waTemplate: tpl }, { merge: true });
@@ -2677,6 +3544,52 @@
       }
     }
 
+    function insertShareVar(varText) {
+      const textarea = document.getElementById("shareTemplateInput");
+      if (!textarea) return;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+      textarea.value = text.substring(0, start) + varText + text.substring(end);
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + varText.length;
+    }
+
+    function resetDefaultShareTemplate() {
+      const textarea = document.getElementById("shareTemplateInput");
+      if (textarea) textarea.value = DEFAULT_SHARE_TEMPLATE;
+      document.querySelectorAll('input[name="shareFormatMode"]').forEach((r) => {
+        r.checked = r.value === "image";
+      });
+    }
+
+    async function saveShareTemplateSetting() {
+      const tpl = document.getElementById("shareTemplateInput").value.trim();
+      if (!tpl) {
+        showCustomAlert("Template pesan bagikan status tidak boleh kosong!");
+        return;
+      }
+      const selectedShareModeEl = document.querySelector('input[name="shareFormatMode"]:checked');
+      const shareFormatMode = selectedShareModeEl ? selectedShareModeEl.value : "image";
+
+      appSettings.shareTemplate = tpl;
+      appSettings.shareFormatMode = shareFormatMode;
+      try {
+        localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+      } catch (e) {}
+      try {
+        if (window.db && window.setDoc && window.doc) {
+          await window.setDoc(window.doc(window.db, "settings", "appConfig"), { shareTemplate: tpl, shareFormatMode }, { merge: true });
+        }
+        closeAdminProfileModal();
+        showCustomAlert("Template & format bagikan hasil cek status berhasil disimpan!", true);
+      } catch (e) {
+        console.error(e);
+        closeAdminProfileModal();
+        showCustomAlert("Template & format bagikan tersimpan di perangkat lokal.", true);
+      }
+    }
+
     async function savePrintSettings() {
       appSettings.printShopName = document.getElementById("printShopName").value.trim() || "ROVCELL SMARTPHONE";
       appSettings.printShopPhone = document.getElementById("printShopPhone").value.trim() || "WA: 0889-0889-0176";
@@ -2687,7 +3600,9 @@
       appSettings.printShowGaransi = document.getElementById("printShowGaransi").checked;
       appSettings.printShowPin = document.getElementById("printShowPin").checked;
 
-      localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+      try {
+        localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
+      } catch (e) {}
       try {
         if (window.db && window.setDoc && window.doc) {
           await window.setDoc(window.doc(window.db, "settings", "appConfig"), appSettings, { merge: true });
@@ -2708,8 +3623,10 @@
         showCustomAlert("Username dan password tidak boleh kosong!");
         return;
       }
-      localStorage.setItem("rovcell_admin_user", u);
-      localStorage.setItem("rovcell_admin_pass", p);
+      try {
+        localStorage.setItem("rovcell_admin_user", u);
+        localStorage.setItem("rovcell_admin_pass", p);
+      } catch (e) {}
       try {
         if (window.db && window.setDoc && window.doc) {
           const docRef = window.doc(window.db, "settings", "adminCredentials");
@@ -2744,7 +3661,7 @@
           garansiVal += ` (s/d ${exp})`;
         }
         garansiLine = `
-          <div style="display:flex; justify-space-between; margin-top:2px;">
+          <div style="display:flex; justify-content:space-between; margin-top:2px;">
             <span>GARANSI:</span>
             <span>${garansiVal}</span>
           </div>
@@ -2792,17 +3709,17 @@
           <div style="border-bottom:2px dashed #000; padding-bottom:5px; margin-bottom:5px;">
             <div>UNIT HP : ${item.merk}</div>
             <div>KELUHAN : ${item.kerusakan}</div>
-            <div>STATUS  : ${item.status}</div>
-            ${item.keterangan ? `<div>KET     : ${item.keterangan}</div>` : ""}
+            <div>STATUS : ${item.status}</div>
+            ${item.keterangan ? `<div>KET : ${item.keterangan}</div>` : ""}
             ${garansiLine}
           </div>
 
           <div style="border-bottom:2px dashed #000; padding-bottom:6px; margin-bottom:6px;">
             ${cancelled ? "" : `
-            <div style="display:flex; justify-content:space-between; font-size:15px;">
-              <span>TOTAL BIAYA:</span>
-              <span>${costText}</span>
-            </div>
+              <div style="display:flex; justify-content:space-between; font-size:15px;">
+                <span>TOTAL BIAYA:</span>
+                <span>${costText}</span>
+              </div>
             `}
             <div style="display:flex; justify-content:space-between; margin-top:2px;">
               <span>STATUS BAYAR:</span>
@@ -2903,7 +3820,7 @@
         return `
           <div class="py-4 px-4 bg-red-500/10 rounded-2xl border border-red-500/30 my-2 text-center space-y-2">
             <div class="w-12 h-12 bg-red-500/20 border border-red-500/40 rounded-full flex items-center justify-center mx-auto text-red-400 text-xl">
-              <i class="fa-solid fa-ban"></i>
+              <i class="fa-solid fa-ban animate-pulse"></i>
             </div>
             <div class="font-orbitron font-bold text-red-400 text-base">Service Dibatalkan</div>
             <p class="text-[11px] text-slate-400">Proses perbaikan untuk unit ini telah dibatalkan.</p>
@@ -2912,10 +3829,10 @@
       }
 
       const steps = [
-        { name: "Menunggu Pengecekan", label: "Pengecekan", icon: "fa-clipboard-question" },
-        { name: "Sedang Dikerjakan", label: "Perbaikan", icon: "fa-screwdriver-wrench" },
-        { name: "Selesai", label: "Selesai", icon: "fa-circle-check" },
-        { name: "Diambil", label: "Diambil", icon: "fa-bag-shopping" }
+        { name: "Menunggu Pengecekan", label: "Pengecekan", icon: "fa-clipboard-question", animClass: "animate-progress-float" },
+        { name: "Sedang Dikerjakan", label: "Perbaikan", icon: "fa-screwdriver-wrench", animClass: "animate-wrench-swing" },
+        { name: "Selesai", label: "Selesai", icon: "fa-circle-check", animClass: "animate-progress-float" },
+        { name: "Diambil", label: "Diambil", icon: "fa-bag-shopping", animClass: "animate-progress-float" }
       ];
 
       let activeIdx = 0;
@@ -2924,25 +3841,34 @@
       else if (currentStatus === "Selesai") activeIdx = 2;
       else if (currentStatus === "Diambil") activeIdx = 3;
 
+      const progressPercent = (activeIdx / (steps.length - 1)) * 100;
+
       let html = '<div class="py-4 px-2 bg-neon-dark/60 rounded-2xl border border-neon-border/60 my-2"><div class="flex items-center justify-between relative max-w-md mx-auto px-4">';
-      html += '<div class="absolute left-10 right-10 top-5 h-1 bg-slate-800 -z-0"></div>';
+      html += '<div class="absolute left-10 right-10 top-5 h-1.5 bg-slate-800 rounded-full -z-0 overflow-hidden">';
+      html += `<div class="h-full animate-progress-line rounded-full transition-all duration-500 shadow-[0_0_12px_rgba(0,243,255,0.75)]" style="width: ${progressPercent}%;"></div>`;
+      html += "</div>";
 
       steps.forEach((step, idx) => {
         const isCompleted = idx <= activeIdx;
         const isCurrent = idx === activeIdx;
         const circleStyle = isCompleted
-          ? "bg-neon-blue text-neon-dark border-neon-blue shadow-[0_0_12px_rgba(0,243,255,0.45)]"
+          ? "bg-neon-blue text-neon-dark border-neon-blue shadow-[0_0_14px_rgba(0,243,255,0.55)]"
           : "bg-slate-900 text-slate-500 border-slate-700";
         const labelStyle = isCurrent
           ? "text-neon-blue font-bold"
           : isCompleted
           ? "text-slate-200 font-medium"
           : "text-slate-500";
+        const pingRingHtml = isCurrent
+          ? '<span class="absolute inset-0 rounded-full bg-neon-blue/55 animate-ping pointer-events-none"></span>'
+          : "";
+        const iconAnimClass = isCurrent ? step.animClass : "";
 
         html += `
           <div class="relative z-10 flex flex-col items-center text-center gap-1.5 w-16">
-            <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center text-sm transition-all ${circleStyle}">
-              <i class="fa-solid ${step.icon}"></i>
+            <div class="relative w-10 h-10 rounded-full border-2 flex items-center justify-center text-sm transition-all ${circleStyle}">
+              ${pingRingHtml}
+              <i class="fa-solid ${step.icon} relative z-10 ${iconAnimClass}"></i>
             </div>
             <span class="text-[10px] leading-tight ${labelStyle}">${step.label}</span>
           </div>
@@ -2958,194 +3884,440 @@
       if (!container) return;
       requestAnimationFrame(() => {
         const headerEl = document.querySelector("header");
-        const headerOffset = headerEl ? headerEl.offsetHeight + 16 : 160;
+        const headerOffset = headerEl ? headerEl.offsetHeight + 12 : 96;
         const elementTop = container.getBoundingClientRect().top + window.pageYOffset;
-        const targetPosition = Math.max(0, elementTop - headerOffset);
+        const targetScrollTop = Math.max(0, elementTop - headerOffset);
         window.scrollTo({
-          top: targetPosition,
+          top: targetScrollTop,
           behavior: "smooth"
         });
       });
     }
 
     function searchService(shouldScroll = true) {
-      const rawInput = document.getElementById("searchNotaInput").value.trim().toUpperCase();
-      const pinInput = document.getElementById("searchPhonePin").value.trim().replace(/[^0-9]/g, "");
+      const rawNota = document.getElementById("searchNotaInput").value.trim().replace(/[^0-9]/g, "");
+      const pinVal = document.getElementById("searchPhonePin").value.trim().replace(/[^0-9]/g, "");
       const container = document.getElementById("searchResultContainer");
       container.classList.remove("hidden");
 
-      if (!rawInput) {
-        container.innerHTML = `<div class="bg-neon-card p-6 rounded-2xl border border-red-500/30 text-center space-y-2"><i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i><h3 class="font-orbitron font-bold text-white">Masukkan Nomor Nota</h3><p class="text-[11px] text-slate-400">Kolom nomor nota wajib diisi.</p></div>`;
+      if (!rawNota) {
+        container.innerHTML = `<div class="bg-red-500/10 border border-red-500/30 p-4 rounded-xl text-center text-red-400 text-sm">Mohon masukkan nomor nota service Anda!</div>`;
+        if (shouldScroll) scrollToSearchResult();
         return;
       }
 
-      if (!pinInput || pinInput.length !== 3) {
-        container.innerHTML = `<div class="bg-neon-card p-6 rounded-2xl border border-red-500/30 text-center space-y-2"><i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i><h3 class="font-orbitron font-bold text-white">Masukkan 3 Digit Akhir No. HP</h3><p class="text-[11px] text-slate-400">Demi keamanan, masukkan 3 digit terakhir nomor WhatsApp pelanggan yang terdaftar.</p></div>`;
+      if (!pinVal || pinVal.length < 3) {
+        container.innerHTML = `<div class="bg-red-500/10 border border-red-500/30 p-4 rounded-xl text-center text-red-400 text-sm">Mohon masukkan 3 digit terakhir nomor WhatsApp Anda untuk verifikasi keamanan!</div>`;
+        if (shouldScroll) scrollToSearchResult();
         return;
       }
 
-      const query = rawInput.startsWith("ROV-") ? rawInput : "ROV-" + rawInput.padStart(4, "0");
-      const item = serviceList.find((s) => s.nota === query);
+      const paddedNota = "ROV-" + rawNota.padStart(4, "0");
+      const found = serviceList.find((s) => s.nota && s.nota.toUpperCase() === paddedNota);
 
-      if (!item) {
-        container.innerHTML = `<div class="bg-neon-card p-6 rounded-2xl border border-red-500/30 text-center space-y-2"><i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i><h3 class="font-orbitron font-bold text-white">Nota Tidak Ditemukan</h3><p class="text-[11px] text-slate-400">Pastikan nomor nota benar.</p></div>`;
+      if (!found) {
+        container.innerHTML = `<div class="bg-red-500/10 border border-red-500/30 p-6 rounded-2xl text-center text-red-400 space-y-2"><i class="fa-solid fa-circle-exclamation text-2xl"></i><p class="font-semibold">Nomor Nota "${paddedNota}" tidak ditemukan.</p><p class="text-xs text-slate-400">Pastikan nomor nota yang Anda masukkan sudah benar atau gunakan tombol "Lupa Nota Saya".</p></div>`;
+        if (shouldScroll) scrollToSearchResult();
         return;
       }
 
+      const cleanPhone = (found.phone || "").replace(/[^0-9]/g, "");
+      if (!cleanPhone.endsWith(pinVal)) {
+        container.innerHTML = `<div class="bg-red-500/10 border border-red-500/30 p-6 rounded-2xl text-center text-red-400 space-y-2"><i class="fa-solid fa-lock text-2xl"></i><p class="font-semibold">Verifikasi PIN Gagal!</p><p class="text-xs text-slate-400">3 digit terakhir nomor HP yang Anda masukkan tidak cocok dengan data nota ${paddedNota}.</p></div>`;
+        if (shouldScroll) scrollToSearchResult();
+        return;
+      }
+
+      saveRecentSearch(rawNota.padStart(4, "0"), pinVal, found.merk);
+
+      const cancelled = isStatusCancelled(found.status);
+      const checking = isStatusChecking(found.status);
+      const badgeColor = cancelled
+        ? "text-red-400 bg-red-500/10 border-red-500/30"
+        : found.status === "Selesai" || found.status === "Diambil"
+        ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/30"
+        : found.status === "Menunggu Sparepart"
+        ? "text-amber-400 bg-amber-500/10 border-amber-500/30"
+        : "text-neon-blue bg-cyan-500/10 border-cyan-500/30";
+
+      const paymentBadge = cancelled
+        ? ""
+        : checking
+        ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-yellow-500/10 border border-yellow-500/30 text-yellow-400"><i class="fa-solid fa-clipboard-question mr-1"></i>MENUNGGU PENGECEKAN</span>`
+        : found.isPaid
+        ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 border border-emerald-500/30 text-emerald-400"><i class="fa-solid fa-circle-check mr-1"></i>LUNAS</span>`
+        : `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-500/10 border border-red-500/30 text-red-400"><i class="fa-solid fa-clock mr-1"></i>BELUM LUNAS</span>`;
+
+      let garansiDisplay = "-";
+      let klaimGaransiButtonHtml = "";
+      if (!cancelled) {
+        if (found.status === "Diambil" && found.garansi && found.garansi !== "Tidak ada" && found.diambilDate) {
+          const expiry = calculateGaransiExpiry(found.diambilDate, found.garansi);
+          const active = isGaransiActive(found.diambilDate, found.garansi);
+          if (active) {
+            garansiDisplay = `${found.garansi} (Aktif s/d ${expiry})`;
+            const waText = `Halo Admin Rovcell Smartphone, saya ingin mengajukan Klaim Garansi untuk unit HP *${found.merk}* dengan Nomor Nota *${found.nota}* atas nama *${found.nama}*. Kendala saat ini: `;
+            klaimGaransiButtonHtml = `
+              <a href="https://wa.me/6288908890176?text=${encodeURIComponent(waText)}" target="_blank" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3 rounded-xl transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 text-sm mt-2">
+                <i class="fa-solid fa-shield-halved text-base"></i> Ajukan Klaim Garansi via WhatsApp
+              </a>
+            `;
+          } else {
+            garansiDisplay = `${found.garansi} (Sudah Habis pada ${expiry})`;
+          }
+        } else if (found.garansi && found.garansi !== "Tidak ada") {
+          garansiDisplay = `${found.garansi} (Berlaku setelah diambil)`;
+        }
+      }
+
+      const qrisButtonHtml = !cancelled && !checking && !found.isPaid && parseFormattedNumber(found.biaya) > 0
+        ? `
+        <button type="button" onclick="openQrisModal('${found.nota}')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 text-sm mt-3 cursor-pointer">
+          <i class="fa-solid fa-qrcode text-base"></i> Bayar Sekarang via QRIS
+        </button>
+      `
+        : "";
+
+      const shareStatusButtonHtml = `
+        <button type="button" onclick="shareServiceStatus('${found.nota}')" class="w-full bg-neon-blue/15 hover:bg-neon-blue/25 border border-neon-blue/50 text-neon-blue font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-xs mt-2.5 cursor-pointer">
+          <i class="fa-solid fa-share-nodes text-sm"></i> Bagikan Hasil Status
+        </button>
+      `;
+
+      const tanggalKeluarRow = found.keluarDate
+        ? `<div class="flex justify-between"><span class="text-slate-400">Tanggal Keluar:</span><span class="font-medium text-emerald-400">${formatDateDDMMYYYY(found.keluarDate)}</span></div>`
+        : "";
+
+      const costDisplayVal = checking || found.biaya === "-" ? "-" : `Rp ${parseFormattedNumber(found.biaya).toLocaleString("id-ID")}`;
+      const costRowHtml = cancelled
+        ? ""
+        : `<div class="flex justify-between items-center pt-2 border-t border-slate-800"><span class="text-slate-400">Estimasi / Total Biaya:</span><span class="font-orbitron font-bold text-neon-blue text-base">${costDisplayVal}</span></div>`;
+
+      const garansiRowHtml = cancelled
+        ? ""
+        : `<div class="flex justify-between items-center"><span class="text-slate-400">Masa Garansi:</span><span class="font-semibold text-cyan-400 text-xs">${garansiDisplay}</span></div>`;
+
+      container.innerHTML = `
+        <div class="bg-neon-card p-6 rounded-2xl neon-glow border border-neon-border space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div>
+              <span class="text-xs text-slate-400 block">Nomor Nota</span>
+              <span class="font-orbitron font-bold text-neon-blue text-lg">${found.nota}</span>
+            </div>
+            <div class="flex flex-col items-end gap-1">
+              <span class="px-3 py-1 rounded-full text-xs font-bold border ${badgeColor}">${found.status}</span>
+              ${paymentBadge}
+            </div>
+          </div>
+
+          ${getProgressBarHtml(found.status)}
+
+          <div class="space-y-2.5 text-sm">
+            <div class="flex justify-between"><span class="text-slate-400">Nama Pelanggan:</span><span class="font-medium text-white">${found.nama}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Tanggal Masuk:</span><span class="font-medium text-slate-300">${formatDateDDMMYYYY(found.date)}</span></div>
+            ${tanggalKeluarRow}
+            <div class="flex justify-between"><span class="text-slate-400">Unit HP:</span><span class="font-medium text-white">${found.merk}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Kerusakan:</span><span class="font-medium text-white">${found.kerusakan}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Keterangan:</span><span class="font-medium text-slate-300 text-right max-w-xs">${found.keterangan || "-"}</span></div>
+            ${garansiRowHtml}
+            ${costRowHtml}
+          </div>
+          ${qrisButtonHtml}
+          ${klaimGaransiButtonHtml}
+          ${shareStatusButtonHtml}
+        </div>
+      `;
+
+      if (shouldScroll) {
+        scrollToSearchResult();
+      }
+    }
+
+    function buildFormattedShareMessage(item) {
       const cleanPhone = (item.phone || "").replace(/[^0-9]/g, "");
-      const last3Digits = cleanPhone.slice(-3);
+      const pin3 = cleanPhone.slice(-3) || "-";
+      const cancelled = isStatusCancelled(item.status);
+      const checking = isStatusChecking(item.status);
+      const paymentStr = cancelled
+        ? "DIBATALKAN"
+        : checking
+        ? "MENUNGGU PENGECEKAN"
+        : item.isPaid
+        ? "LUNAS"
+        : "BELUM LUNAS";
+      const costStr = cancelled
+        ? "-"
+        : checking || item.biaya === "-"
+        ? "-"
+        : `Rp ${parseFormattedNumber(item.biaya).toLocaleString("id-ID")}`;
 
-      if (last3Digits !== pinInput) {
-        container.innerHTML = `<div class="bg-neon-card p-6 rounded-2xl border border-red-500/30 text-center space-y-2"><i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i><h3 class="font-orbitron font-bold text-white">Verifikasi Gagal</h3><p class="text-[11px] text-slate-400">3 digit akhir nomor HP yang Anda masukkan tidak sesuai dengan data nota ${item.nota}.</p></div>`;
-        return;
+      let garansiStr = "-";
+      if (!cancelled) {
+        if (item.status === "Diambil" && item.garansi && item.garansi !== "Tidak ada" && item.diambilDate) {
+          const expiry = calculateGaransiExpiry(item.diambilDate, item.garansi);
+          const active = isGaransiActive(item.diambilDate, item.garansi);
+          garansiStr = active ? `${item.garansi} (Aktif s/d ${expiry})` : `${item.garansi} (Habis pada ${expiry})`;
+        } else if (item.garansi && item.garansi !== "Tidak ada") {
+          garansiStr = `${item.garansi} (Berlaku setelah diambil)`;
+        }
       }
 
-      saveRecentSearch(item.nota, pinInput, item.nama, item.merk);
+      const tpl = appSettings.shareTemplate || DEFAULT_SHARE_TEMPLATE;
+      return tpl
+        .replace(/{nama}/g, item.nama || "-")
+        .replace(/{nota}/g, item.nota || "-")
+        .replace(/{pin}/g, pin3)
+        .replace(/{tanggal_masuk}/g, formatDateDDMMYYYY(item.date))
+        .replace(/{tanggal_keluar}/g, formatDateDDMMYYYY(item.keluarDate))
+        .replace(/{merk}/g, item.merk || "-")
+        .replace(/{kerusakan}/g, item.kerusakan || "-")
+        .replace(/{status}/g, item.status || "-")
+        .replace(/{keterangan}/g, item.keterangan || "-")
+        .replace(/{pembayaran}/g, paymentStr)
+        .replace(/{biaya}/g, costStr)
+        .replace(/{garansi}/g, garansiStr);
+    }
+
+    function drawCanvasRoundedRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function wrapCanvasLines(ctx, text, maxWidth) {
+      const words = String(text || "-").split(/\s+/);
+      const lines = [];
+      let current = "";
+      words.forEach((word) => {
+        const test = current ? `${current} ${word}` : word;
+        if (ctx.measureText(test).width <= maxWidth) {
+          current = test;
+        } else {
+          if (current) lines.push(current);
+          current = word;
+        }
+      });
+      if (current) lines.push(current);
+      return lines.length > 0 ? lines : ["-"];
+    }
+
+    async function generateStatusCardImageFile(item) {
+      const activeTheme = getThemeById(appSettings.websiteTheme || "cyber-cyan");
+      const width = 800;
+      const height = 1040;
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+
+      const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+      bgGrad.addColorStop(0, activeTheme.mode === "light" ? "#0f172a" : activeTheme.bg);
+      bgGrad.addColorStop(0.5, activeTheme.mode === "light" ? "#1e293b" : activeTheme.card);
+      bgGrad.addColorStop(1, activeTheme.mode === "light" ? "#0f172a" : activeTheme.cardAlt);
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.strokeStyle = `rgba(${activeTheme.accentRgb}, 0.08)`;
+      ctx.lineWidth = 1;
+      for (let gx = 40; gx < width; gx += 40) {
+        ctx.beginPath();
+        ctx.moveTo(gx, 0);
+        ctx.lineTo(gx, height);
+        ctx.stroke();
+      }
+      for (let gy = 40; gy < height; gy += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, gy);
+        ctx.lineTo(width, gy);
+        ctx.stroke();
+      }
+
+      drawCanvasRoundedRect(ctx, 36, 36, width - 72, height - 72, 28);
+      ctx.fillStyle = "rgba(10, 25, 47, 0.94)";
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = activeTheme.accent;
+      ctx.stroke();
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 40px 'Orbitron', sans-serif";
+      ctx.fillText("ROVCELL", width / 2, 108);
+
+      ctx.fillStyle = activeTheme.accent;
+      ctx.font = "700 17px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText("SMARTPHONE SERVICE CENTER", width / 2, 138);
+
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "500 14px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText("Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar • WA: 0889-0889-0176", width / 2, 164);
+
+      ctx.beginPath();
+      ctx.moveTo(72, 190);
+      ctx.lineTo(width - 72, 190);
+      ctx.strokeStyle = `rgba(${activeTheme.accentRgb}, 0.28)`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
 
       const cancelled = isStatusCancelled(item.status);
       const checking = isStatusChecking(item.status);
 
-      let statusColor = "text-yellow-400 border-yellow-500/30 bg-yellow-500/10";
-      if (item.status === "Selesai") statusColor = "text-emerald-400 border-emerald-500/30 bg-emerald-500/10";
-      if (item.status === "Diambil") statusColor = "text-blue-400 border-blue-500/30 bg-blue-500/10";
-      if (cancelled) statusColor = "text-red-400 border-red-500/30 bg-red-500/10";
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "600 15px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText("NOMOR NOTA SERVICE", 72, 228);
 
-      const paymentBadge = cancelled || checking
-        ? ""
-        : item.isPaid
-        ? `<span class="px-3 py-1 rounded-full text-xs border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>LUNAS</span>`
-        : `<span class="px-3 py-1 rounded-full text-xs border border-red-500/30 bg-red-500/10 text-red-400 font-bold"><i class="fa-solid fa-clock mr-1"></i>BELUM LUNAS</span>`;
+      ctx.fillStyle = activeTheme.accent;
+      ctx.font = "800 32px 'Orbitron', sans-serif";
+      ctx.fillText(item.nota || "-", 72, 266);
 
-      let qrisButtonHtml = "";
-      if (!cancelled && !checking && !item.isPaid && item.biaya !== "-") {
-        qrisButtonHtml = `
-          <button type="button" onclick="openQrisModal('${item.nota}')" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer">
-            <i class="fa-solid fa-qrcode text-base"></i> Bayar dengan QRIS
-          </button>
-        `;
-      }
+      const statusText = (item.status || "-").toUpperCase();
+      ctx.font = "800 15px 'Plus Jakarta Sans', sans-serif";
+      const badgeW = Math.min(340, ctx.measureText(statusText).width + 36);
+      const badgeX = width - 72 - badgeW;
+      drawCanvasRoundedRect(ctx, badgeX, 214, badgeW, 38, 19);
+      ctx.fillStyle = cancelled ? "rgba(239, 68, 68, 0.18)" : `rgba(${activeTheme.accentRgb}, 0.18)`;
+      ctx.fill();
+      ctx.strokeStyle = cancelled ? "#ef4444" : activeTheme.accent;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.textAlign = "center";
+      ctx.fillStyle = cancelled ? "#f87171" : activeTheme.accent;
+      ctx.fillText(statusText, badgeX + badgeW / 2, 238);
 
-      let garansiHtml = "";
-      let klaimGaransiBtn = "";
-      if (!cancelled && item.status === "Diambil" && item.garansi && item.garansi !== "Tidak ada") {
-        const expiryStr = calculateGaransiExpiry(item.diambilDate, item.garansi);
-        const active = isGaransiActive(item.diambilDate, item.garansi);
+      const payText = cancelled ? "DIBATALKAN" : checking ? "MENUNGGU CEK" : item.isPaid ? "SUDAH LUNAS" : "BELUM LUNAS";
+      const payW = ctx.measureText(payText).width + 28;
+      const payX = width - 72 - payW;
+      drawCanvasRoundedRect(ctx, payX, 260, payW, 28, 14);
+      ctx.fillStyle = item.isPaid && !cancelled ? "rgba(16, 185, 129, 0.2)" : "rgba(245, 158, 11, 0.16)";
+      ctx.fill();
+      ctx.fillStyle = item.isPaid && !cancelled ? "#34d399" : "#fbbf24";
+      ctx.font = "700 13px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText(payText, payX + payW / 2, 279);
 
-        garansiHtml = `
-          <div class="p-3 bg-neon-dark rounded-xl border border-neon-blue/30 space-y-1 text-xs">
-            <div class="flex items-center justify-between">
-              <span class="text-slate-400"><i class="fa-solid fa-shield-halved text-neon-blue mr-2"></i>Garansi (${item.garansi}):</span>
-              <span class="font-bold text-neon-blue">Aktif s/d ${expiryStr || "-"}</span>
-            </div>
-          </div>
-        `;
-
-        if (active) {
-          klaimGaransiBtn = `
-            <button type="button" onclick="claimGaransi('${item.nota}')" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer">
-              <i class="fa-solid fa-shield-check text-base"></i> Klaim Garansi Service
-            </button>
-          `;
+      let garansiText = "-";
+      if (!cancelled) {
+        if (item.status === "Diambil" && item.garansi && item.garansi !== "Tidak ada" && item.diambilDate) {
+          const exp = calculateGaransiExpiry(item.diambilDate, item.garansi);
+          garansiText = `${item.garansi} (s/d ${exp})`;
+        } else if (item.garansi && item.garansi !== "Tidak ada") {
+          garansiText = `${item.garansi} (Setelah diambil)`;
         }
       }
 
-      const progressBar = getProgressBarHtml(item.status);
-      const displayCostText = checking || item.biaya === "-" ? "-" : `Rp ${parseFormattedNumber(item.biaya).toLocaleString("id-ID")}`;
-      const totalCostSection = cancelled
-        ? ""
-        : `<div class="flex justify-between items-center pt-2 border-t border-slate-800">
-            <div>
-              <span class="text-[11px] text-slate-400 block">Total Biaya:</span>
-              ${checking ? `<span class="text-[10px] text-yellow-300/90">Menunggu hasil pengecekan unit</span>` : ""}
-            </div>
-            <span class="font-orbitron font-bold text-white text-base">${displayCostText}</span>
-          </div>`;
+      const rows = [
+        { label: "Nama Pelanggan", value: item.nama || "-" },
+        { label: "Tanggal Masuk", value: formatDateDDMMYYYY(item.date) },
+        ...(item.keluarDate ? [{ label: "Tanggal Keluar", value: formatDateDDMMYYYY(item.keluarDate) }] : []),
+        { label: "Unit / Tipe HP", value: item.merk || "-" },
+        { label: "Kerusakan", value: item.kerusakan || "-" },
+        { label: "Keterangan", value: item.keterangan || "-" },
+        ...(!cancelled ? [{ label: "Masa Garansi", value: garansiText }] : [])
+      ];
 
-      container.innerHTML = `
-        <div class="bg-neon-card p-6 rounded-2xl neon-glow border border-neon-border space-y-4">
-          <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-800 pb-4">
-            <span class="font-orbitron font-bold text-neon-blue text-lg">${item.nota}</span>
-            <div class="flex flex-wrap items-center gap-2">
-              ${paymentBadge}
-              <span class="px-3 py-1 rounded-full text-xs border ${statusColor}">${item.status}</span>
-            </div>
-          </div>
-          ${progressBar}
-          <div class="grid grid-cols-2 gap-4 text-xs">
-            <div><span class="text-slate-500 block">Nama Pelanggan</span><span class="font-medium text-white text-sm">${item.nama}</span></div>
-            <div><span class="text-slate-500 block">Tanggal Masuk</span><span class="font-medium text-white text-sm">${formatDateDDMMYYYY(item.date)}</span></div>
-            ${item.keluarDate ? `<div><span class="text-slate-500 block">Tanggal Keluar</span><span class="font-medium text-white text-sm">${formatDateDDMMYYYY(item.keluarDate)}</span></div>` : ""}
-            <div><span class="text-slate-500 block">Merk / Tipe HP</span><span class="font-medium text-white text-sm">${item.merk}</span></div>
-            <div><span class="text-slate-500 block">Kerusakan</span><span class="font-medium text-white text-sm">${item.kerusakan}</span></div>
-          </div>
-          <div class="p-3 bg-neon-dark rounded-xl border border-slate-800 text-xs space-y-1"><span class="text-slate-500 block">Keterangan Perbaikan:</span><p class="text-slate-300">${item.keterangan || "Belum ada keterangan."}</p></div>
-          ${garansiHtml}
-          ${totalCostSection}
-          ${qrisButtonHtml}
-          ${klaimGaransiBtn}
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-            <button type="button" onclick="shareServiceStatus('${item.nota}')" class="w-full bg-neon-blue/15 hover:bg-neon-blue hover:text-neon-dark border border-neon-blue text-neon-blue font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-md shadow-cyan-500/10 cursor-pointer">
-              <i class="fa-solid fa-share-nodes text-sm"></i> Bagikan Hasil Status
-            </button>
-            <button type="button" onclick="contactAdminWhatsApp('${item.nota}')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2 cursor-pointer">
-              <i class="fa-brands fa-whatsapp text-base"></i> Hubungi Admin via WA
-            </button>
-          </div>
-        </div>
-      `;
+      let curY = 325;
+      rows.forEach((row, index) => {
+        ctx.font = "600 18px 'Plus Jakarta Sans', sans-serif";
+        const valLines = wrapCanvasLines(ctx, row.value, 390);
+        const rowH = Math.max(54, valLines.length * 25 + 28);
 
-      if (shouldScroll) scrollToSearchResult();
+        drawCanvasRoundedRect(ctx, 68, curY, width - 136, rowH, 14);
+        ctx.fillStyle = index % 2 === 0 ? "rgba(15, 35, 65, 0.72)" : "rgba(7, 19, 36, 0.85)";
+        ctx.fill();
+
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "500 17px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText(row.label, 90, curY + 33);
+
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#f8fafc";
+        ctx.font = "700 18px 'Plus Jakarta Sans', sans-serif";
+        valLines.forEach((line, lIdx) => {
+          ctx.fillText(line, width - 90, curY + 33 + lIdx * 25);
+        });
+
+        curY += rowH + 10;
+      });
+
+      if (!cancelled) {
+        const costStr = checking || item.biaya === "-" ? "-" : `Rp ${parseFormattedNumber(item.biaya).toLocaleString("id-ID")}`;
+        drawCanvasRoundedRect(ctx, 68, curY + 6, width - 136, 76, 18);
+        ctx.fillStyle = `rgba(${activeTheme.accentRgb}, 0.14)`;
+        ctx.fill();
+        ctx.strokeStyle = `rgba(${activeTheme.accentRgb}, 0.5)`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#cbd5e1";
+        ctx.font = "700 18px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("TOTAL BIAYA SERVICE", 92, curY + 50);
+
+        ctx.textAlign = "right";
+        ctx.fillStyle = activeTheme.accent;
+        ctx.font = "800 28px 'Orbitron', sans-serif";
+        ctx.fillText(costStr, width - 92, curY + 53);
+      }
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#64748b";
+      ctx.font = "600 14px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText("Cek status perbaikan secara real-time di: https://rovcell.online", width / 2, height - 64);
+
+      return new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            resolve({ file: null, dataUrl: canvas.toDataURL("image/png") });
+            return;
+          }
+          const fileName = `Status-Service-${item.nota || "ROVCELL"}.png`;
+          const file = new File([blob], fileName, { type: "image/png" });
+          resolve({ file, dataUrl: canvas.toDataURL("image/png"), fileName });
+        }, "image/png");
+      });
     }
 
     async function shareServiceStatus(nota) {
       const item = serviceList.find((s) => s.nota === nota);
       if (!item) return;
 
-      const cancelled = isStatusCancelled(item.status);
-      const checking = isStatusChecking(item.status);
-      const paidStatusText = item.isPaid ? "LUNAS" : "BELUM LUNAS";
-      const costFormatted = checking || item.biaya === "-" ? "-" : `Rp ${parseFormattedNumber(item.biaya).toLocaleString("id-ID")}`;
+      const shareText = buildFormattedShareMessage(item);
+      const mode = appSettings.shareFormatMode || "image";
 
-      const lines = [
-        "*STATUS SERVICE HP - ROVCELL SMARTPHONE*",
-        `No. Nota : *${item.nota}*`,
-        `Nama Pelanggan : ${item.nama}`,
-        `Tanggal Masuk : ${formatDateDDMMYYYY(item.date)}`,
-        `Unit HP : ${item.merk}`,
-        `Kerusakan : ${item.kerusakan}`,
-        `Status Pengerjaan : *${item.status}*`
-      ];
+      if (mode === "image") {
+        const { file, dataUrl, fileName } = await generateStatusCardImageFile(item);
 
-      if (item.keterangan) {
-        lines.push(`Keterangan : ${item.keterangan}`);
-      }
-
-      if (!cancelled) {
-        if (!checking) {
-          lines.push(`Status Pembayaran : *${paidStatusText}*`);
+        if (navigator.share && file && navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              title: `Status Service ${item.nota} - Rovcell Smartphone`,
+              text: shareText,
+              files: [file]
+            });
+            return;
+          } catch (err) {
+            if (err && err.name === "AbortError") return;
+          }
         }
-        lines.push(`Total Biaya : *${costFormatted}*`);
+
+        openShareFallbackModal(item, shareText, dataUrl, fileName);
+        return;
       }
-
-      if (!cancelled && item.status === "Diambil" && item.garansi && item.garansi !== "Tidak ada") {
-        const expiryStr = calculateGaransiExpiry(item.diambilDate, item.garansi);
-        const active = isGaransiActive(item.diambilDate, item.garansi);
-        if (active) {
-          lines.push(`Garansi : ${item.garansi} (Aktif s/d ${expiryStr || "-"})`);
-        }
-      }
-
-      lines.push("Cek status online: https://rovcell.online");
-
-      const shareText = lines.join("\n");
-      const shareTitle = `Status Service ${item.nota} - Rovcell Smartphone`;
 
       if (navigator.share) {
         try {
           await navigator.share({
-            title: shareTitle,
-            text: shareText,
-            url: "https://rovcell.online"
+            title: `Status Service ${item.nota} - Rovcell Smartphone`,
+            text: shareText
           });
           return;
         } catch (err) {
@@ -3153,35 +4325,54 @@
         }
       }
 
-      let copied = false;
+      openShareFallbackModal(item, shareText, null, null);
+    }
+
+    function openShareFallbackModal(item, shareText, imageDataUrl, imageFileName) {
       try {
-        const tempTextarea = document.createElement("textarea");
-        tempTextarea.value = shareText;
-        tempTextarea.setAttribute("readonly", "");
-        tempTextarea.style.position = "fixed";
-        tempTextarea.style.opacity = "0";
-        document.body.appendChild(tempTextarea);
-        tempTextarea.select();
-        tempTextarea.setSelectionRange(0, shareText.length);
-        copied = document.execCommand("copy");
-        document.body.removeChild(tempTextarea);
+        const tempInput = document.createElement("textarea");
+        tempInput.value = shareText;
+        tempInput.setAttribute("readonly", "");
+        tempInput.style.position = "fixed";
+        tempInput.style.opacity = "0";
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        tempInput.setSelectionRange(0, shareText.length);
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
       } catch (e) {
-        console.error("Fallback copy error:", e);
+        console.error("Clipboard copy fallback error:", e);
       }
 
+      const imagePreviewSection = imageDataUrl
+        ? `
+          <div class="space-y-2">
+            <div class="rounded-xl overflow-hidden border border-cyan-500/40 bg-slate-950 flex justify-center">
+              <img src="${imageDataUrl}" alt="Kartu Status ${item.nota}" class="max-h-60 w-auto object-contain">
+            </div>
+            <a href="${imageDataUrl}" download="${imageFileName || "Status-Service.png"}" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-md">
+              <i class="fa-solid fa-download text-sm"></i> Download Gambar Kartu Status
+            </a>
+          </div>
+        `
+        : "";
+
       const shareModal = document.createElement("div");
-      shareModal.className = "fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4";
+      shareModal.className = "fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto";
       shareModal.innerHTML = `
-        <div class="bg-neon-card p-6 rounded-2xl border border-neon-blue/50 neon-glow max-w-sm w-full space-y-4">
+        <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow max-w-sm w-full space-y-4 my-6">
           <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-            <h3 class="font-orbitron font-bold text-white text-sm"><i class="fa-solid fa-share-nodes mr-2 text-neon-blue"></i>Bagikan Status Service</h3>
+            <h3 class="font-orbitron font-bold text-white text-sm"><i class="fa-solid fa-share-nodes mr-2 text-neon-blue"></i>Bagikan Hasil Status</h3>
             <button type="button" onclick="this.closest('.fixed').remove()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
           </div>
-          ${copied ? `<div class="p-2.5 bg-emerald-500/15 border border-emerald-500/40 rounded-xl text-[11px] text-emerald-300 text-center font-semibold"><i class="fa-solid fa-circle-check mr-1"></i>Ringkasan status berhasil disalin ke clipboard!</div>` : ""}
-          <pre class="bg-neon-dark p-3 rounded-xl border border-slate-800 text-[11px] text-slate-300 whitespace-pre-wrap font-sans leading-relaxed max-h-48 overflow-y-auto">${shareText}</pre>
-          <div class="grid grid-cols-2 gap-2 pt-1">
-            <button type="button" id="btnShareWaFallback" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
-              <i class="fa-brands fa-whatsapp text-sm"></i> Kirim ke WA
+          ${imagePreviewSection}
+          <div class="p-2.5 bg-emerald-500/15 border border-emerald-500/40 rounded-xl text-[11px] text-emerald-300 text-center font-semibold">
+            <i class="fa-solid fa-circle-check mr-1"></i>Teks ringkasan telah disalin ke clipboard!
+          </div>
+          <pre class="bg-neon-dark p-3 rounded-xl border border-slate-800 text-[11px] text-slate-300 whitespace-pre-wrap font-sans leading-relaxed max-h-40 overflow-y-auto">${shareText}</pre>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="btnShareWaDirect" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+              <i class="fa-brands fa-whatsapp text-sm"></i> Kirim WA
             </button>
             <button type="button" onclick="this.closest('.fixed').remove()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
               Tutup
@@ -3190,154 +4381,18 @@
         </div>
       `;
       document.body.appendChild(shareModal);
-      shareModal.querySelector("#btnShareWaFallback").onclick = () => {
+      shareModal.querySelector("#btnShareWaDirect").onclick = () => {
         window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
         shareModal.remove();
       };
     }
 
-    function claimGaransi(nota) {
-      const item = serviceList.find((s) => s.nota === nota);
-      if (!item) return;
-      const text = `Halo Admin Rovcell Smartphone, saya ingin melakukan KLAIM GARANSI untuk service dengan Nomor Nota *${item.nota}* atas nama *${item.nama}* (${item.merk}). Garansi aktif s/d ${calculateGaransiExpiry(item.diambilDate, item.garansi)}. Terima kasih!`;
-      const phoneTarget = "6288908890176";
-      window.open(`https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`, "_blank");
-    }
-
-    function contactAdminWhatsApp(nota) {
-      const item = serviceList.find((s) => s.nota === nota);
-      if (!item) return;
-      const text = `Halo Admin Rovcell Smartphone, saya ingin menanyakan status service dengan Nomor Nota *${item.nota}* atas nama *${item.nama}* (${item.merk}). Status saat ini: *${item.status}*.`;
-      const phoneTarget = "6288908890176";
-      window.open(`https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`, "_blank");
-    }
-
-    function notifyCustomerWhatsApp(nota) {
-      const item = serviceList.find((s) => s.nota === nota);
-      if (!item || !item.phone) {
-        showCustomAlert("Nomor WhatsApp pelanggan tidak valid atau kosong!");
-        return;
-      }
-      const cancelled = isStatusCancelled(item.status);
-      const checking = isStatusChecking(item.status);
-      const paidStatusText = cancelled ? "Dibatalkan" : checking ? "Menunggu Hasil Pengecekan" : item.isPaid ? "Sudah Lunas" : "Belum Lunas";
-      const cleanPhone = item.phone.replace(/[^0-9]/g, "");
-      const pin3 = cleanPhone.slice(-3) || "-";
-      const tpl = appSettings.waTemplate || DEFAULT_WA_TEMPLATE;
-      const formattedCostForWa = checking || item.biaya === "-" ? "-" : `Rp ${parseFormattedNumber(item.biaya).toLocaleString("id-ID")}`;
-
-      const text = tpl
-        .replace(/\{nama\}/g, item.nama || "")
-        .replace(/\{nota\}/g, item.nota || "")
-        .replace(/\{pin\}/g, pin3)
-        .replace(/\{merk\}/g, item.merk || "")
-        .replace(/\{kerusakan\}/g, item.kerusakan || "")
-        .replace(/\{status\}/g, item.status || "")
-        .replace(/\{keterangan\}/g, item.keterangan || "Dalam proses")
-        .replace(/\{pembayaran\}/g, paidStatusText)
-        .replace(/Rp\s*\{biaya\}/gi, formattedCostForWa)
-        .replace(/\{biaya\}/g, formattedCostForWa)
-        .replace(/\{garansi\}/g, item.garansi || "Tidak ada");
-
-      let phoneTarget = cleanPhone;
-      if (phoneTarget.startsWith("0")) phoneTarget = "62" + phoneTarget.substring(1);
-      window.open(`https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`, "_blank");
-    }
-
-    function saveRecentSearch(nota, pin, nama, merk) {
-      let history = JSON.parse(localStorage.getItem("rovcell_recent_searches") || "[]");
-      history = history.filter((item) => item.nota !== nota);
-      const now = new Date();
-      const d = String(now.getDate()).padStart(2, "0");
-      const m = String(now.getMonth() + 1).padStart(2, "0");
-      const y = now.getFullYear();
-      history.unshift({ nota, pin, nama, merk, timestamp: `${d}-${m}-${y}` });
-      if (history.length > 5) history.pop();
-      localStorage.setItem("rovcell_recent_searches", JSON.stringify(history));
-      renderRecentSearches();
-    }
-
-    function renderRecentSearches() {
-      const history = JSON.parse(localStorage.getItem("rovcell_recent_searches") || "[]");
-      const container = document.getElementById("recentSearchesContainer");
-      const chipsList = document.getElementById("recentChipsList");
-      if (!container || !chipsList) return;
-
-      if (history.length === 0) {
-        container.classList.add("hidden");
-        return;
-      }
-
-      container.classList.remove("hidden");
-      chipsList.innerHTML = "";
-
-      history.forEach((item) => {
-        chipsList.innerHTML += `
-          <button type="button" onclick="fillSearchForm('${item.nota}', '${item.pin}')" class="px-3 py-1.5 bg-neon-dark hover:bg-neon-blue/10 border border-neon-border hover:border-neon-blue rounded-xl text-xs flex items-center gap-2 transition text-left group cursor-pointer">
-            <div>
-              <span class="font-orbitron font-bold text-neon-blue">${item.nota}</span>
-              <span class="text-slate-400 text-[10px] ml-1">(${item.merk || item.nama})</span>
-              ${item.timestamp ? `<span class="text-slate-500 text-[9px] ml-1">• ${formatDateDDMMYYYY(item.timestamp)}</span>` : ""}
-            </div>
-            <i class="fa-solid fa-arrow-right text-[10px] text-slate-500 group-hover:text-neon-blue"></i>
-          </button>
-        `;
-      });
-    }
-
-    function fillSearchForm(nota, pin) {
-      const cleanNota = nota.replace("ROV-", "");
-      document.getElementById("searchNotaInput").value = cleanNota;
-      document.getElementById("searchPhonePin").value = pin;
-      searchService(true);
-    }
-
-    function clearRecentSearches() {
-      localStorage.removeItem("rovcell_recent_searches");
-      renderRecentSearches();
-    }
-
-    async function quickUpdateStatus(nota, newStatus) {
-      const item = serviceList.find((s) => s.nota === nota);
-      if (!item) return;
-
-      const date = new Date().toISOString().split("T")[0];
-      let keluarDate = item.keluarDate || null;
-      if ((newStatus === "Diambil" || newStatus === "Dibatalkan (Sudah Diambil)") && !keluarDate) {
-        keluarDate = date;
-      } else if (newStatus !== "Diambil" && newStatus !== "Dibatalkan (Sudah Diambil)") {
-        keluarDate = null;
-      }
-      const diambilDate = newStatus === "Diambil" ? keluarDate : null;
-      const checking = isStatusChecking(newStatus);
-      const isPaid = isStatusCancelled(newStatus) || checking ? false : item.isPaid;
-      const modal = checking ? "-" : item.modal === "-" ? 0 : item.modal;
-      const biaya = checking ? "-" : item.biaya === "-" ? 0 : item.biaya;
-
-      const updatedData = { ...item, status: newStatus, modal, biaya, isPaid, diambilDate, keluarDate };
-      try {
-        if (window.db && window.setDoc && window.doc) {
-          await window.setDoc(window.doc(window.db, "services", nota), updatedData);
-        }
-      } catch (err) {
-        console.warn("Firestore quick status update fallback to local cache:", err);
-      }
-      item.status = newStatus;
-      item.modal = modal;
-      item.biaya = biaya;
-      item.isPaid = isPaid;
-      item.diambilDate = diambilDate;
-      item.keluarDate = keluarDate;
-      localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
-      notifyBroadcastSync('UPDATE_DATA');
-      refreshAllUIComponents();
-    }
-
     function openLupaNotaModal() {
-      document.getElementById("lupaNotaModal").classList.remove("hidden");
       document.getElementById("lupaPhoneInput").value = "";
-      document.getElementById("lupaNotaResultContainer").innerHTML = "";
-      document.getElementById("lupaNotaResultContainer").classList.add("hidden");
+      const resCont = document.getElementById("lupaNotaResultContainer");
+      resCont.classList.add("hidden");
+      resCont.innerHTML = "";
+      document.getElementById("lupaNotaModal").classList.remove("hidden");
     }
 
     function closeLupaNotaModal() {
@@ -3345,94 +4400,234 @@
     }
 
     function executeLupaNotaSearch() {
-      const phoneQuery = document.getElementById("lupaPhoneInput").value.trim().replace(/[^0-9]/g, "");
-      const resultContainer = document.getElementById("lupaNotaResultContainer");
-      resultContainer.classList.remove("hidden");
-      resultContainer.innerHTML = "";
+      const phoneInput = document.getElementById("lupaPhoneInput").value.trim().replace(/[^0-9]/g, "");
+      const resCont = document.getElementById("lupaNotaResultContainer");
+      resCont.classList.remove("hidden");
 
-      if (!phoneQuery) {
-        resultContainer.innerHTML = `<p class="text-xs text-red-400 text-center py-2">Masukkan nomor WhatsApp terlebih dahulu.</p>`;
+      if (!phoneInput || phoneInput.length < 8) {
+        resCont.innerHTML = `<div class="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs text-center">Masukkan nomor WhatsApp lengkap (minimal 8 digit).</div>`;
         return;
       }
 
-      let cleanQuery = phoneQuery;
-      if (cleanQuery.startsWith("0")) cleanQuery = "62" + cleanQuery.substring(1);
+      const normInput = phoneInput.startsWith("62") ? "0" + phoneInput.slice(2) : phoneInput;
 
       const matches = serviceList.filter((s) => {
-        let itemPhone = (s.phone || "").replace(/[^0-9]/g, "");
-        if (itemPhone.startsWith("0")) itemPhone = "62" + itemPhone.substring(1);
-        return itemPhone && (itemPhone.includes(cleanQuery) || cleanQuery.includes(itemPhone));
+        if (!s.phone) return false;
+        const normDb = s.phone.startsWith("62") ? "0" + s.phone.slice(2) : s.phone;
+        return normDb === normInput || normDb.endsWith(normInput.slice(-9));
       });
 
       if (matches.length === 0) {
-        resultContainer.innerHTML = `<p class="text-[11px] text-slate-400 text-center py-2">Tidak ditemukan data service dengan nomor WhatsApp tersebut.</p>`;
+        resCont.innerHTML = `<div class="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs text-center space-y-1"><p class="font-semibold">Tidak ada nota ditemukan!</p><p class="text-[11px] text-slate-400">Nomor WhatsApp ${phoneInput} tidak terdaftar di sistem kami.</p></div>`;
         return;
       }
 
-      resultContainer.innerHTML = `<p class="text-xs font-medium text-neon-blue mb-1">Ditemukan ${matches.length} nota:</p>`;
+      let html = `<div class="text-[11px] text-neon-blue font-semibold mb-1">Ditemukan ${matches.length} riwayat service:</div>`;
       matches.forEach((m) => {
-        const last3 = (m.phone || "").replace(/[^0-9]/g, "").slice(-3);
-        resultContainer.innerHTML += `
-          <div class="p-3 bg-neon-dark rounded-xl border border-neon-border/60 flex justify-between items-center text-xs">
+        const notaDigits = m.nota.replace(/[^0-9]/g, "");
+        const pin3 = m.phone ? m.phone.slice(-3) : "";
+        html += `
+          <div onclick="autoFillFromLupa('${notaDigits}', '${pin3}')" class="bg-neon-dark p-3 rounded-xl border border-neon-border hover:border-neon-blue cursor-pointer transition flex justify-between items-center">
             <div>
-              <span class="font-orbitron font-bold text-neon-blue text-sm">${m.nota}</span>
-              <div class="text-slate-300 font-medium mt-0.5">${m.merk} (${m.kerusakan})</div>
-              <div class="text-slate-400 text-[11px] mt-0.5"><i class="fa-regular fa-calendar mr-1"></i>Masuk: ${formatDateDDMMYYYY(m.date)}</div>
+              <div class="font-orbitron font-bold text-neon-blue text-xs">${m.nota} <span class="text-slate-400 font-sans font-normal text-[10px]">• ${formatDateDDMMYYYY(m.date)}</span></div>
+              <div class="font-medium text-white text-xs mt-0.5">${m.merk} (${m.kerusakan})</div>
             </div>
-            <button type="button" onclick="selectNotaFromLupa('${m.nota}', '${last3}')" class="px-3 py-2 bg-neon-blue/10 hover:bg-neon-blue hover:text-neon-dark border border-neon-blue text-neon-blue rounded-lg transition font-bold cursor-pointer">
-              Pilih
-            </button>
+            <span class="px-2 py-1 bg-cyan-500/10 text-neon-blue text-[10px] font-bold rounded-lg border border-cyan-500/30">Pilih <i class="fa-solid fa-arrow-right ml-1"></i></span>
           </div>
         `;
       });
+      resCont.innerHTML = html;
     }
 
-    function selectNotaFromLupa(nota, last3Pin) {
-      const cleanNota = nota.replace("ROV-", "");
-      document.getElementById("searchNotaInput").value = cleanNota;
-      document.getElementById("searchPhonePin").value = last3Pin;
+    function autoFillFromLupa(notaDigits, pin3) {
       closeLupaNotaModal();
-      searchService(true);
+      document.getElementById("searchNotaInput").value = notaDigits;
+      document.getElementById("searchPhonePin").value = pin3;
+      searchService();
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      initAppData();
-    });
-  </script>
+    function saveRecentSearch(notaDigits, pin3, merk) {
+      let recents = [];
+      try {
+        recents = JSON.parse(localStorage.getItem("rovcell_recent_searches") || "[]");
+      } catch (e) {
+        recents = [];
+      }
+      recents = recents.filter((r) => !(r.nota === notaDigits && r.pin === pin3));
+      recents.unshift({ nota: notaDigits, pin: pin3, merk: merk || "HP" });
+      if (recents.length > 5) recents = recents.slice(0, 5);
+      try {
+        localStorage.setItem("rovcell_recent_searches", JSON.stringify(recents));
+      } catch (e) {}
+      renderRecentSearches();
+    }
 
-  <!-- Firebase SDK (Live Cloud Synchronization Module) -->
-  <script type="module">
-    try {
-      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js");
-      const { getFirestore, collection, getDocs, setDoc, doc, deleteDoc, getDoc, onSnapshot } = await import("https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js");
+    function renderRecentSearches() {
+      let recents = [];
+      try {
+        recents = JSON.parse(localStorage.getItem("rovcell_recent_searches") || "[]");
+      } catch (e) {
+        recents = [];
+      }
+      const container = document.getElementById("recentSearchesContainer");
+      const listEl = document.getElementById("recentChipsList");
+      if (!container || !listEl) return;
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyB_rbX12MbpGpbwjgbbi9O-ZXj1FsjzSVs",
-        authDomain: "rovcell-app.firebaseapp.com",
-        projectId: "rovcell-app",
-        storageBucket: "rovcell-app.firebasestorage.app",
-        messagingSenderId: "651419436645",
-        appId: "1:651419436645:web:ecdfbd27d69a7bcdb5288c",
-        measurementId: "G-DDRHGBYHZQ"
+      if (recents.length === 0) {
+        container.classList.add("hidden");
+        return;
+      }
+
+      container.classList.remove("hidden");
+      listEl.innerHTML = recents
+        .map(
+          (r) => `
+        <button type="button" onclick="applyRecentSearch('${r.nota}', '${r.pin}')" class="px-2.5 py-1 bg-neon-dark hover:bg-cyan-500/10 border border-neon-border hover:border-neon-blue rounded-lg text-[11px] text-slate-300 transition flex items-center gap-1.5 cursor-pointer">
+          <span class="font-orbitron font-bold text-neon-blue">ROV-${r.nota}</span>
+          <span class="text-slate-500">•</span>
+          <span class="truncate max-w-[100px]">${r.merk}</span>
+        </button>
+      `
+        )
+        .join("");
+    }
+
+    function applyRecentSearch(notaDigits, pin3) {
+      document.getElementById("searchNotaInput").value = notaDigits;
+      document.getElementById("searchPhonePin").value = pin3;
+      searchService();
+    }
+
+    function clearRecentSearches() {
+      try {
+        localStorage.removeItem("rovcell_recent_searches");
+      } catch (e) {}
+      renderRecentSearches();
+    }
+
+    async function quickUpdateStatus(nota, newStatus) {
+      const item = serviceList.find((s) => s.nota === nota);
+      if (!item) return;
+
+      const todayIso = new Date().toISOString().split("T")[0];
+      let keluarDate = item.keluarDate || null;
+      if ((newStatus === "Diambil" || newStatus === "Dibatalkan (Sudah Diambil)") && !keluarDate) {
+        keluarDate = todayIso;
+      } else if (newStatus !== "Diambil" && newStatus !== "Dibatalkan (Sudah Diambil)") {
+        keluarDate = null;
+      }
+      const diambilDate = newStatus === "Diambil" ? keluarDate : null;
+      const isPaid = isStatusCancelled(newStatus) || isStatusChecking(newStatus) ? false : item.isPaid;
+      const updatedModal = isStatusChecking(newStatus) ? "-" : item.modal;
+      const updatedBiaya = isStatusChecking(newStatus) ? "-" : item.biaya;
+
+      const updatedData = {
+        ...item,
+        status: newStatus,
+        modal: updatedModal,
+        biaya: updatedBiaya,
+        isPaid,
+        diambilDate,
+        keluarDate
       };
 
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
+      try {
+        if (window.db && window.setDoc && window.doc) {
+          await window.setDoc(window.doc(window.db, "services", nota), updatedData);
+        }
+      } catch (err) {
+        console.warn("Firestore quick update fallback to local cache:", err);
+      }
 
-      window.db = db;
+      const idx = serviceList.findIndex((s) => s.nota === nota);
+      if (idx !== -1) serviceList[idx] = updatedData;
+      try {
+        localStorage.setItem("rovcell_cached_services", JSON.stringify(serviceList));
+      } catch (e) {}
+      notifyBroadcastSync("UPDATE_DATA");
+      refreshAllUIComponents();
+    }
+
+    function notifyCustomerWhatsApp(nota) {
+      const item = serviceList.find((s) => s.nota === nota);
+      if (!item || !item.phone) {
+        showCustomAlert("Nomor WhatsApp pelanggan tidak tersedia.");
+        return;
+      }
+      let phone = item.phone.replace(/[^0-9]/g, "");
+      if (phone.startsWith("0")) phone = "62" + phone.slice(1);
+      const pin3 = phone.slice(-3);
+      const cancelled = isStatusCancelled(item.status);
+      const checking = isStatusChecking(item.status);
+      const paymentStatus = cancelled
+        ? "DIBATALKAN"
+        : checking
+        ? "MENUNGGU PENGECEKAN"
+        : item.isPaid
+        ? "LUNAS"
+        : "BELUM LUNAS";
+
+      let garansiInfo = cancelled ? "-" : item.garansi || "Tidak ada";
+      if (!cancelled && item.status === "Diambil" && item.diambilDate && item.garansi && item.garansi !== "Tidak ada") {
+        const exp = calculateGaransiExpiry(item.diambilDate, item.garansi);
+        garansiInfo += ` (Aktif s/d ${exp})`;
+      }
+
+      const costText = cancelled ? "-" : checking || item.biaya === "-" ? "-" : `Rp ${parseFormattedNumber(item.biaya).toLocaleString("id-ID")}`;
+
+      const tpl = appSettings.waTemplate || DEFAULT_WA_TEMPLATE;
+      const text = tpl
+        .replace(/{nama}/g, item.nama || "")
+        .replace(/{nota}/g, item.nota || "")
+        .replace(/{pin}/g, pin3)
+        .replace(/{merk}/g, item.merk || "")
+        .replace(/{kerusakan}/g, item.kerusakan || "")
+        .replace(/{status}/g, item.status || "")
+        .replace(/{keterangan}/g, item.keterangan || "-")
+        .replace(/{pembayaran}/g, paymentStatus)
+        .replace(/{biaya}/g, costText)
+        .replace(/{garansi}/g, garansiInfo);
+
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, "_blank");
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initAppData);
+    } else {
+      initAppData();
+    }
+  </script>
+
+  <!-- Firebase SDK (Module) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, setDoc, doc, deleteDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB_rbX12MbpGpbwjgbbi9O-ZXj1FsjzSVs",
+      authDomain: "rovcell-app.firebaseapp.com",
+      projectId: "rovcell-app",
+      storageBucket: "rovcell-app.firebasestorage.app",
+      messagingSenderId: "651419436645",
+      appId: "1:651419436645:web:ecdfbd27d69a7bcdb5288c",
+      measurementId: "G-DDRHGBYHZQ"
+    };
+
+    try {
+      const app = initializeApp(firebaseConfig);
+      window.db = getFirestore(app);
       window.collection = collection;
       window.getDocs = getDocs;
-      window.setDoc = setDoc;
       window.doc = doc;
+      window.setDoc = setDoc;
       window.deleteDoc = deleteDoc;
       window.getDoc = getDoc;
       window.onSnapshot = onSnapshot;
-
-      if (typeof syncFirebaseLive === "function") {
-        syncFirebaseLive();
+      if (typeof window.syncFirebaseLive === "function") {
+        window.syncFirebaseLive();
       }
     } catch (e) {
-      console.warn("Firebase module running in offline/local mode:", e);
+      console.warn("Firebase module init fallback to local storage:", e);
     }
   </script>
 </body>
