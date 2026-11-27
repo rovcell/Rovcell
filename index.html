@@ -313,8 +313,8 @@
         background: #ffffff !important;
         color: #000000 !important;
         margin: 0 !important;
-        padding: 2mm 3mm !important;
-        font-family: 'Courier New', Courier, monospace !important;
+        padding: 2.5mm 3.5mm !important;
+        font-family: Arial, Helvetica, sans-serif !important;
         font-weight: 900 !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
@@ -325,6 +325,7 @@
         color: #000000 !important;
         font-weight: 900 !important;
         border-color: #000000 !important;
+        text-shadow: 0.25px 0 0 #000000 !important;
       }
     }
   </style>
@@ -1014,7 +1015,7 @@
         </button>
         <button type="button" id="mainSettingsSubBtn-theme" onclick="switchMainSettingsSubTab('theme')" class="px-2 sm:px-3 py-2.5 rounded-xl text-[11px] sm:text-xs font-orbitron font-bold text-slate-300 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-palette text-neon-blue"></i>
-          <span class="truncate">Tema (15)</span>
+          <span class="truncate">Tema (50)</span>
         </button>
       </div>
 
@@ -1236,9 +1237,9 @@
             <div>
               <label class="block text-xs font-medium text-slate-300 mb-1">Ukuran Font Cetak</label>
               <select id="printFontSize" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-neon-blue">
-                <option value="12px">Sedang (12px Bold)</option>
-                <option value="13px">Besar (13px Extra Bold)</option>
-                <option value="14px">Sangat Besar (14px Extra Bold)</option>
+                <option value="14px">Sedang (14px Extra Bold)</option>
+                <option value="15px">Besar (15px Extra Bold)</option>
+                <option value="17px">Sangat Besar (17px Extra Bold)</option>
               </select>
             </div>
           </div>
@@ -1336,20 +1337,18 @@
           </button>
           <div class="flex gap-2">
             <button type="button" onclick="closeAdminProfileModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer">Batal</button>
-            <button type="button" onclick="saveTableSettings()" class="px-4 py-2 bg-neon-blue hover:bg-cyan-400 text-neon-dark font-bold text-xs rounded-xl shadow-lg shadow-cyan-500/20 cursor-pointer">
-              <i class="fa-solid fa-check mr-1"></i>Simpan Tampilan Tabel
-            </button>
+            <button type="button" onclick="saveTableSettings()" class="px-4 py-2 bg-neon-blue hover:bg-cyan-400 text-neon-dark font-bold text-xs rounded-xl cursor-pointer">Simpan Tabel</button>
           </div>
         </div>
       </div>
 
-      <!-- GROUP 3: 15 PILIHAN TEMA WEBSITE -->
+      <!-- GROUP 3: 50 PILIHAN TEMA WEBSITE -->
       <div id="mainSettingsGroup-theme" class="hidden space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2 bg-neon-dark/80 p-3 rounded-xl border border-slate-800">
           <div>
             <div class="text-xs font-bold text-neon-blue flex items-center gap-1.5">
               <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <span>15 Pilihan Tema Website (Dark &amp; Light Mode)</span>
+              <span>50 Pilihan Tema Website (Dark &amp; Light Mode)</span>
             </div>
             <p class="text-[11px] text-slate-400 mt-0.5">Klik kartu tema untuk pratinjau langsung seluruh halaman pelanggan &amp; admin.</p>
           </div>
@@ -1358,7 +1357,16 @@
           </span>
         </div>
 
-        <div id="websiteThemeGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-[52vh] overflow-y-auto pr-1"></div>
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="inline-flex items-center gap-1.5 bg-neon-dark/80 p-1 rounded-xl border border-slate-800 text-[11px]">
+            <button type="button" id="themeFilterBtn-all" onclick="setThemeModeFilter('all')" class="px-2.5 py-1 rounded-lg font-bold bg-neon-blue text-neon-dark transition cursor-pointer">Semua (50)</button>
+            <button type="button" id="themeFilterBtn-dark" onclick="setThemeModeFilter('dark')" class="px-2.5 py-1 rounded-lg font-semibold text-slate-300 hover:text-white transition cursor-pointer"><i class="fa-solid fa-moon mr-1"></i>Gelap (38)</button>
+            <button type="button" id="themeFilterBtn-light" onclick="setThemeModeFilter('light')" class="px-2.5 py-1 rounded-lg font-semibold text-slate-300 hover:text-white transition cursor-pointer"><i class="fa-solid fa-sun mr-1"></i>Terang (12)</button>
+          </div>
+          <input type="text" id="themeSearchInput" oninput="renderWebsiteThemeGrid(selectedDraftThemeId)" placeholder="Cari nama tema..." class="bg-neon-dark border border-neon-border rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-neon-blue w-full sm:w-48">
+        </div>
+
+        <div id="websiteThemeGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-[48vh] overflow-y-auto pr-1"></div>
 
         <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-slate-800">
           <button type="button" onclick="resetDefaultWebsiteTheme()" class="text-xs text-slate-400 hover:text-white underline cursor-pointer">
@@ -1461,8 +1469,9 @@
     let activeFinancePreset = "month";
     let latestFinanceSummarySnapshot = null;
     let cachedPreviousFormAmounts = { modal: "", biaya: "" };
+    let activeThemeModeFilter = "all";
 
-    // 15 Pilihan Tema Website Lengkap (12 Dark Mode + 3 Light Mode)
+    // 50 Pilihan Tema Website Lengkap (38 Dark Mode + 12 Light Mode)
     const WEBSITE_THEMES = [
       {
         id: "cyber-cyan",
@@ -1793,6 +1802,776 @@
         text: "#064e3b",
         grad1: "#10b981",
         grad2: "#059669"
+      },
+      {
+        id: "midnight-indigo",
+        name: "Midnight Indigo",
+        shortName: "Indigo",
+        mode: "dark",
+        desc: "Deep Indigo & Electric Blue",
+        bg: "#070818",
+        card: "#10122b",
+        cardAlt: "#0b0d20",
+        cardTop: "#181b3d",
+        inputBg: "#070818",
+        headerBg: "rgba(7, 8, 24, 0.88)",
+        footerBg: "rgba(7, 8, 24, 0.85)",
+        accent: "#6366f1",
+        accentHover: "#818cf8",
+        accentRgb: "99, 102, 241",
+        accentContrast: "#ffffff",
+        border: "#312e81",
+        text: "#e0e7ff",
+        grad1: "#818cf8",
+        grad2: "#6366f1"
+      },
+      {
+        id: "rog-gamer-red",
+        name: "ROG Gamer Red",
+        shortName: "ROG Red",
+        mode: "dark",
+        desc: "Pitch Black & Gaming Red",
+        bg: "#09090b",
+        card: "#16161a",
+        cardAlt: "#101013",
+        cardTop: "#241418",
+        inputBg: "#09090b",
+        headerBg: "rgba(9, 9, 11, 0.9)",
+        footerBg: "rgba(9, 9, 11, 0.88)",
+        accent: "#ef4444",
+        accentHover: "#f87171",
+        accentRgb: "239, 68, 68",
+        accentContrast: "#ffffff",
+        border: "#7f1d1d",
+        text: "#f4f4f5",
+        grad1: "#f87171",
+        grad2: "#ef4444"
+      },
+      {
+        id: "cyberpunk-yellow",
+        name: "Cyberpunk 2077",
+        shortName: "Cyberpunk",
+        mode: "dark",
+        desc: "Night City Dark & Neon Yellow",
+        bg: "#0c0b04",
+        card: "#1a1808",
+        cardAlt: "#131106",
+        cardTop: "#26230b",
+        inputBg: "#0c0b04",
+        headerBg: "rgba(12, 11, 4, 0.9)",
+        footerBg: "rgba(12, 11, 4, 0.88)",
+        accent: "#eab308",
+        accentHover: "#facc15",
+        accentRgb: "234, 179, 8",
+        accentContrast: "#090802",
+        border: "#713f12",
+        text: "#fef9c3",
+        grad1: "#facc15",
+        grad2: "#eab308"
+      },
+      {
+        id: "dracula-vampire",
+        name: "Dracula Orchid",
+        shortName: "Dracula",
+        mode: "dark",
+        desc: "Dracula Slate & Orchid Pink",
+        bg: "#13141c",
+        card: "#1e202c",
+        cardAlt: "#181923",
+        cardTop: "#282a3a",
+        inputBg: "#13141c",
+        headerBg: "rgba(19, 20, 28, 0.9)",
+        footerBg: "rgba(19, 20, 28, 0.88)",
+        accent: "#d946ef",
+        accentHover: "#e879f9",
+        accentRgb: "217, 70, 239",
+        accentContrast: "#ffffff",
+        border: "#701a75",
+        text: "#fae8ff",
+        grad1: "#e879f9",
+        grad2: "#d946ef"
+      },
+      {
+        id: "nord-frost",
+        name: "Nordic Frost",
+        shortName: "Nord Frost",
+        mode: "dark",
+        desc: "Polar Night & Ice Cyan",
+        bg: "#12161f",
+        card: "#1b2230",
+        cardAlt: "#161c27",
+        cardTop: "#232c3e",
+        inputBg: "#12161f",
+        headerBg: "rgba(18, 22, 31, 0.9)",
+        footerBg: "rgba(18, 22, 31, 0.88)",
+        accent: "#67e8f9",
+        accentHover: "#a5f3fc",
+        accentRgb: "103, 232, 249",
+        accentContrast: "#081217",
+        border: "#155e75",
+        text: "#ecfeff",
+        grad1: "#a5f3fc",
+        grad2: "#67e8f9"
+      },
+      {
+        id: "oled-pure-black",
+        name: "OLED Pure Black",
+        shortName: "OLED Black",
+        mode: "dark",
+        desc: "True AMOLED Black & Cyan",
+        bg: "#000000",
+        card: "#0a0a0c",
+        cardAlt: "#050507",
+        cardTop: "#121216",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.92)",
+        footerBg: "rgba(0, 0, 0, 0.9)",
+        accent: "#06b6d4",
+        accentHover: "#22d3ee",
+        accentRgb: "6, 182, 212",
+        accentContrast: "#000000",
+        border: "#164e63",
+        text: "#f8fafc",
+        grad1: "#22d3ee",
+        grad2: "#06b6d4"
+      },
+      {
+        id: "oled-emerald-pro",
+        name: "OLED Emerald Pro",
+        shortName: "OLED Green",
+        mode: "dark",
+        desc: "True AMOLED Black & Mint",
+        bg: "#000000",
+        card: "#080f0c",
+        cardAlt: "#040806",
+        cardTop: "#0e1a15",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.92)",
+        footerBg: "rgba(0, 0, 0, 0.9)",
+        accent: "#34d399",
+        accentHover: "#6ee7b7",
+        accentRgb: "52, 211, 153",
+        accentContrast: "#020c08",
+        border: "#065f46",
+        text: "#ecfdf5",
+        grad1: "#6ee7b7",
+        grad2: "#34d399"
+      },
+      {
+        id: "oled-gold-luxury",
+        name: "OLED Gold Luxury",
+        shortName: "OLED Gold",
+        mode: "dark",
+        desc: "True AMOLED Black & Gold",
+        bg: "#000000",
+        card: "#0f0d08",
+        cardAlt: "#080704",
+        cardTop: "#1a160d",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.92)",
+        footerBg: "rgba(0, 0, 0, 0.9)",
+        accent: "#fbbf24",
+        accentHover: "#fcd34d",
+        accentRgb: "251, 191, 36",
+        accentContrast: "#0a0802",
+        border: "#78350f",
+        text: "#fffbeb",
+        grad1: "#fcd34d",
+        grad2: "#fbbf24"
+      },
+      {
+        id: "sapphire-royal-blue",
+        name: "Sapphire Royal Blue",
+        shortName: "Sapphire",
+        mode: "dark",
+        desc: "Navy Sapphire & Royal Blue",
+        bg: "#060d1f",
+        card: "#0d1b3e",
+        cardAlt: "#09132c",
+        cardTop: "#142859",
+        inputBg: "#060d1f",
+        headerBg: "rgba(6, 13, 31, 0.88)",
+        footerBg: "rgba(6, 13, 31, 0.85)",
+        accent: "#3b82f6",
+        accentHover: "#60a5fa",
+        accentRgb: "59, 130, 246",
+        accentContrast: "#ffffff",
+        border: "#1d4ed8",
+        text: "#dbeafe",
+        grad1: "#60a5fa",
+        grad2: "#3b82f6"
+      },
+      {
+        id: "lavender-dusk",
+        name: "Lavender Dusk",
+        shortName: "Lavender",
+        mode: "dark",
+        desc: "Twilight Purple & Soft Violet",
+        bg: "#100c1c",
+        card: "#1c1630",
+        cardAlt: "#151024",
+        cardTop: "#261e42",
+        inputBg: "#100c1c",
+        headerBg: "rgba(16, 12, 28, 0.88)",
+        footerBg: "rgba(16, 12, 28, 0.85)",
+        accent: "#8b5cf6",
+        accentHover: "#a78bfa",
+        accentRgb: "139, 92, 246",
+        accentContrast: "#ffffff",
+        border: "#5b21b6",
+        text: "#ede9fe",
+        grad1: "#a78bfa",
+        grad2: "#8b5cf6"
+      },
+      {
+        id: "volcanic-lava",
+        name: "Volcanic Lava",
+        shortName: "Lava",
+        mode: "dark",
+        desc: "Magma Dark & Fiery Orange",
+        bg: "#140805",
+        card: "#240f0a",
+        cardAlt: "#1a0b07",
+        cardTop: "#33150e",
+        inputBg: "#140805",
+        headerBg: "rgba(20, 8, 5, 0.88)",
+        footerBg: "rgba(20, 8, 5, 0.85)",
+        accent: "#fb923c",
+        accentHover: "#fdba74",
+        accentRgb: "251, 146, 60",
+        accentContrast: "#120602",
+        border: "#9a3412",
+        text: "#ffedd5",
+        grad1: "#fdba74",
+        grad2: "#fb923c"
+      },
+      {
+        id: "jade-dragon",
+        name: "Jade Dragon",
+        shortName: "Jade",
+        mode: "dark",
+        desc: "Deep Jade & Imperial Green",
+        bg: "#05140f",
+        card: "#0b261d",
+        cardAlt: "#071c15",
+        cardTop: "#103629",
+        inputBg: "#05140f",
+        headerBg: "rgba(5, 20, 15, 0.88)",
+        footerBg: "rgba(5, 20, 15, 0.85)",
+        accent: "#22c55e",
+        accentHover: "#4ade80",
+        accentRgb: "34, 197, 94",
+        accentContrast: "#031008",
+        border: "#15803d",
+        text: "#dcfce7",
+        grad1: "#4ade80",
+        grad2: "#22c55e"
+      },
+      {
+        id: "aqua-lagoon",
+        name: "Aqua Lagoon",
+        shortName: "Lagoon",
+        mode: "dark",
+        desc: "Deep Lagoon & Turquoise",
+        bg: "#041318",
+        card: "#09242d",
+        cardAlt: "#061b22",
+        cardTop: "#0e333f",
+        inputBg: "#041318",
+        headerBg: "rgba(4, 19, 24, 0.88)",
+        footerBg: "rgba(4, 19, 24, 0.85)",
+        accent: "#2dd4bf",
+        accentHover: "#5eead4",
+        accentRgb: "45, 212, 191",
+        accentContrast: "#031114",
+        border: "#0f766e",
+        text: "#ccfbf1",
+        grad1: "#5eead4",
+        grad2: "#2dd4bf"
+      },
+      {
+        id: "mocha-espresso",
+        name: "Mocha Espresso",
+        shortName: "Mocha",
+        mode: "dark",
+        desc: "Dark Roast & Caramel Cream",
+        bg: "#120d0a",
+        card: "#211813",
+        cardAlt: "#18110e",
+        cardTop: "#2e221b",
+        inputBg: "#120d0a",
+        headerBg: "rgba(18, 13, 10, 0.88)",
+        footerBg: "rgba(18, 13, 10, 0.85)",
+        accent: "#d6a87c",
+        accentHover: "#e5be98",
+        accentRgb: "214, 168, 124",
+        accentContrast: "#140d08",
+        border: "#6b4c35",
+        text: "#f5ebe0",
+        grad1: "#e5be98",
+        grad2: "#d6a87c"
+      },
+      {
+        id: "neon-coral-reef",
+        name: "Neon Coral Reef",
+        shortName: "Coral",
+        mode: "dark",
+        desc: "Deep Sea & Glowing Coral",
+        bg: "#090f18",
+        card: "#121d2e",
+        cardAlt: "#0d1522",
+        cardTop: "#19283f",
+        inputBg: "#090f18",
+        headerBg: "rgba(9, 15, 24, 0.88)",
+        footerBg: "rgba(9, 15, 24, 0.85)",
+        accent: "#ff6b6b",
+        accentHover: "#ff8787",
+        accentRgb: "255, 107, 107",
+        accentContrast: "#140505",
+        border: "#991b1b",
+        text: "#ffe3e3",
+        grad1: "#ff8787",
+        grad2: "#ff6b6b"
+      },
+      {
+        id: "mint-chocolate",
+        name: "Mint Chocolate",
+        shortName: "Mint Choc",
+        mode: "dark",
+        desc: "Dark Cocoa & Fresh Mint",
+        bg: "#0e0b0a",
+        card: "#1a1513",
+        cardAlt: "#130f0e",
+        cardTop: "#241d1a",
+        inputBg: "#0e0b0a",
+        headerBg: "rgba(14, 11, 10, 0.88)",
+        footerBg: "rgba(14, 11, 10, 0.85)",
+        accent: "#34d399",
+        accentHover: "#6ee7b7",
+        accentRgb: "52, 211, 153",
+        accentContrast: "#04120c",
+        border: "#065f46",
+        text: "#ecfdf5",
+        grad1: "#6ee7b7",
+        grad2: "#34d399"
+      },
+      {
+        id: "electric-orchid",
+        name: "Electric Orchid",
+        shortName: "Orchid",
+        mode: "dark",
+        desc: "Deep Space & Neon Fuchsia",
+        bg: "#0e0614",
+        card: "#1b0c26",
+        cardAlt: "#13081b",
+        cardTop: "#261136",
+        inputBg: "#0e0614",
+        headerBg: "rgba(14, 6, 20, 0.88)",
+        footerBg: "rgba(14, 6, 20, 0.85)",
+        accent: "#f472b6",
+        accentHover: "#f9a8d4",
+        accentRgb: "244, 114, 182",
+        accentContrast: "#14040d",
+        border: "#86198f",
+        text: "#fdf4ff",
+        grad1: "#f9a8d4",
+        grad2: "#f472b6"
+      },
+      {
+        id: "gunmetal-steel",
+        name: "Gunmetal Steel",
+        shortName: "Gunmetal",
+        mode: "dark",
+        desc: "Industrial Steel & Ice Blue",
+        bg: "#0f1318",
+        card: "#1a2029",
+        cardAlt: "#141920",
+        cardTop: "#232b37",
+        inputBg: "#0f1318",
+        headerBg: "rgba(15, 19, 24, 0.88)",
+        footerBg: "rgba(15, 19, 24, 0.85)",
+        accent: "#93c5fd",
+        accentHover: "#bfdbfe",
+        accentRgb: "147, 197, 253",
+        accentContrast: "#09111e",
+        border: "#1e40af",
+        text: "#eff6ff",
+        grad1: "#bfdbfe",
+        grad2: "#93c5fd"
+      },
+      {
+        id: "aurora-borealis",
+        name: "Aurora Borealis",
+        shortName: "Aurora",
+        mode: "dark",
+        desc: "Arctic Night & Aurora Green",
+        bg: "#061016",
+        card: "#0d1f29",
+        cardAlt: "#09161e",
+        cardTop: "#122b38",
+        inputBg: "#061016",
+        headerBg: "rgba(6, 16, 22, 0.88)",
+        footerBg: "rgba(6, 16, 22, 0.85)",
+        accent: "#4ade80",
+        accentHover: "#86efac",
+        accentRgb: "74, 222, 128",
+        accentContrast: "#031208",
+        border: "#0f766e",
+        text: "#f0fdf4",
+        grad1: "#2dd4bf",
+        grad2: "#4ade80"
+      },
+      {
+        id: "phantom-violet",
+        name: "Phantom Violet",
+        shortName: "Phantom",
+        mode: "dark",
+        desc: "Shadow Noir & Neon Violet",
+        bg: "#09070f",
+        card: "#130f20",
+        cardAlt: "#0d0a17",
+        cardTop: "#1b152e",
+        inputBg: "#09070f",
+        headerBg: "rgba(9, 7, 15, 0.9)",
+        footerBg: "rgba(9, 7, 15, 0.88)",
+        accent: "#c084fc",
+        accentHover: "#d8b4fe",
+        accentRgb: "192, 132, 252",
+        accentContrast: "#0d0617",
+        border: "#6b21a8",
+        text: "#f3e8ff",
+        grad1: "#d8b4fe",
+        grad2: "#c084fc"
+      },
+      {
+        id: "sunset-amber-red",
+        name: "Sunset Horizon",
+        shortName: "Sunset",
+        mode: "dark",
+        desc: "Dusk Maroon & Warm Sunset",
+        bg: "#14080a",
+        card: "#240f13",
+        cardAlt: "#1a0b0e",
+        cardTop: "#33151b",
+        inputBg: "#14080a",
+        headerBg: "rgba(20, 8, 10, 0.88)",
+        footerBg: "rgba(20, 8, 10, 0.85)",
+        accent: "#fb7185",
+        accentHover: "#fda4af",
+        accentRgb: "251, 113, 133",
+        accentContrast: "#140407",
+        border: "#9f1239",
+        text: "#ffe4e6",
+        grad1: "#fb923c",
+        grad2: "#fb7185"
+      },
+      {
+        id: "deep-marine-cyan",
+        name: "Deep Marine",
+        shortName: "Marine",
+        mode: "dark",
+        desc: "Submarine Navy & Aqua",
+        bg: "#040e1a",
+        card: "#091c33",
+        cardAlt: "#061424",
+        cardTop: "#0e2847",
+        inputBg: "#040e1a",
+        headerBg: "rgba(4, 14, 26, 0.88)",
+        footerBg: "rgba(4, 14, 26, 0.85)",
+        accent: "#22d3ee",
+        accentHover: "#67e8f9",
+        accentRgb: "34, 211, 238",
+        accentContrast: "#031018",
+        border: "#0284c7",
+        text: "#e0f2fe",
+        grad1: "#67e8f9",
+        grad2: "#22d3ee"
+      },
+      {
+        id: "olive-tactical",
+        name: "Olive Tactical",
+        shortName: "Tactical",
+        mode: "dark",
+        desc: "Military Olive & Tactical Lime",
+        bg: "#0d0f08",
+        card: "#191d10",
+        cardAlt: "#12150b",
+        cardTop: "#232916",
+        inputBg: "#0d0f08",
+        headerBg: "rgba(13, 15, 8, 0.88)",
+        footerBg: "rgba(13, 15, 8, 0.85)",
+        accent: "#a3e635",
+        accentHover: "#bef264",
+        accentRgb: "163, 230, 53",
+        accentContrast: "#0a0d04",
+        border: "#4d7c0f",
+        text: "#f7fee7",
+        grad1: "#bef264",
+        grad2: "#a3e635"
+      },
+      {
+        id: "ruby-velvet",
+        name: "Ruby Velvet",
+        shortName: "Ruby",
+        mode: "dark",
+        desc: "Velvet Burgundy & Ruby",
+        bg: "#140508",
+        card: "#260a10",
+        cardAlt: "#1b070b",
+        cardTop: "#360e17",
+        inputBg: "#140508",
+        headerBg: "rgba(20, 5, 8, 0.88)",
+        footerBg: "rgba(20, 5, 8, 0.85)",
+        accent: "#e11d48",
+        accentHover: "#f43f5e",
+        accentRgb: "225, 29, 72",
+        accentContrast: "#ffffff",
+        border: "#881337",
+        text: "#ffe4e6",
+        grad1: "#f43f5e",
+        grad2: "#e11d48"
+      },
+      {
+        id: "cyber-mint-wave",
+        name: "Cyber Mint Wave",
+        shortName: "Mint Wave",
+        mode: "dark",
+        desc: "Deep Teal & Electric Mint",
+        bg: "#041210",
+        card: "#092420",
+        cardAlt: "#061916",
+        cardTop: "#0e332d",
+        inputBg: "#041210",
+        headerBg: "rgba(4, 18, 16, 0.88)",
+        footerBg: "rgba(4, 18, 16, 0.85)",
+        accent: "#00ffa3",
+        accentHover: "#33ffb5",
+        accentRgb: "0, 255, 163",
+        accentContrast: "#02120c",
+        border: "#047857",
+        text: "#ecfdf5",
+        grad1: "#33ffb5",
+        grad2: "#00ffa3"
+      },
+      {
+        id: "starlight-platinum",
+        name: "Starlight Platinum",
+        shortName: "Platinum",
+        mode: "dark",
+        desc: "Obsidian Silver & Platinum",
+        bg: "#0c0e12",
+        card: "#171b22",
+        cardAlt: "#111419",
+        cardTop: "#20252f",
+        inputBg: "#0c0e12",
+        headerBg: "rgba(12, 14, 18, 0.88)",
+        footerBg: "rgba(12, 14, 18, 0.85)",
+        accent: "#38bdf8",
+        accentHover: "#7dd3fc",
+        accentRgb: "56, 189, 248",
+        accentContrast: "#050b14",
+        border: "#334155",
+        text: "#f1f5f9",
+        grad1: "#cbd5e1",
+        grad2: "#38bdf8"
+      },
+      {
+        id: "light-lavender-mist",
+        name: "Lavender Mist Light",
+        shortName: "Light Violet",
+        mode: "light",
+        desc: "Soft Lilac White & Royal Purple",
+        bg: "#f5f3ff",
+        card: "#ffffff",
+        cardAlt: "#faf8ff",
+        cardTop: "#ede9fe",
+        inputBg: "#f5f3ff",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(245, 243, 255, 0.92)",
+        accent: "#7c3aed",
+        accentHover: "#6d28d9",
+        accentRgb: "124, 58, 237",
+        accentContrast: "#ffffff",
+        border: "#ddd6fe",
+        text: "#1e1b4b",
+        grad1: "#8b5cf6",
+        grad2: "#7c3aed"
+      },
+      {
+        id: "light-rose-blossom",
+        name: "Rose Blossom Light",
+        shortName: "Light Rose",
+        mode: "light",
+        desc: "Blush White & Crimson Rose",
+        bg: "#fff1f2",
+        card: "#ffffff",
+        cardAlt: "#fff8f9",
+        cardTop: "#ffe4e6",
+        inputBg: "#fff1f2",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(255, 241, 242, 0.92)",
+        accent: "#e11d48",
+        accentHover: "#be123c",
+        accentRgb: "225, 29, 72",
+        accentContrast: "#ffffff",
+        border: "#fecdd3",
+        text: "#1f1216",
+        grad1: "#f43f5e",
+        grad2: "#e11d48"
+      },
+      {
+        id: "light-corporate-indigo",
+        name: "Corporate Indigo Light",
+        shortName: "Light Indigo",
+        mode: "light",
+        desc: "Clean Pearl & Deep Indigo",
+        bg: "#eef2ff",
+        card: "#ffffff",
+        cardAlt: "#f8faff",
+        cardTop: "#e0e7ff",
+        inputBg: "#eef2ff",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(238, 242, 255, 0.92)",
+        accent: "#4f46e5",
+        accentHover: "#4338ca",
+        accentRgb: "79, 70, 229",
+        accentContrast: "#ffffff",
+        border: "#c7d2fe",
+        text: "#1e1b4b",
+        grad1: "#6366f1",
+        grad2: "#4f46e5"
+      },
+      {
+        id: "light-aqua-breeze",
+        name: "Aqua Breeze Light",
+        shortName: "Light Teal",
+        mode: "light",
+        desc: "Coastal White & Ocean Teal",
+        bg: "#f0fdfa",
+        card: "#ffffff",
+        cardAlt: "#f7fefe",
+        cardTop: "#ccfbf1",
+        inputBg: "#f0fdfa",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(240, 253, 250, 0.92)",
+        accent: "#0d9488",
+        accentHover: "#0f766e",
+        accentRgb: "13, 148, 136",
+        accentContrast: "#ffffff",
+        border: "#99f6e4",
+        text: "#134e4a",
+        grad1: "#14b8a6",
+        grad2: "#0d9488"
+      },
+      {
+        id: "light-sunset-peach",
+        name: "Sunset Peach Light",
+        shortName: "Light Orange",
+        mode: "light",
+        desc: "Warm Peach & Burnt Orange",
+        bg: "#fff7ed",
+        card: "#ffffff",
+        cardAlt: "#fffbf5",
+        cardTop: "#ffedd5",
+        inputBg: "#fff7ed",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(255, 247, 237, 0.92)",
+        accent: "#ea580c",
+        accentHover: "#c2410c",
+        accentRgb: "234, 88, 12",
+        accentContrast: "#ffffff",
+        border: "#fed7aa",
+        text: "#1c1917",
+        grad1: "#f97316",
+        grad2: "#ea580c"
+      },
+      {
+        id: "light-apple-minimal",
+        name: "Minimal Silver Light",
+        shortName: "Light Silver",
+        mode: "light",
+        desc: "Pure Studio White & Slate",
+        bg: "#f8fafc",
+        card: "#ffffff",
+        cardAlt: "#f1f5f9",
+        cardTop: "#e2e8f0",
+        inputBg: "#f8fafc",
+        headerBg: "rgba(255, 255, 255, 0.94)",
+        footerBg: "rgba(248, 250, 252, 0.94)",
+        accent: "#0f172a",
+        accentHover: "#334155",
+        accentRgb: "15, 23, 42",
+        accentContrast: "#ffffff",
+        border: "#cbd5e1",
+        text: "#0f172a",
+        grad1: "#334155",
+        grad2: "#0f172a"
+      },
+      {
+        id: "light-royal-blue",
+        name: "Royal Azure Light",
+        shortName: "Light Blue",
+        mode: "light",
+        desc: "Bright Azure & Cobalt Blue",
+        bg: "#eff6ff",
+        card: "#ffffff",
+        cardAlt: "#f8fbff",
+        cardTop: "#dbeafe",
+        inputBg: "#eff6ff",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(239, 246, 255, 0.92)",
+        accent: "#2563eb",
+        accentHover: "#1d4ed8",
+        accentRgb: "37, 99, 235",
+        accentContrast: "#ffffff",
+        border: "#bfdbfe",
+        text: "#1e3a8a",
+        grad1: "#3b82f6",
+        grad2: "#2563eb"
+      },
+      {
+        id: "light-fuchsia-pop",
+        name: "Fuchsia Pop Light",
+        shortName: "Light Pink",
+        mode: "light",
+        desc: "Soft Pastel Pink & Magenta",
+        bg: "#fdf4ff",
+        card: "#ffffff",
+        cardAlt: "#fefaff",
+        cardTop: "#fae8ff",
+        inputBg: "#fdf4ff",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(253, 244, 255, 0.92)",
+        accent: "#c026d3",
+        accentHover: "#a21caf",
+        accentRgb: "192, 38, 211",
+        accentContrast: "#ffffff",
+        border: "#f5d0fe",
+        text: "#3b0764",
+        grad1: "#d946ef",
+        grad2: "#c026d3"
+      },
+      {
+        id: "light-lime-fresh",
+        name: "Fresh Citrus Light",
+        shortName: "Light Lime",
+        mode: "light",
+        desc: "Crisp Citrus & Forest Lime",
+        bg: "#f7fee7",
+        card: "#ffffff",
+        cardAlt: "#fbfff2",
+        cardTop: "#ecfccb",
+        inputBg: "#f7fee7",
+        headerBg: "rgba(255, 255, 255, 0.92)",
+        footerBg: "rgba(247, 254, 231, 0.92)",
+        accent: "#65a30d",
+        accentHover: "#4d7c0f",
+        accentRgb: "101, 163, 13",
+        accentContrast: "#ffffff",
+        border: "#d9f99d",
+        text: "#1a2e05",
+        grad1: "#84cc16",
+        grad2: "#65a30d"
       }
     ];
 
@@ -1849,7 +2628,7 @@
       printShopAddress: "Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar",
       printShopPhone: "WA: 0889-0889-0176",
       printPaperWidth: "80mm",
-      printFontSize: "13px",
+      printFontSize: "15px",
       printFooterNote: "Barang yang tidak diambil lebih dari 30 hari di luar tanggung jawab kami. Terima kasih atas kepercayaan Anda.",
       printShowGaransi: true,
       printShowPin: true,
@@ -1895,15 +2674,24 @@
         metaTheme.setAttribute("content", theme.accent);
       }
 
-      const headerPill = document.getElementById("headerActiveThemePill");
-      if (headerPill) {
-        headerPill.innerText = theme.shortName;
-      }
-
       const modalBadge = document.getElementById("modalSelectedThemeBadge");
       if (modalBadge) {
         modalBadge.innerText = `Aktif: ${theme.name}`;
       }
+    }
+
+    function setThemeModeFilter(mode) {
+      activeThemeModeFilter = mode;
+      ["all", "dark", "light"].forEach((m) => {
+        const btn = document.getElementById(`themeFilterBtn-${m}`);
+        if (!btn) return;
+        if (m === mode) {
+          btn.className = "px-2.5 py-1 rounded-lg font-bold bg-neon-blue text-neon-dark transition cursor-pointer";
+        } else {
+          btn.className = "px-2.5 py-1 rounded-lg font-semibold text-slate-300 hover:text-white transition cursor-pointer";
+        }
+      });
+      renderWebsiteThemeGrid(selectedDraftThemeId);
     }
 
     function renderWebsiteThemeGrid(activeId) {
@@ -1911,7 +2699,26 @@
       if (!grid) return;
       grid.innerHTML = "";
 
-      WEBSITE_THEMES.forEach((t, index) => {
+      const searchEl = document.getElementById("themeSearchInput");
+      const keyword = (searchEl ? searchEl.value : "").toLowerCase().trim();
+
+      const filteredThemes = WEBSITE_THEMES.map((t, index) => ({ ...t, origIndex: index })).filter((t) => {
+        const matchesMode = activeThemeModeFilter === "all" || t.mode === activeThemeModeFilter;
+        const matchesKeyword =
+          !keyword ||
+          t.name.toLowerCase().includes(keyword) ||
+          t.desc.toLowerCase().includes(keyword) ||
+          t.shortName.toLowerCase().includes(keyword);
+        return matchesMode && matchesKeyword;
+      });
+
+      if (filteredThemes.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-400">Tidak ada tema yang cocok dengan pencarian Anda.</div>`;
+        return;
+      }
+
+      filteredThemes.forEach((t) => {
+        const index = t.origIndex;
         const isSelected = t.id === activeId;
         const modeBadge = t.mode === "light"
           ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40"><i class="fa-solid fa-sun mr-0.5"></i>Terang</span>`
@@ -3488,7 +4295,9 @@
       document.getElementById("printShopAddress").value = appSettings.printShopAddress || "Jl. Maluku No. 7 Karangtengah Sananwetan Kota Blitar";
       document.getElementById("printShopPhone").value = appSettings.printShopPhone || "WA: 0889-0889-0176";
       document.getElementById("printPaperWidth").value = appSettings.printPaperWidth || "80mm";
-      document.getElementById("printFontSize").value = appSettings.printFontSize || "13px";
+      const savedFont = appSettings.printFontSize || "15px";
+      const fontSelect = document.getElementById("printFontSize");
+      fontSelect.value = ["14px", "15px", "17px"].includes(savedFont) ? savedFont : "15px";
       document.getElementById("printFooterNote").value = appSettings.printFooterNote || "";
       document.getElementById("printShowGaransi").checked = appSettings.printShowGaransi !== false;
       document.getElementById("printShowPin").checked = appSettings.printShowPin !== false;
@@ -3793,52 +4602,6 @@
       }
     }
 
-    function insertShareVar(varText) {
-      const textarea = document.getElementById("shareTemplateInput");
-      if (!textarea) return;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const text = textarea.value;
-      textarea.value = text.substring(0, start) + varText + text.substring(end);
-      textarea.focus();
-      textarea.selectionStart = textarea.selectionEnd = start + varText.length;
-    }
-
-    function resetDefaultShareTemplate() {
-      const textarea = document.getElementById("shareTemplateInput");
-      if (textarea) textarea.value = DEFAULT_SHARE_TEMPLATE;
-      document.querySelectorAll('input[name="shareFormatMode"]').forEach((r) => {
-        r.checked = r.value === "image";
-      });
-    }
-
-    async function saveShareTemplateSetting() {
-      const tpl = document.getElementById("shareTemplateInput").value.trim();
-      if (!tpl) {
-        showCustomAlert("Template pesan bagikan status tidak boleh kosong!");
-        return;
-      }
-      const selectedShareModeEl = document.querySelector('input[name="shareFormatMode"]:checked');
-      const shareFormatMode = selectedShareModeEl ? selectedShareModeEl.value : "image";
-
-      appSettings.shareTemplate = tpl;
-      appSettings.shareFormatMode = shareFormatMode;
-      try {
-        localStorage.setItem("rovcell_app_settings", JSON.stringify(appSettings));
-      } catch (e) {}
-      try {
-        if (window.db && window.setDoc && window.doc) {
-          await window.setDoc(window.doc(window.db, "settings", "appConfig"), { shareTemplate: tpl, shareFormatMode }, { merge: true });
-        }
-        closeAdminProfileModal();
-        showCustomAlert("Template & format bagikan hasil cek status berhasil disimpan!", true);
-      } catch (e) {
-        console.error(e);
-        closeAdminProfileModal();
-        showCustomAlert("Template & format bagikan tersimpan di perangkat lokal.", true);
-      }
-    }
-
     async function savePrintSettings() {
       appSettings.printShopName = document.getElementById("printShopName").value.trim() || "ROVCELL SMARTPHONE";
       appSettings.printShopPhone = document.getElementById("printShopPhone").value.trim() || "WA: 0889-0889-0176";
@@ -3894,7 +4657,13 @@
 
     function buildThermalReceiptHtml(item) {
       const width = appSettings.printPaperWidth || "80mm";
-      const fontSize = appSettings.printFontSize || "13px";
+      const rawFontSize = parseInt(appSettings.printFontSize, 10);
+      const baseFontPx = !isNaN(rawFontSize) && rawFontSize >= 14 ? rawFontSize : 15;
+      const fontSize = `${baseFontPx}px`;
+      const headerFontPx = baseFontPx + 5;
+      const subFontPx = Math.max(12, baseFontPx - 2);
+      const totalFontPx = baseFontPx + 3;
+
       const cleanPhone = (item.phone || "").replace(/[^0-9]/g, "");
       const pin3 = cleanPhone.slice(-3) || "-";
       const cancelled = isStatusCancelled(item.status);
@@ -3910,7 +4679,7 @@
           garansiVal += ` (s/d ${exp})`;
         }
         garansiLine = `
-          <div style="display:flex; justify-content:space-between; margin-top:2px;">
+          <div style="display:flex; justify-content:space-between; margin-top:4px; font-weight:900;">
             <span>GARANSI:</span>
             <span>${garansiVal}</span>
           </div>
@@ -3920,32 +4689,32 @@
       let pinLine = "";
       if (appSettings.printShowPin !== false) {
         pinLine = `
-          <div style="margin-top:6px; padding:4px; border:2px dashed #000; text-align:center;">
-            <div style="font-size:11px;">CEK STATUS ONLINE: rovcell.online</div>
-            <div>NOTA: ${item.nota} | PIN: ${pin3}</div>
+          <div style="margin-top:8px; padding:6px; border:2.5px dashed #000; text-align:center; font-weight:900;">
+            <div style="font-size:${subFontPx}px;">CEK STATUS ONLINE: rovcell.online</div>
+            <div style="font-size:${baseFontPx + 1}px; margin-top:2px;">NOTA: ${item.nota} | PIN: ${pin3}</div>
           </div>
         `;
       }
 
       return `
-        <div style="width:${width}; max-width:${width}; background:#fff; color:#000; font-family:'Courier New', Courier, monospace; font-size:${fontSize}; font-weight:900; line-height:1.35; padding:4px 6px; box-sizing:border-box;">
-          <div style="text-align:center; border-bottom:2px dashed #000; padding-bottom:6px; margin-bottom:6px;">
-            <div style="font-size:16px; letter-spacing:0.5px;">${appSettings.printShopName}</div>
-            <div style="font-size:11px; margin-top:2px;">${appSettings.printShopAddress}</div>
-            <div style="font-size:11px;">${appSettings.printShopPhone}</div>
+        <div style="width:${width}; max-width:${width}; background:#fff; color:#000; font-family:Arial, Helvetica, sans-serif; font-size:${fontSize}; font-weight:900; line-height:1.42; padding:6px 8px; box-sizing:border-box; -webkit-text-stroke:0.25px #000;">
+          <div style="text-align:center; border-bottom:2.5px dashed #000; padding-bottom:8px; margin-bottom:8px;">
+            <div style="font-size:${headerFontPx}px; letter-spacing:0.6px; font-weight:900;">${appSettings.printShopName}</div>
+            <div style="font-size:${subFontPx}px; margin-top:3px; font-weight:900;">${appSettings.printShopAddress}</div>
+            <div style="font-size:${subFontPx}px; margin-top:2px; font-weight:900;">${appSettings.printShopPhone}</div>
           </div>
 
-          <div style="border-bottom:2px dashed #000; padding-bottom:5px; margin-bottom:5px;">
-            <div style="display:flex; justify-content:space-between;">
+          <div style="border-bottom:2.5px dashed #000; padding-bottom:7px; margin-bottom:7px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
               <span>NO NOTA:</span>
-              <span>${item.nota}</span>
+              <span style="font-size:${baseFontPx + 1}px;">${item.nota}</span>
             </div>
-            <div style="display:flex; justify-content:space-between;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
               <span>TGL MASUK:</span>
               <span>${formatDateDDMMYYYY(item.date)}</span>
             </div>
-            ${item.keluarDate ? `<div style="display:flex; justify-content:space-between;"><span>TGL KELUAR:</span><span>${formatDateDDMMYYYY(item.keluarDate)}</span></div>` : ""}
-            <div style="display:flex; justify-content:space-between;">
+            ${item.keluarDate ? `<div style="display:flex; justify-content:space-between; margin-bottom:2px;"><span>TGL KELUAR:</span><span>${formatDateDDMMYYYY(item.keluarDate)}</span></div>` : ""}
+            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
               <span>PELANGGAN:</span>
               <span>${item.nama}</span>
             </div>
@@ -3955,22 +4724,22 @@
             </div>
           </div>
 
-          <div style="border-bottom:2px dashed #000; padding-bottom:5px; margin-bottom:5px;">
-            <div>UNIT HP : ${item.merk}</div>
-            <div>KELUHAN : ${item.kerusakan}</div>
-            <div>STATUS : ${item.status}</div>
-            ${item.keterangan ? `<div>KET : ${item.keterangan}</div>` : ""}
+          <div style="border-bottom:2.5px dashed #000; padding-bottom:7px; margin-bottom:7px;">
+            <div style="margin-bottom:3px;">UNIT HP : ${item.merk}</div>
+            <div style="margin-bottom:3px;">KELUHAN : ${item.kerusakan}</div>
+            <div style="margin-bottom:3px;">STATUS : ${item.status}</div>
+            ${item.keterangan ? `<div style="margin-bottom:3px;">KET : ${item.keterangan}</div>` : ""}
             ${garansiLine}
           </div>
 
-          <div style="border-bottom:2px dashed #000; padding-bottom:6px; margin-bottom:6px;">
+          <div style="border-bottom:2.5px dashed #000; padding-bottom:8px; margin-bottom:8px;">
             ${cancelled ? "" : `
-              <div style="display:flex; justify-content:space-between; font-size:15px;">
+              <div style="display:flex; justify-content:space-between; font-size:${totalFontPx}px; font-weight:900;">
                 <span>TOTAL BIAYA:</span>
                 <span>${costText}</span>
               </div>
             `}
-            <div style="display:flex; justify-content:space-between; margin-top:2px;">
+            <div style="display:flex; justify-content:space-between; margin-top:4px; font-size:${baseFontPx + 1}px;">
               <span>STATUS BAYAR:</span>
               <span>${paidText}</span>
             </div>
@@ -3978,7 +4747,7 @@
 
           ${pinLine}
 
-          <div style="text-align:center; font-size:11px; margin-top:6px;">
+          <div style="text-align:center; font-size:${subFontPx}px; margin-top:8px; font-weight:900;">
             ${appSettings.printFooterNote || ""}
           </div>
         </div>
@@ -4226,23 +4995,15 @@
         ? `<button type="button" onclick="openQrisModal('${found.nota}')" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer"><i class="fa-solid fa-qrcode text-base"></i> Bayar Sekarang via QRIS</button>`
         : "";
 
-      const shareMode = appSettings.shareFormatMode || "image";
       const shareBtnLabel = "Bagikan";
-      const shareBtnIcon = shareMode === "text" ? "fa-share-nodes" : "fa-image";
+      const shareBtnIcon = "fa-share-nodes";
 
       container.innerHTML = `
         <div class="bg-neon-card rounded-2xl neon-glow border border-neon-border overflow-hidden shadow-lg">
           <!-- Header Ringkas -->
           <div class="bg-gradient-to-r from-[#0c223b] to-neon-card px-4 py-3 border-b border-slate-800/90 flex items-center justify-between gap-2">
             <div class="min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="font-orbitron font-bold text-neon-blue text-xs sm:text-sm">${found.nota}</span>
-                <span class="text-slate-600">•</span>
-                <span class="font-bold text-white text-xs sm:text-sm truncate max-w-[140px] sm:max-w-[220px]">${found.nama}</span>
-              </div>
-              <div class="text-[10px] text-slate-400 mt-0.5">
-                Masuk: ${formatDateDDMMYYYY(found.date)}${found.keluarDate ? ` • Keluar: ${formatDateDDMMYYYY(found.keluarDate)}` : ""}
-              </div>
+              <span class="inline-flex items-center px-3 py-1.5 rounded-xl bg-cyan-500/20 border-2 border-neon-blue/70 font-orbitron font-black text-neon-blue text-sm sm:text-base leading-none tracking-wider shadow-[0_0_12px_rgba(0,243,255,0.28)]">${found.nota}</span>
             </div>
             <div class="shrink-0">
               <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-sm sm:text-base font-extrabold tracking-wide border shadow-md ${badgeClass}">${found.status}</span>
@@ -4252,6 +5013,24 @@
           <!-- Isi Ringkas -->
           <div class="p-4 space-y-3">
             ${progressBar}
+
+            <!-- Tabel Terpisah: Nama Pelanggan (Tebal) & Tanggal Masuk / Keluar -->
+            <div class="rounded-xl bg-neon-dark/80 border border-slate-800/90 divide-y divide-slate-800/70 text-xs overflow-hidden">
+              <div class="px-3.5 py-2.5 flex items-center gap-2 min-w-0">
+                <i class="fa-regular fa-user text-neon-blue shrink-0"></i>
+                <span class="font-extrabold text-white text-sm tracking-wide truncate">${found.nama}</span>
+              </div>
+              <div class="grid grid-cols-2 divide-x divide-slate-800/70 text-[11px]">
+                <div class="px-3.5 py-2 flex items-center gap-1.5">
+                  <i class="fa-regular fa-calendar text-neon-blue shrink-0"></i>
+                  <span class="text-slate-400">Masuk: <strong class="text-slate-200 font-semibold">${formatDateDDMMYYYY(found.date)}</strong></span>
+                </div>
+                <div class="px-3.5 py-2 flex items-center gap-1.5">
+                  <i class="fa-regular fa-calendar-check text-emerald-400 shrink-0"></i>
+                  <span class="text-slate-400">Keluar: <strong class="text-slate-200 font-semibold">${found.keluarDate ? formatDateDDMMYYYY(found.keluarDate) : "-"}</strong></span>
+                </div>
+              </div>
+            </div>
 
             <!-- Info Unit, Keluhan & Keterangan dalam 1 Kotak Padat -->
             <div class="rounded-xl bg-neon-dark/80 border border-slate-800/90 divide-y divide-slate-800/70 text-xs">
@@ -4546,7 +5325,8 @@
     async function generateStatusShareCardBlob(item, garansiText, overrideImgConfig = null) {
       const imgCfg = overrideImgConfig || getShareImageConfig();
       const canvas = document.createElement("canvas");
-      const width = 900;
+      const width = 820;
+      const ctx = canvas.getContext("2d");
 
       const cancelled = isStatusCancelled(item.status);
       const checking = isStatusChecking(item.status);
@@ -4563,41 +5343,23 @@
         ? "-"
         : `Rp ${parseFormattedNumber(item.biaya).toLocaleString("id-ID")}`;
 
-      const rows = [
-        { label: "Nomor Nota", value: item.nota || "-", highlight: true },
-        { label: "Nama Pelanggan", value: item.nama || "-" },
-        ...(imgCfg.showDates ? [
-          { label: "Tanggal Masuk", value: formatDateDDMMYYYY(item.date) },
-          ...(item.keluarDate ? [{ label: "Tanggal Keluar", value: formatDateDDMMYYYY(item.keluarDate) }] : [])
-        ] : []),
-        { label: "Unit HP", value: item.merk || "-" },
-        ...(imgCfg.showIssue ? [{ label: "Kerusakan", value: item.kerusakan || "-" }] : []),
-        ...(imgCfg.showNotes ? [{ label: "Keterangan", value: item.keterangan || "-" }] : []),
-        ...(imgCfg.showPayment ? [{ label: "Status Pembayaran", value: paidStatus }] : []),
-        ...(imgCfg.showCost ? [{ label: "Total Biaya", value: costDisplay, highlight: true }] : []),
-        ...(imgCfg.showWarranty ? [{ label: "Garansi", value: garansiText }] : [])
-      ];
-
-      const height = Math.max(760, 480 + rows.length * 56);
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d");
-
       const activeTheme = getThemeById(appSettings.websiteTheme || "cyber-cyan");
       let palette = {
         bg1: "#050b14",
         bg2: "#0a192f",
         bg3: "#040911",
-        cardFill: "rgba(10, 25, 47, 0.94)",
+        cardFill: "#0a192f",
+        headerFill: "#0c223b",
+        panelFill: "rgba(5, 11, 20, 0.85)",
         accent: activeTheme.mode === "light" ? "#00f3ff" : activeTheme.accent,
         subText: "#94a3b8",
         labelText: "#94a3b8",
         valueText: "#ffffff",
-        divider: "rgba(148, 163, 184, 0.15)",
-        footerFill: "rgba(0, 243, 255, 0.1)",
+        divider: "rgba(30, 58, 138, 0.55)",
+        footerFill: "rgba(5, 11, 20, 0.9)",
         footerStroke: "rgba(0, 243, 255, 0.35)",
         footerText: "#e2e8f0",
-        gridStroke: "rgba(0, 243, 255, 0.08)"
+        gridStroke: "rgba(0, 243, 255, 0.07)"
       };
 
       if (imgCfg.cardTheme === "cyber") {
@@ -4606,37 +5368,62 @@
         palette.bg1 = "#04120c";
         palette.bg2 = "#092117";
         palette.bg3 = "#020c08";
-        palette.cardFill = "rgba(9, 33, 23, 0.94)";
+        palette.cardFill = "#092117";
+        palette.headerFill = "#0d2e20";
+        palette.panelFill = "rgba(4, 18, 12, 0.85)";
         palette.accent = "#10b981";
-        palette.footerFill = "rgba(16, 185, 129, 0.12)";
         palette.footerStroke = "rgba(16, 185, 129, 0.35)";
-        palette.gridStroke = "rgba(16, 185, 129, 0.08)";
+        palette.gridStroke = "rgba(16, 185, 129, 0.07)";
       } else if (imgCfg.cardTheme === "gold") {
         palette.bg1 = "#120d05";
         palette.bg2 = "#21180a";
         palette.bg3 = "#0c0803";
-        palette.cardFill = "rgba(33, 24, 10, 0.94)";
+        palette.cardFill = "#21180a";
+        palette.headerFill = "#2e220e";
+        palette.panelFill = "rgba(18, 13, 5, 0.85)";
         palette.accent = "#f59e0b";
-        palette.footerFill = "rgba(245, 158, 11, 0.12)";
         palette.footerStroke = "rgba(245, 158, 11, 0.35)";
-        palette.gridStroke = "rgba(245, 158, 11, 0.08)";
+        palette.gridStroke = "rgba(245, 158, 11, 0.07)";
       } else if (imgCfg.cardTheme === "light") {
         palette = {
           bg1: "#e2e8f0",
-          bg2: "#f8fafc",
+          bg2: "#f1f5f9",
           bg3: "#cbd5e1",
           cardFill: "#ffffff",
+          headerFill: "#e0f2fe",
+          panelFill: "#f8fafc",
           accent: "#0284c7",
           subText: "#475569",
           labelText: "#64748b",
           valueText: "#0f172a",
-          divider: "rgba(15, 23, 42, 0.12)",
-          footerFill: "rgba(2, 132, 199, 0.08)",
-          footerStroke: "rgba(2, 132, 199, 0.3)",
+          divider: "#e2e8f0",
+          footerFill: "#f1f5f9",
+          footerStroke: "#bae6fd",
           footerText: "#0f172a",
           gridStroke: "rgba(2, 132, 199, 0.06)"
         };
       }
+
+      const isLightCard = imgCfg.cardTheme === "light";
+
+      // Hitung baris dinamis untuk tinggi kanvas yang presisi
+      ctx.font = "700 21px 'Plus Jakarta Sans', sans-serif";
+      const merkLines = wrapCanvasText(ctx, item.merk || "-", 330);
+      const kerusakanLines = wrapCanvasText(ctx, item.kerusakan || "-", 330);
+      ctx.font = "600 19px 'Plus Jakarta Sans', sans-serif";
+      const ketLines = imgCfg.showNotes !== false ? wrapCanvasText(ctx, item.keterangan || "-", 620) : [];
+
+      const topBarH = 92;
+      const progressH = 148;
+      const customerBoxH = imgCfg.showDates !== false ? 106 : 62;
+      const deviceBoxH = 44 + Math.max(merkLines.length, kerusakanLines.length) * 26 + (imgCfg.showNotes !== false ? 20 + ketLines.length * 24 : 0);
+      const warrantyH = !cancelled && imgCfg.showWarranty !== false && garansiText && garansiText !== "Tidak ada" ? 74 : 0;
+      const costBoxH = 94;
+      const footerH = 56;
+      const height = 40 + topBarH + 22 + progressH + 16 + customerBoxH + 16 + deviceBoxH + (warrantyH ? 16 + warrantyH : 0) + 16 + costBoxH + 16 + footerH + 40;
+
+      canvas.width = width;
+      canvas.height = height;
 
       const bgGrad = ctx.createLinearGradient(0, 0, width, height);
       bgGrad.addColorStop(0, palette.bg1);
@@ -4648,13 +5435,13 @@
       if (imgCfg.showGrid !== false) {
         ctx.strokeStyle = palette.gridStroke;
         ctx.lineWidth = 1;
-        for (let gx = 45; gx < width; gx += 45) {
+        for (let gx = 40; gx < width; gx += 40) {
           ctx.beginPath();
           ctx.moveTo(gx, 0);
           ctx.lineTo(gx, height);
           ctx.stroke();
         }
-        for (let gy = 45; gy < height; gy += 45) {
+        for (let gy = 40; gy < height; gy += 40) {
           ctx.beginPath();
           ctx.moveTo(0, gy);
           ctx.lineTo(width, gy);
@@ -4662,98 +5449,369 @@
         }
       }
 
-      drawRoundedRectPath(ctx, 40, 40, width - 80, height - 80, 32);
+      // Kartu Utama Mirip Hasil Pengecekan
+      const cardX = 32;
+      const cardY = 32;
+      const cardW = width - 64;
+      const cardH = height - 64;
+
+      drawRoundedRectPath(ctx, cardX, cardY, cardW, cardH, 28);
       ctx.fillStyle = palette.cardFill;
       ctx.fill();
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = palette.accent;
+      ctx.stroke();
+
+      // Header Bar: Nomor Nota di kiri, Badge Status di kanan
+      drawRoundedRectPath(ctx, cardX + 2, cardY + 2, cardW - 4, topBarH, 26);
+      ctx.fillStyle = palette.headerFill;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(cardX + 16, cardY + topBarH);
+      ctx.lineTo(cardX + cardW - 16, cardY + topBarH);
+      ctx.strokeStyle = palette.divider;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Badge Nomor Nota
+      ctx.font = "800 25px Orbitron, sans-serif";
+      const notaStr = item.nota || "-";
+      const notaBadgeW = Math.max(165, ctx.measureText(notaStr).width + 44);
+      const notaBadgeX = cardX + 24;
+      const notaBadgeY = cardY + (topBarH - 48) / 2;
+      drawRoundedRectPath(ctx, notaBadgeX, notaBadgeY, notaBadgeW, 48, 14);
+      ctx.fillStyle = isLightCard ? "rgba(2, 132, 199, 0.14)" : "rgba(0, 243, 255, 0.18)";
+      ctx.fill();
+      ctx.lineWidth = 2;
       ctx.strokeStyle = palette.accent;
       ctx.stroke();
 
       ctx.fillStyle = palette.accent;
-      ctx.font = "800 40px Orbitron, sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText(imgCfg.headerTitle || "ROVCELL SMARTPHONE", width / 2, 118);
+      ctx.textBaseline = "middle";
+      ctx.fillText(notaStr, notaBadgeX + notaBadgeW / 2, notaBadgeY + 25);
 
-      ctx.fillStyle = palette.subText;
-      ctx.font = "600 19px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText(imgCfg.subHeader || "SMARTPHONE SERVICE CENTER • KOTA BLITAR", width / 2, 152);
-
-      ctx.strokeStyle = palette.divider;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(85, 182);
-      ctx.lineTo(width - 85, 182);
-      ctx.stroke();
-
-      let statusBg = imgCfg.cardTheme === "light" ? "rgba(2, 132, 199, 0.1)" : "rgba(0, 243, 255, 0.16)";
+      // Badge Status Kanan
+      let statusBg = isLightCard ? "rgba(2, 132, 199, 0.12)" : "rgba(0, 243, 255, 0.14)";
       let statusBorder = palette.accent;
       let statusText = palette.accent;
       if (item.status === "Selesai" || item.status === "Diambil") {
         statusBg = "rgba(16, 185, 129, 0.16)";
         statusBorder = "#10b981";
-        statusText = imgCfg.cardTheme === "light" ? "#047857" : "#34d399";
+        statusText = isLightCard ? "#047857" : "#34d399";
       } else if (item.status === "Menunggu Sparepart") {
         statusBg = "rgba(245, 158, 11, 0.16)";
         statusBorder = "#f59e0b";
-        statusText = imgCfg.cardTheme === "light" ? "#b45309" : "#fbbf24";
+        statusText = isLightCard ? "#b45309" : "#fbbf24";
       } else if (checking) {
         statusBg = "rgba(234, 179, 8, 0.16)";
         statusBorder = "#eab308";
-        statusText = imgCfg.cardTheme === "light" ? "#a16207" : "#facc15";
+        statusText = isLightCard ? "#a16207" : "#facc15";
       } else if (cancelled) {
-        statusBg = "rgba(239, 68, 68, 0.16)";
+        statusBg = "rgba(239, 68, 68, 0.18)";
         statusBorder = "#ef4444";
-        statusText = imgCfg.cardTheme === "light" ? "#be123c" : "#f87171";
+        statusText = isLightCard ? "#be123c" : "#f87171";
       }
 
-      drawRoundedRectPath(ctx, 85, 208, width - 170, 96, 20);
+      ctx.font = "800 18px 'Plus Jakarta Sans', sans-serif";
+      const stStr = String(item.status || "-");
+      const stBadgeW = Math.min(390, Math.max(150, ctx.measureText(stStr).width + 42));
+      const stBadgeX = cardX + cardW - 24 - stBadgeW;
+      const stBadgeY = cardY + (topBarH - 44) / 2;
+      drawRoundedRectPath(ctx, stBadgeX, stBadgeY, stBadgeW, 44, 22);
       ctx.fillStyle = statusBg;
       ctx.fill();
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.8;
       ctx.strokeStyle = statusBorder;
       ctx.stroke();
 
-      ctx.fillStyle = palette.subText;
-      ctx.font = "600 18px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText(imgCfg.statusLabel || "STATUS PERBAIKAN SAAT INI", width / 2, 243);
-
       ctx.fillStyle = statusText;
-      ctx.font = "800 30px Orbitron, sans-serif";
-      ctx.fillText(String(item.status || "-").toUpperCase(), width / 2, 284);
+      ctx.fillText(stStr, stBadgeX + stBadgeW / 2, stBadgeY + 23);
+      ctx.textBaseline = "alphabetic";
 
-      let curY = 352;
-      const leftX = 95;
-      const rightX = width - 95;
+      let curY = cardY + topBarH + 20;
+      const innerX = cardX + 24;
+      const innerW = cardW - 48;
 
-      rows.forEach((row) => {
-        ctx.textAlign = "left";
-        ctx.fillStyle = palette.labelText;
-        ctx.font = "500 22px 'Plus Jakarta Sans', sans-serif";
-        ctx.fillText(row.label, leftX, curY);
+      // Blok Progres 4 Langkah atau Status Dibatalkan
+      drawRoundedRectPath(ctx, innerX, curY, innerW, progressH, 18);
+      ctx.fillStyle = cancelled ? "rgba(239, 68, 68, 0.12)" : palette.panelFill;
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = cancelled ? "rgba(239, 68, 68, 0.45)" : palette.divider;
+      ctx.stroke();
 
-        ctx.textAlign = "right";
-        ctx.fillStyle = row.highlight ? palette.accent : palette.valueText;
-        ctx.font = row.highlight
-          ? "800 24px Orbitron, sans-serif"
-          : "700 22px 'Plus Jakarta Sans', sans-serif";
-
-        const wrapped = wrapCanvasText(ctx, row.value, 430);
-        wrapped.forEach((line, lineIdx) => {
-          ctx.fillText(line, rightX, curY + lineIdx * 28);
+      if (cancelled) {
+        ctx.textAlign = "center";
+        ctx.fillStyle = isLightCard ? "#be123c" : "#f87171";
+        ctx.font = "800 26px Orbitron, sans-serif";
+        ctx.fillText("SERVICE DIBATALKAN", innerX + innerW / 2, curY + 66);
+        ctx.fillStyle = palette.subText;
+        ctx.font = "500 18px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("Proses perbaikan untuk unit ini telah dibatalkan.", innerX + innerW / 2, curY + 102);
+      } else {
+        const steps = [
+          { label: "Pengecekan", match: ["Menunggu Pengecekan"] },
+          { label: "Perbaikan", match: ["Sedang Dikerjakan", "Menunggu Sparepart"] },
+          { label: "Selesai", match: ["Selesai"] },
+          { label: "Diambil", match: ["Diambil"] }
+        ];
+        let activeIdx = 0;
+        steps.forEach((st, idx) => {
+          if (st.match.includes(item.status)) activeIdx = idx;
         });
 
-        const rowHeight = Math.max(46, wrapped.length * 28 + 18);
-        ctx.strokeStyle = palette.divider;
-        ctx.lineWidth = 1;
+        const stepCount = steps.length;
+        const padX = 85;
+        const trackStartX = innerX + padX;
+        const trackEndX = innerX + innerW - padX;
+        const trackY = curY + 52;
+        const trackW = trackEndX - trackStartX;
+        const progressRatio = activeIdx / (stepCount - 1);
+
+        // Garis jalur abu-abu
+        ctx.strokeStyle = isLightCard ? "#cbd5e1" : "#1e293b";
+        ctx.lineWidth = 6;
+        ctx.lineCap = "round";
         ctx.beginPath();
-        ctx.moveTo(leftX, curY + rowHeight - 28);
-        ctx.lineTo(rightX, curY + rowHeight - 28);
+        ctx.moveTo(trackStartX, trackY);
+        ctx.lineTo(trackEndX, trackY);
         ctx.stroke();
 
-        curY += rowHeight;
+        // Garis progres aktif
+        if (progressRatio > 0) {
+          ctx.strokeStyle = palette.accent;
+          ctx.lineWidth = 6;
+          ctx.beginPath();
+          ctx.moveTo(trackStartX, trackY);
+          ctx.lineTo(trackStartX + trackW * progressRatio, trackY);
+          ctx.stroke();
+        }
+
+        steps.forEach((step, idx) => {
+          const cx = trackStartX + (trackW * idx) / (stepCount - 1);
+          const isCompleted = idx <= activeIdx;
+          const isCurrent = idx === activeIdx;
+
+          if (isCurrent) {
+            ctx.beginPath();
+            ctx.arc(cx, trackY, 27, 0, Math.PI * 2);
+            ctx.fillStyle = isLightCard ? "rgba(2, 132, 199, 0.16)" : "rgba(0, 243, 255, 0.2)";
+            ctx.fill();
+          }
+
+          ctx.beginPath();
+          ctx.arc(cx, trackY, 20, 0, Math.PI * 2);
+          ctx.fillStyle = isCompleted ? palette.accent : (isLightCard ? "#e2e8f0" : "#0f172a");
+          ctx.fill();
+          ctx.lineWidth = 2.5;
+          ctx.strokeStyle = isCompleted ? palette.accent : (isLightCard ? "#94a3b8" : "#334155");
+          ctx.stroke();
+
+          ctx.fillStyle = isCompleted ? (isLightCard ? "#ffffff" : "#050b14") : palette.subText;
+          ctx.font = "800 16px Orbitron, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(isCompleted ? "✓" : String(idx + 1), cx, trackY + 1);
+          ctx.textBaseline = "alphabetic";
+
+          ctx.fillStyle = isCurrent ? palette.accent : (isCompleted ? palette.valueText : palette.subText);
+          ctx.font = isCurrent ? "700 16px 'Plus Jakarta Sans', sans-serif" : "600 15px 'Plus Jakarta Sans', sans-serif";
+          ctx.fillText(step.label, cx, trackY + 48);
+        });
+      }
+
+      curY += progressH + 16;
+
+      // Blok Pelanggan & Tanggal Masuk / Keluar
+      drawRoundedRectPath(ctx, innerX, curY, innerW, customerBoxH, 16);
+      ctx.fillStyle = palette.panelFill;
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = palette.divider;
+      ctx.stroke();
+
+      ctx.textAlign = "left";
+      ctx.fillStyle = palette.valueText;
+      ctx.font = "800 22px 'Plus Jakarta Sans', sans-serif";
+      const namaWrapped = wrapCanvasText(ctx, item.nama || "-", innerW - 36);
+      ctx.fillText(namaWrapped[0], innerX + 18, curY + 38);
+
+      if (imgCfg.showDates !== false) {
+        const splitMidY = curY + 56;
+        ctx.beginPath();
+        ctx.moveTo(innerX, splitMidY);
+        ctx.lineTo(innerX + innerW, splitMidY);
+        ctx.strokeStyle = palette.divider;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        const halfW = innerW / 2;
+        ctx.beginPath();
+        ctx.moveTo(innerX + halfW, splitMidY);
+        ctx.lineTo(innerX + halfW, curY + customerBoxH);
+        ctx.stroke();
+
+        ctx.font = "600 17px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillStyle = palette.labelText;
+        ctx.fillText(`Masuk: `, innerX + 18, curY + 86);
+        const mLabelW = ctx.measureText("Masuk: ").width;
+        ctx.fillStyle = palette.valueText;
+        ctx.font = "700 17px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText(formatDateDDMMYYYY(item.date), innerX + 18 + mLabelW, curY + 86);
+
+        ctx.font = "600 17px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillStyle = palette.labelText;
+        ctx.fillText(`Keluar: `, innerX + halfW + 18, curY + 86);
+        const kLabelW = ctx.measureText("Keluar: ").width;
+        ctx.fillStyle = palette.valueText;
+        ctx.font = "700 17px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText(item.keluarDate ? formatDateDDMMYYYY(item.keluarDate) : "-", innerX + halfW + 18 + kLabelW, curY + 86);
+      }
+
+      curY += customerBoxH + 16;
+
+      // Blok Unit HP, Kerusakan & Keterangan
+      drawRoundedRectPath(ctx, innerX, curY, innerW, deviceBoxH, 16);
+      ctx.fillStyle = palette.panelFill;
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = palette.divider;
+      ctx.stroke();
+
+      const topPairH = 24 + Math.max(merkLines.length, kerusakanLines.length) * 26;
+      const halfDevW = innerW / 2;
+
+      ctx.beginPath();
+      ctx.moveTo(innerX + halfDevW, curY + 10);
+      ctx.lineTo(innerX + halfDevW, curY + topPairH - 6);
+      ctx.strokeStyle = palette.divider;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      ctx.textAlign = "left";
+      ctx.fillStyle = palette.labelText;
+      ctx.font = "600 15px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText("Unit HP", innerX + 18, curY + 28);
+
+      ctx.fillStyle = palette.valueText;
+      ctx.font = "700 20px 'Plus Jakarta Sans', sans-serif";
+      merkLines.forEach((line, idx) => {
+        ctx.fillText(line, innerX + 18, curY + 54 + idx * 25);
       });
 
-      drawRoundedRectPath(ctx, 85, height - 135, width - 170, 62, 16);
+      ctx.fillStyle = palette.labelText;
+      ctx.font = "600 15px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText("Kerusakan", innerX + halfDevW + 18, curY + 28);
+
+      ctx.fillStyle = palette.valueText;
+      ctx.font = "700 20px 'Plus Jakarta Sans', sans-serif";
+      kerusakanLines.forEach((line, idx) => {
+        ctx.fillText(line, innerX + halfDevW + 18, curY + 54 + idx * 25);
+      });
+
+      if (imgCfg.showNotes !== false) {
+        ctx.beginPath();
+        ctx.moveTo(innerX, curY + topPairH);
+        ctx.lineTo(innerX + innerW, curY + topPairH);
+        ctx.strokeStyle = palette.divider;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        ctx.fillStyle = palette.labelText;
+        ctx.font = "600 17px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("Ket:", innerX + 18, curY + topPairH + 28);
+        const ketLabelW = ctx.measureText("Ket: ").width;
+
+        ctx.fillStyle = palette.valueText;
+        ctx.font = "600 17px 'Plus Jakarta Sans', sans-serif";
+        ketLines.forEach((line, idx) => {
+          ctx.fillText(line, innerX + 18 + ketLabelW + 4, curY + topPairH + 28 + idx * 23);
+        });
+      }
+
+      curY += deviceBoxH + 16;
+
+      // Blok Garansi (jika ada)
+      if (warrantyH > 0) {
+        drawRoundedRectPath(ctx, innerX, curY, innerW, warrantyH, 16);
+        ctx.fillStyle = isLightCard ? "rgba(2, 132, 199, 0.08)" : "rgba(0, 243, 255, 0.1)";
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = palette.footerStroke;
+        ctx.stroke();
+
+        ctx.textAlign = "left";
+        ctx.fillStyle = palette.labelText;
+        ctx.font = "600 15px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("Informasi Garansi", innerX + 18, curY + 26);
+
+        ctx.fillStyle = palette.accent;
+        ctx.font = "700 19px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText(garansiText, innerX + 18, curY + 54);
+
+        curY += warrantyH + 16;
+      }
+
+      // Blok Total Biaya & Status Pembayaran
+      drawRoundedRectPath(ctx, innerX, curY, innerW, costBoxH, 16);
+      ctx.fillStyle = palette.panelFill;
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = cancelled ? "rgba(239, 68, 68, 0.5)" : palette.footerStroke;
+      ctx.stroke();
+
+      ctx.textAlign = "left";
+      ctx.fillStyle = palette.labelText;
+      ctx.font = "700 18px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText(cancelled ? "Status" : "Total Biaya", innerX + 20, curY + 34);
+
+      if (imgCfg.showPayment !== false) {
+        ctx.font = "700 15px 'Plus Jakarta Sans', sans-serif";
+        const payW = Math.max(120, ctx.measureText(paidStatus).width + 26);
+        const payX = innerX + 20;
+        const payY = curY + 46;
+        drawRoundedRectPath(ctx, payX, payY, payW, 32, 16);
+
+        let payBg = isLightCard ? "#fee2e2" : "rgba(239, 68, 68, 0.18)";
+        let payFg = isLightCard ? "#be123c" : "#f87171";
+        let payBd = "rgba(239, 68, 68, 0.45)";
+
+        if (!cancelled && !checking && item.isPaid) {
+          payBg = isLightCard ? "#dcfce7" : "rgba(16, 185, 129, 0.18)";
+          payFg = isLightCard ? "#047857" : "#34d399";
+          payBd = "rgba(16, 185, 129, 0.45)";
+        } else if (!cancelled && checking) {
+          payBg = isLightCard ? "#fef9c3" : "rgba(234, 179, 8, 0.18)";
+          payFg = isLightCard ? "#a16207" : "#facc15";
+          payBd = "rgba(234, 179, 8, 0.45)";
+        }
+
+        ctx.fillStyle = payBg;
+        ctx.fill();
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = payBd;
+        ctx.stroke();
+
+        ctx.fillStyle = payFg;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(paidStatus, payX + payW / 2, payY + 17);
+        ctx.textBaseline = "alphabetic";
+      }
+
+      if (!cancelled && imgCfg.showCost !== false) {
+        ctx.textAlign = "right";
+        ctx.fillStyle = palette.accent;
+        ctx.font = "800 30px Orbitron, sans-serif";
+        ctx.fillText(costDisplay, innerX + innerW - 20, curY + 58);
+      }
+
+      curY += costBoxH + 16;
+
+      // Footer Bar
+      drawRoundedRectPath(ctx, innerX, curY, innerW, footerH, 14);
       ctx.fillStyle = palette.footerFill;
       ctx.fill();
       ctx.lineWidth = 1.5;
@@ -4762,8 +5820,8 @@
 
       ctx.textAlign = "center";
       ctx.fillStyle = palette.footerText;
-      ctx.font = "600 19px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText(imgCfg.footerText || "Lacak Online: https://rovcell.online  •  WA: 0889-0889-0176", width / 2, height - 97);
+      ctx.font = "600 17px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText(imgCfg.footerText || "Lacak Online: https://rovcell.online  •  WA: 0889-0889-0176", innerX + innerW / 2, curY + 34);
 
       return new Promise((resolve) => {
         canvas.toBlob((blob) => resolve(blob), "image/png");
