@@ -333,7 +333,21 @@
       }
     }
   </style>
+  <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" id="metaThemeColor" content="#00f3ff">
+  <link rel="icon" type="image/png" href="./icon-192.png">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('ServiceWorker registered: ', reg))
+          .catch(err => console.log('ServiceWorker registration failed: ', err));
+      });
+    }
+  </script>
 </head>
 
 <body class="circuit-bg min-h-screen flex flex-col justify-between">
