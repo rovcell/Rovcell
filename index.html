@@ -594,36 +594,6 @@
               <input type="text" inputmode="numeric" id="inputBiaya" oninput="handleCurrencyInput(this)" value="-" readonly required class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-slate-400 text-xs sm:text-sm font-semibold focus:outline-none focus:border-neon-blue opacity-60 cursor-not-allowed">
             </div>
 
-            <!-- Baris 2: No. WhatsApp & Merk / Type HP -->
-            <div class="space-y-1">
-              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-brands fa-whatsapp text-emerald-400 mr-1"></i>No. WhatsApp</label>
-              <input type="tel" inputmode="numeric" pattern="[0-9]*" id="inputPhone" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required placeholder="08xxxxxxxxxx" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-blue">
-            </div>
-            <div class="space-y-1">
-              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-mobile-screen text-neon-blue mr-1"></i>Merk / Type HP</label>
-              <input type="text" id="inputMerk" required placeholder="iPhone 18 Pro Max" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-blue">
-            </div>
-
-            <!-- Baris 3: Kerusakan & Keterangan Perbaikan -->
-            <div class="space-y-1">
-              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i>Kerusakan</label>
-              <input type="text" id="inputKerusakan" required placeholder="Mati Total / Ganti LCD" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-blue">
-            </div>
-            <div class="space-y-1">
-              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-clipboard-list text-neon-blue mr-1"></i>Keterangan</label>
-              <input type="text" id="inputKeterangan" placeholder="Detail / kelengkapan..." class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-blue">
-            </div>
-
-            <!-- Baris 4: Harga Modal & Biaya Service / Jual -->
-            <div class="space-y-1">
-              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-microchip text-rose-400 mr-1"></i>Harga Modal (Rp)</label>
-              <input type="text" inputmode="numeric" id="inputModal" oninput="handleCurrencyInput(this)" value="-" readonly required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-slate-400 text-xs sm:text-sm font-semibold focus:outline-none focus:border-neon-blue opacity-60 cursor-not-allowed">
-            </div>
-            <div class="space-y-1">
-              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-tag text-cyan-400 mr-1"></i>Biaya Jual (Rp)</label>
-              <input type="text" inputmode="numeric" id="inputBiaya" oninput="handleCurrencyInput(this)" value="-" readonly required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-slate-400 text-xs sm:text-sm font-semibold focus:outline-none focus:border-neon-blue opacity-60 cursor-not-allowed">
-            </div>
-
             <!-- Baris 5: Ringkasan Laba Bersih & Status Lunas -->
             <div class="bg-neon-dark/90 border border-neon-border rounded-xl px-2.5 py-2 flex flex-col justify-center gap-0.5 text-[10px] sm:text-xs">
               <div class="flex items-center justify-between">
