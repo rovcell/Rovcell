@@ -89,6 +89,14 @@
       font-size: 16px !important;
     }
 
+    /* Ukuran dropdown status pengerjaan yang proporsional di daftar service */
+    select.status-select-compact {
+      font-size: 12px !important;
+      line-height: 1.25 !important;
+      padding-top: 0.375rem !important;
+      padding-bottom: 0.375rem !important;
+    }
+
     /* Dynamic Theme Overrides for Tailwind & Custom Surfaces */
     .bg-neon-dark {
       background-color: var(--theme-bg) !important;
@@ -603,6 +611,23 @@
           </div>
           <div id="recentChipsList" class="flex flex-wrap gap-2"></div>
         </div>
+      </div>
+
+      <!-- Tombol Unduh / Install Aplikasi Android (APK) -->
+      <div class="bg-neon-card/90 p-3.5 rounded-2xl border border-cyan-500/30 flex items-center justify-between gap-3 shadow-[0_0_16px_rgba(0,243,255,0.1)]">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-400/40 flex items-center justify-center text-emerald-400 shrink-0">
+            <i class="fa-brands fa-android text-xl"></i>
+          </div>
+          <div class="min-w-0">
+            <div class="text-xs sm:text-sm font-bold text-white truncate">Aplikasi Rovcell Android</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-400 truncate">Cek status service lebih cepat langsung dari HP</div>
+          </div>
+        </div>
+        <button type="button" onclick="triggerApkDownload()" class="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 shrink-0 cursor-pointer">
+          <i class="fa-solid fa-download"></i>
+          <span>Unduh APK</span>
+        </button>
       </div>
 
       <div id="searchResultContainer" class="hidden space-y-4"></div>
@@ -1570,9 +1595,48 @@
   </div>
 
   <!-- Footer -->
-  <footer class="border-t border-neon-border bg-neon-dark/80 py-4 text-center text-xs text-slate-500 font-orbitron relative z-10">
-    &copy; 2020 ROVCELL SMARTPHONE. All Rights Reserved.
+  <footer class="border-t border-neon-border bg-neon-dark/80 py-4 px-4 text-center text-xs text-slate-500 font-orbitron relative z-10 space-y-2">
+    <div>&copy; 2020 ROVCELL SMARTPHONE. All Rights Reserved.</div>
+    <div>
+      <button type="button" onclick="triggerApkDownload()" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/35 text-emerald-300 font-sans text-[11px] font-semibold transition cursor-pointer">
+        <i class="fa-brands fa-android"></i>
+        <span>Unduh Aplikasi Android (APK)</span>
+      </button>
+    </div>
   </footer>
+
+  <!-- Modal Unduh / Install APK -->
+  <div id="apkDownloadModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-neon-card p-6 rounded-2xl border border-neon-border neon-glow max-w-sm w-full space-y-4 text-center relative">
+      <button type="button" onclick="closeApkModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-400/40 flex items-center justify-center mx-auto text-emerald-400 text-2xl shadow-[0_0_18px_rgba(16,185,129,0.25)]">
+        <i class="fa-brands fa-android"></i>
+      </div>
+      <div class="space-y-1">
+        <h3 class="font-orbitron font-bold text-white text-base">Unduh Aplikasi Rovcell</h3>
+        <p class="text-[11px] text-slate-400">Install aplikasi di HP Android untuk cek status service &amp; notifikasi lebih praktis.</p>
+      </div>
+      <div class="space-y-2.5 text-left">
+        <button type="button" id="btnPwaDirectInstall" onclick="installPwaApp()" class="hidden w-full bg-neon-blue hover:bg-cyan-400 text-neon-dark font-extrabold py-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 cursor-pointer">
+          <i class="fa-solid fa-mobile-screen-button text-sm"></i>
+          <span>Install Otomatis ke Layar Utama</span>
+        </button>
+        <a href="./rovcell.apk" download="Rovcell-Smartphone.apk" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25">
+          <i class="fa-solid fa-file-arrow-down text-sm"></i>
+          <span>Download File Installer (.APK)</span>
+        </a>
+      </div>
+      <div class="bg-neon-dark/80 p-3 rounded-xl border border-slate-800 text-[11px] text-slate-300 text-left space-y-1">
+        <div class="font-bold text-neon-blue"><i class="fa-solid fa-circle-info mr-1"></i>Cara Install Cepat:</div>
+        <p class="text-slate-400 leading-relaxed">Jika menggunakan Chrome di Android, Anda juga bisa menekan ikon <strong class="text-white">Menu (⋮)</strong> di pojok kanan atas browser lalu pilih <strong class="text-white">"Tambahkan ke Layar Utama" / "Install Aplikasi"</strong>.</p>
+      </div>
+      <button type="button" onclick="closeApkModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
+        Tutup
+      </button>
+    </div>
+  </div>
 
   <!-- Modal QRIS Pembayaran -->
   <div id="qrisModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -1662,6 +1726,40 @@
     let latestFinanceSummarySnapshot = null;
     let cachedPreviousFormAmounts = { modal: "", biaya: "" };
     let activeThemeModeFilter = "all";
+    let deferredInstallPrompt = null;
+    let editingServiceNota = null;
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const directBtn = document.getElementById("btnPwaDirectInstall");
+      if (directBtn) directBtn.classList.remove("hidden");
+    });
+
+    function triggerApkDownload() {
+      const directBtn = document.getElementById("btnPwaDirectInstall");
+      if (directBtn) {
+        if (deferredInstallPrompt) directBtn.classList.remove("hidden");
+        else directBtn.classList.add("hidden");
+      }
+      const modal = document.getElementById("apkDownloadModal");
+      if (modal) modal.classList.remove("hidden");
+    }
+
+    function closeApkModal() {
+      const modal = document.getElementById("apkDownloadModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    async function installPwaApp() {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      try {
+        await deferredInstallPrompt.userChoice;
+      } catch (e) {}
+      deferredInstallPrompt = null;
+      closeApkModal();
+    }
 
     // 65 Pilihan Tema Website Lengkap
     const WEBSITE_THEMES = [
@@ -3612,6 +3710,7 @@
     }
 
     function generateNextNota() {
+      if (editingServiceNota) return;
       const inputNota = document.getElementById("inputNota");
       if (!inputNota) return;
       if (serviceList.length === 0) {
@@ -3698,10 +3797,12 @@
         if (adminEl) adminEl.classList.remove("hidden");
         updateMainNavStyles("admin");
         toggleHomeAnimatedBackground(false);
-        switchAdminSubTab("input");
+        if (!editingServiceNota) {
+          switchAdminSubTab("input");
+          generateNextNota();
+        }
         renderAdminTable();
         updateFinancialStats();
-        generateNextNota();
       }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -4022,7 +4123,8 @@
 
     async function saveServiceData(e) {
       e.preventDefault();
-      const nota = document.getElementById("inputNota").value;
+      const targetNota = (editingServiceNota || document.getElementById("inputNota").value || "").trim().toUpperCase();
+      const nota = targetNota;
       const nama = document.getElementById("inputNama").value.trim();
       const phone = document.getElementById("inputPhone").value.replace(/[^0-9]/g, "");
       const merk = document.getElementById("inputMerk").value.trim();
@@ -4040,7 +4142,7 @@
       const garansi = garansiEl ? garansiEl.value : "Tidak ada";
       const keterangan = document.getElementById("inputKeterangan").value.trim();
 
-      const existingItem = serviceList.find((s) => s.nota === nota);
+      const existingItem = serviceList.find((s) => (s.nota || "").trim().toUpperCase() === nota);
       const todayIso = new Date().toISOString().split("T")[0];
       const date = existingItem && existingItem.date ? existingItem.date : todayIso;
 
@@ -4071,13 +4173,14 @@
 
       try {
         if (window.db && window.setDoc && window.doc) {
-          await window.setDoc(window.doc(window.db, "services", nota), newData);
+          await window.setDoc(window.doc(window.db, "services", nota), newData, { merge: true });
         }
       } catch (err) {
         console.warn("Firestore save fallback to local cache:", err);
       }
 
-      const index = serviceList.findIndex((s) => s.nota === nota);
+      const index = serviceList.findIndex((s) => (s.nota || "").trim().toUpperCase() === nota);
+      const isEditMode = Boolean(editingServiceNota || index !== -1);
       if (index !== -1) {
         serviceList[index] = newData;
       } else {
@@ -4089,13 +4192,19 @@
       } catch (e) {}
       notifyBroadcastSync("UPDATE_DATA");
 
-      refreshAllUIComponents();
-      showCustomAlert("Data service berhasil disimpan!", true);
       resetServiceForm();
+      refreshAllUIComponents();
+      showCustomAlert(
+        isEditMode
+          ? `Perubahan data nota ${nota} berhasil diperbarui!`
+          : `Data service baru (${nota}) berhasil disimpan!`,
+        true
+      );
       switchAdminSubTab("list");
     }
 
     function resetServiceForm() {
+      editingServiceNota = null;
       const formEl = document.getElementById("serviceForm");
       if (formEl) formEl.reset();
       cachedPreviousFormAmounts = { modal: "", biaya: "" };
@@ -4173,8 +4282,10 @@
     }
 
     function editService(nota) {
-      const item = serviceList.find((s) => s.nota === nota);
+      const normalizedNota = (nota || "").trim().toUpperCase();
+      const item = serviceList.find((s) => (s.nota || "").trim().toUpperCase() === normalizedNota);
       if (!item) return;
+      editingServiceNota = item.nota;
       switchAdminSubTab("input");
       document.getElementById("formTitle").innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i><span>Edit Data Service (${item.nota})</span>`;
       document.getElementById("cancelEditBtn").classList.remove("hidden");
@@ -4441,7 +4552,7 @@
               ` : ""}
               ${cols.status ? `
               <td class="py-2.5 px-3 align-top">
-                <select onchange="quickUpdateStatus('${s.nota}', this.value)" class="bg-neon-dark border ${cancelled ? "border-red-500/60 text-red-300" : "border-neon-blue/60 text-neon-blue"} font-semibold text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:border-neon-blue cursor-pointer">
+                <select onchange="quickUpdateStatus('${s.nota}', this.value)" class="status-select-compact w-full max-w-[175px] bg-neon-dark border ${cancelled ? "border-red-500/60 text-red-300" : "border-neon-blue/60 text-neon-blue"} font-semibold text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-neon-blue cursor-pointer">
                   ${optionsHtml}
                 </select>
               </td>
@@ -4538,11 +4649,11 @@
           ${showFooterRow ? `
           <tr class="${theme.bg} ${theme.border} hover:brightness-110 transition border-b-2 border-b-slate-700">
             <td colspan="4" class="py-2.5 px-3 text-[11px]">
-              <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap items-center justify-between gap-2.5">
                 ${cols.status ? `
-                <div class="flex items-center gap-2">
-                  <span class="text-slate-300 font-medium">Status Pengerjaan:</span>
-                  <select onchange="quickUpdateStatus('${s.nota}', this.value)" class="bg-neon-dark border ${cancelled ? "border-red-500/60 text-red-300" : "border-neon-blue/60 text-neon-blue"} font-semibold text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:border-neon-blue cursor-pointer shadow-md min-w-[150px]">
+                <div class="flex items-center gap-2 flex-1 min-w-[210px] sm:flex-initial">
+                  <span class="text-slate-300 font-medium shrink-0">Status:</span>
+                  <select onchange="quickUpdateStatus('${s.nota}', this.value)" class="status-select-compact w-full sm:w-52 bg-neon-dark border ${cancelled ? "border-red-500/60 text-red-300" : "border-neon-blue/60 text-neon-blue"} font-semibold text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-neon-blue cursor-pointer shadow-md">
                     ${optionsHtml}
                   </select>
                 </div>
