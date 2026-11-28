@@ -1149,6 +1149,10 @@
               <span class="block text-[11px] font-medium text-slate-300">Baris Data yang Ditampilkan di Gambar:</span>
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[11px]">
                 <label class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-2.5 py-1.5 rounded-lg cursor-pointer">
+                  <input type="checkbox" id="shareImgShowHeader" class="rounded text-neon-blue bg-neon-dark border-neon-border">
+                  <span class="text-slate-200">Header &amp; Subjudul</span>
+                </label>
+                <label class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-2.5 py-1.5 rounded-lg cursor-pointer">
                   <input type="checkbox" id="shareImgShowDates" class="rounded text-neon-blue bg-neon-dark border-neon-border">
                   <span class="text-slate-200">Tgl Masuk/Keluar</span>
                 </label>
@@ -2595,6 +2599,7 @@
       statusLabel: "STATUS PERBAIKAN SAAT INI",
       footerText: "Lacak Online: https://rovcell.online  •  WA: 0889-0889-0176",
       cardTheme: "theme",
+      showHeader: true,
       showGrid: true,
       showDates: true,
       showIssue: true,
@@ -4282,6 +4287,7 @@
       document.getElementById("shareImgStatusLabel").value = imgCfg.statusLabel;
       document.getElementById("shareImgFooterText").value = imgCfg.footerText;
       document.getElementById("shareImgCardTheme").value = imgCfg.cardTheme;
+      document.getElementById("shareImgShowHeader").checked = imgCfg.showHeader !== false;
       document.getElementById("shareImgShowGrid").checked = imgCfg.showGrid !== false;
       document.getElementById("shareImgShowDates").checked = imgCfg.showDates !== false;
       document.getElementById("shareImgShowIssue").checked = imgCfg.showIssue !== false;
@@ -4378,6 +4384,7 @@
         statusLabel: document.getElementById("shareImgStatusLabel").value.trim() || DEFAULT_SHARE_IMAGE_CONFIG.statusLabel,
         footerText: document.getElementById("shareImgFooterText").value.trim() || DEFAULT_SHARE_IMAGE_CONFIG.footerText,
         cardTheme: document.getElementById("shareImgCardTheme").value || "theme",
+        showHeader: document.getElementById("shareImgShowHeader").checked,
         showGrid: document.getElementById("shareImgShowGrid").checked,
         showDates: document.getElementById("shareImgShowDates").checked,
         showIssue: document.getElementById("shareImgShowIssue").checked,
@@ -4464,6 +4471,7 @@
       document.getElementById("shareImgStatusLabel").value = DEFAULT_SHARE_IMAGE_CONFIG.statusLabel;
       document.getElementById("shareImgFooterText").value = DEFAULT_SHARE_IMAGE_CONFIG.footerText;
       document.getElementById("shareImgCardTheme").value = DEFAULT_SHARE_IMAGE_CONFIG.cardTheme;
+      document.getElementById("shareImgShowHeader").checked = DEFAULT_SHARE_IMAGE_CONFIG.showHeader;
       document.getElementById("shareImgShowGrid").checked = DEFAULT_SHARE_IMAGE_CONFIG.showGrid;
       document.getElementById("shareImgShowDates").checked = DEFAULT_SHARE_IMAGE_CONFIG.showDates;
       document.getElementById("shareImgShowIssue").checked = DEFAULT_SHARE_IMAGE_CONFIG.showIssue;
@@ -5405,22 +5413,26 @@
       }
 
       const isLightCard = imgCfg.cardTheme === "light";
+      const showHeaderBrand = imgCfg.showHeader !== false;
 
       // Hitung baris dinamis untuk tinggi kanvas yang presisi
       ctx.font = "700 21px 'Plus Jakarta Sans', sans-serif";
       const merkLines = wrapCanvasText(ctx, item.merk || "-", 330);
       const kerusakanLines = wrapCanvasText(ctx, item.kerusakan || "-", 330);
-      ctx.font = "600 19px 'Plus Jakarta Sans', sans-serif";
-      const ketLines = imgCfg.showNotes !== false ? wrapCanvasText(ctx, item.keterangan || "-", 620) : [];
+      ctx.font = "600 17px 'Plus Jakarta Sans', sans-serif";
+      const ketLines = imgCfg.showNotes !== false ? wrapCanvasText(ctx, item.keterangan || "-", 610) : [];
 
+      const brandBannerH = showHeaderBrand ? 86 : 0;
       const topBarH = 92;
       const progressH = 148;
       const customerBoxH = imgCfg.showDates !== false ? 106 : 62;
-      const deviceBoxH = 44 + Math.max(merkLines.length, kerusakanLines.length) * 26 + (imgCfg.showNotes !== false ? 20 + ketLines.length * 24 : 0);
+      const topPairHeight = 36 + Math.max(merkLines.length, kerusakanLines.length) * 26;
+      const notesSectionHeight = imgCfg.showNotes !== false ? 26 + ketLines.length * 24 : 0;
+      const deviceBoxH = topPairHeight + notesSectionHeight;
       const warrantyH = !cancelled && imgCfg.showWarranty !== false && garansiText && garansiText !== "Tidak ada" ? 74 : 0;
       const costBoxH = 94;
       const footerH = 56;
-      const height = 40 + topBarH + 22 + progressH + 16 + customerBoxH + 16 + deviceBoxH + (warrantyH ? 16 + warrantyH : 0) + 16 + costBoxH + 16 + footerH + 40;
+      const height = 40 + brandBannerH + topBarH + 22 + progressH + 16 + customerBoxH + 16 + deviceBoxH + (warrantyH ? 16 + warrantyH : 0) + 16 + costBoxH + 16 + footerH + 40;
 
       canvas.width = width;
       canvas.height = height;
@@ -5462,14 +5474,46 @@
       ctx.strokeStyle = palette.accent;
       ctx.stroke();
 
+      let headerOffsetY = cardY;
+
+      // Banner Judul Header & Subjudul Header Toko (opsional sesuai checklist)
+      if (showHeaderBrand) {
+        drawRoundedRectPath(ctx, cardX + 2, cardY + 2, cardW - 4, brandBannerH, 26);
+        ctx.fillStyle = palette.headerFill;
+        ctx.fill();
+
+        ctx.textAlign = "center";
+        ctx.fillStyle = palette.valueText;
+        ctx.font = "800 26px Orbitron, sans-serif";
+        ctx.fillText(imgCfg.headerTitle || "ROVCELL SMARTPHONE", cardX + cardW / 2, cardY + 40);
+
+        ctx.fillStyle = palette.accent;
+        ctx.font = "700 13px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText(imgCfg.subHeader || "SMARTPHONE SERVICE CENTER • KOTA BLITAR", cardX + cardW / 2, cardY + 66);
+
+        ctx.beginPath();
+        ctx.moveTo(cardX + 16, cardY + brandBannerH);
+        ctx.lineTo(cardX + cardW - 16, cardY + brandBannerH);
+        ctx.strokeStyle = palette.divider;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        headerOffsetY = cardY + brandBannerH;
+      }
+
       // Header Bar: Nomor Nota di kiri, Badge Status di kanan
-      drawRoundedRectPath(ctx, cardX + 2, cardY + 2, cardW - 4, topBarH, 26);
-      ctx.fillStyle = palette.headerFill;
-      ctx.fill();
+      if (!showHeaderBrand) {
+        drawRoundedRectPath(ctx, cardX + 2, headerOffsetY + 2, cardW - 4, topBarH, 26);
+        ctx.fillStyle = palette.headerFill;
+        ctx.fill();
+      } else {
+        ctx.fillStyle = palette.headerFill;
+        ctx.fillRect(cardX + 2, headerOffsetY, cardW - 4, topBarH);
+      }
 
       ctx.beginPath();
-      ctx.moveTo(cardX + 16, cardY + topBarH);
-      ctx.lineTo(cardX + cardW - 16, cardY + topBarH);
+      ctx.moveTo(cardX + 16, headerOffsetY + topBarH);
+      ctx.lineTo(cardX + cardW - 16, headerOffsetY + topBarH);
       ctx.strokeStyle = palette.divider;
       ctx.lineWidth = 1.5;
       ctx.stroke();
@@ -5479,7 +5523,7 @@
       const notaStr = item.nota || "-";
       const notaBadgeW = Math.max(165, ctx.measureText(notaStr).width + 44);
       const notaBadgeX = cardX + 24;
-      const notaBadgeY = cardY + (topBarH - 48) / 2;
+      const notaBadgeY = headerOffsetY + (topBarH - 48) / 2;
       drawRoundedRectPath(ctx, notaBadgeX, notaBadgeY, notaBadgeW, 48, 14);
       ctx.fillStyle = isLightCard ? "rgba(2, 132, 199, 0.14)" : "rgba(0, 243, 255, 0.18)";
       ctx.fill();
@@ -5518,7 +5562,7 @@
       const stStr = String(item.status || "-");
       const stBadgeW = Math.min(390, Math.max(150, ctx.measureText(stStr).width + 42));
       const stBadgeX = cardX + cardW - 24 - stBadgeW;
-      const stBadgeY = cardY + (topBarH - 44) / 2;
+      const stBadgeY = headerOffsetY + (topBarH - 44) / 2;
       drawRoundedRectPath(ctx, stBadgeX, stBadgeY, stBadgeW, 44, 22);
       ctx.fillStyle = statusBg;
       ctx.fill();
@@ -5530,7 +5574,7 @@
       ctx.fillText(stStr, stBadgeX + stBadgeW / 2, stBadgeY + 23);
       ctx.textBaseline = "alphabetic";
 
-      let curY = cardY + topBarH + 20;
+      let curY = headerOffsetY + topBarH + 20;
       const innerX = cardX + 24;
       const innerW = cardW - 48;
 
@@ -5680,12 +5724,11 @@
       ctx.strokeStyle = palette.divider;
       ctx.stroke();
 
-      const topPairH = 24 + Math.max(merkLines.length, kerusakanLines.length) * 26;
       const halfDevW = innerW / 2;
 
       ctx.beginPath();
-      ctx.moveTo(innerX + halfDevW, curY + 10);
-      ctx.lineTo(innerX + halfDevW, curY + topPairH - 6);
+      ctx.moveTo(innerX + halfDevW, curY + 8);
+      ctx.lineTo(innerX + halfDevW, curY + topPairHeight - 8);
       ctx.strokeStyle = palette.divider;
       ctx.lineWidth = 1.2;
       ctx.stroke();
@@ -5712,23 +5755,28 @@
       });
 
       if (imgCfg.showNotes !== false) {
+        const dividerY = curY + topPairHeight;
         ctx.beginPath();
-        ctx.moveTo(innerX, curY + topPairH);
-        ctx.lineTo(innerX + innerW, curY + topPairH);
+        ctx.moveTo(innerX, dividerY);
+        ctx.lineTo(innerX + innerW, dividerY);
         ctx.strokeStyle = palette.divider;
         ctx.lineWidth = 1.2;
         ctx.stroke();
 
+        ctx.textBaseline = "middle";
+        const firstLineCenterY = dividerY + (notesSectionHeight - (ketLines.length - 1) * 24) / 2 + 1;
+
         ctx.fillStyle = palette.labelText;
         ctx.font = "600 17px 'Plus Jakarta Sans', sans-serif";
-        ctx.fillText("Ket:", innerX + 18, curY + topPairH + 28);
+        ctx.fillText("Ket:", innerX + 18, firstLineCenterY);
         const ketLabelW = ctx.measureText("Ket: ").width;
 
         ctx.fillStyle = palette.valueText;
         ctx.font = "600 17px 'Plus Jakarta Sans', sans-serif";
         ketLines.forEach((line, idx) => {
-          ctx.fillText(line, innerX + 18 + ketLabelW + 4, curY + topPairH + 28 + idx * 23);
+          ctx.fillText(line, innerX + 18 + ketLabelW + 4, firstLineCenterY + idx * 24);
         });
+        ctx.textBaseline = "alphabetic";
       }
 
       curY += deviceBoxH + 16;
@@ -5877,46 +5925,11 @@
       const shareMode = appSettings.shareFormatMode || "image";
 
       if (shareMode === "text") {
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title: `Status Service ${item.nota} - Rovcell Smartphone`,
-              text
-            });
-            return;
-          } catch (err) {
-            if (err && err.name === "AbortError") return;
-          }
-        }
         openShareFallbackModal(text, item.nota, null);
         return;
       }
 
       const imageBlob = await generateStatusShareCardBlob(item, garansiText);
-      const imageFile = imageBlob
-        ? new File([imageBlob], `Status-Service-${item.nota}.png`, { type: "image/png" })
-        : null;
-
-      if (navigator.share) {
-        try {
-          if (imageFile && navigator.canShare && navigator.canShare({ files: [imageFile] })) {
-            await navigator.share({
-              title: `Status Service ${item.nota} - Rovcell Smartphone`,
-              text,
-              files: [imageFile]
-            });
-            return;
-          }
-          await navigator.share({
-            title: `Status Service ${item.nota} - Rovcell Smartphone`,
-            text
-          });
-          return;
-        } catch (err) {
-          if (err && err.name === "AbortError") return;
-        }
-      }
-
       openShareFallbackModal(text, item.nota, imageBlob);
     }
 
