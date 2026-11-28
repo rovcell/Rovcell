@@ -534,138 +534,145 @@
       </div>
 
       <!-- SUB-TAB 1: INPUT SERVICE -->
-      <div id="adminSubTab-input" class="space-y-6">
-        <div class="bg-gradient-to-b from-neon-card to-[#071324] p-6 rounded-2xl border border-cyan-500/25 shadow-[0_8px_25px_rgba(0,0,0,0.35)] space-y-6">
-          <div class="flex justify-between items-center border-b border-slate-800/90 pb-4">
-            <h3 id="formTitle" class="font-orbitron text-base sm:text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-plus-circle text-neon-blue"></i><span>Tambah Service Baru</span></h3>
-            <button type="button" id="cancelEditBtn" onclick="resetServiceForm()" class="hidden px-3 py-1 rounded-lg bg-red-500/15 border border-red-500/40 text-xs text-red-300 hover:bg-red-500/25 font-semibold transition cursor-pointer">Batalkan Edit</button>
+      <div id="adminSubTab-input" class="space-y-4">
+        <div class="bg-gradient-to-b from-neon-card to-[#071324] p-4 sm:p-5 rounded-2xl border border-cyan-500/25 shadow-[0_8px_25px_rgba(0,0,0,0.35)] space-y-3.5">
+          <div class="flex justify-between items-center border-b border-slate-800/90 pb-3">
+            <h3 id="formTitle" class="font-orbitron text-sm sm:text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-plus-circle text-neon-blue"></i><span>Tambah Service Baru</span></h3>
+            <button type="button" id="cancelEditBtn" onclick="resetServiceForm()" class="hidden px-2.5 py-1 rounded-lg bg-red-500/15 border border-red-500/40 text-[11px] text-red-300 hover:bg-red-500/25 font-semibold transition cursor-pointer">Batalkan Edit</button>
           </div>
 
-          <form id="serviceForm" onsubmit="saveServiceData(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <form id="serviceForm" onsubmit="saveServiceData(event)" class="grid grid-cols-2 gap-2.5 sm:gap-3.5">
+            <!-- Baris 1: Nomor Nota & Nama Pelanggan -->
             <div class="space-y-1">
-              <label class="block text-xs font-medium text-slate-300">Nomor Nota</label>
-              <input type="text" id="inputNota" readonly class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-neon-blue font-bold text-sm">
+              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-hashtag text-neon-blue mr-1"></i>No. Nota</label>
+              <input type="text" id="inputNota" readonly class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-neon-blue font-orbitron font-bold text-xs sm:text-sm">
             </div>
             <div class="space-y-1">
-              <label class="block text-xs font-medium text-slate-300">Nama Pelanggan</label>
-              <input type="text" id="inputNama" required placeholder="Nama Pelanggan" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-regular fa-user text-neon-blue mr-1"></i>Nama Pelanggan</label>
+              <input type="text" id="inputNama" required placeholder="Nama Pelanggan" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-blue">
+            </div>
+
+            <!-- Baris 2: No. WhatsApp & Merk / Type HP -->
+            <div class="space-y-1">
+              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-brands fa-whatsapp text-emerald-400 mr-1"></i>No. WhatsApp</label>
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" id="inputPhone" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required placeholder="08xxxxxxxxxx" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-blue">
             </div>
             <div class="space-y-1">
-              <label class="block text-xs font-medium text-slate-300">No. WhatsApp</label>
-              <input type="tel" inputmode="numeric" pattern="[0-9]*" id="inputPhone" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required placeholder="08xxxxxxxxxx" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-mobile-screen text-neon-blue mr-1"></i>Merk / Type HP</label>
+              <input type="text" id="inputMerk" required placeholder="iPhone 18 Pro Max" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-blue">
+            </div>
+
+            <!-- Baris 3: Kerusakan & Keterangan Perbaikan -->
+            <div class="space-y-1">
+              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i>Kerusakan</label>
+              <input type="text" id="inputKerusakan" required placeholder="Mati Total / Ganti LCD" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-blue">
             </div>
             <div class="space-y-1">
-              <label class="block text-xs font-medium text-slate-300">Merk / Type HP</label>
-              <input type="text" id="inputMerk" required placeholder="Iphone 18 Pro Max" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-clipboard-list text-neon-blue mr-1"></i>Keterangan</label>
+              <input type="text" id="inputKeterangan" placeholder="Detail / kelengkapan..." class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-blue">
+            </div>
+
+            <!-- Baris 4: Harga Modal & Biaya Service / Jual -->
+            <div class="space-y-1">
+              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-microchip text-rose-400 mr-1"></i>Harga Modal (Rp)</label>
+              <input type="text" inputmode="numeric" id="inputModal" oninput="handleCurrencyInput(this)" value="-" readonly required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-slate-400 text-xs sm:text-sm font-semibold focus:outline-none focus:border-neon-blue opacity-60 cursor-not-allowed">
             </div>
             <div class="space-y-1">
-              <label class="block text-xs font-medium text-slate-300">Kerusakan</label>
-              <input type="text" id="inputKerusakan" required placeholder="Mati Total" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue">
+              <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 truncate"><i class="fa-solid fa-tag text-cyan-400 mr-1"></i>Biaya Jual (Rp)</label>
+              <input type="text" inputmode="numeric" id="inputBiaya" oninput="handleCurrencyInput(this)" value="-" readonly required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-3 py-2 text-slate-400 text-xs sm:text-sm font-semibold focus:outline-none focus:border-neon-blue opacity-60 cursor-not-allowed">
             </div>
-            <div class="space-y-1">
-              <label class="block text-xs font-medium text-slate-300">Harga Modal (Rp)</label>
-              <input type="text" inputmode="numeric" id="inputModal" oninput="handleCurrencyInput(this)" value="-" readonly required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-slate-400 text-sm font-semibold focus:outline-none focus:border-neon-blue opacity-60 cursor-not-allowed">
-            </div>
-            <div class="space-y-1">
-              <label class="block text-xs font-medium text-slate-300">Biaya Service / Jual (Rp)</label>
-              <input type="text" inputmode="numeric" id="inputBiaya" oninput="handleCurrencyInput(this)" value="-" readonly required placeholder="0" class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-slate-400 text-sm font-semibold focus:outline-none focus:border-neon-blue opacity-60 cursor-not-allowed">
-            </div>
-            <div class="space-y-1 md:col-span-2 flex items-end">
-              <div class="w-full bg-neon-dark/90 border border-neon-border rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs">
-                <div>
-                  <span class="text-slate-400">Laba Bersih:</span>
-                  <span id="liveNetProfit" class="font-orbitron font-bold text-emerald-400 ml-1">-</span>
-                </div>
-                <div>
-                  <span class="text-slate-400">Teknisi (40%):</span>
-                  <span id="liveTechShare" class="font-orbitron font-bold text-amber-400 ml-1">-</span>
-                </div>
-                <div>
-                  <span class="text-slate-400">Toko (60%):</span>
-                  <span id="liveShopShare" class="font-orbitron font-bold text-cyan-400 ml-1">-</span>
-                </div>
+
+            <!-- Baris 5: Ringkasan Laba Bersih & Status Lunas -->
+            <div class="bg-neon-dark/90 border border-neon-border rounded-xl px-2.5 py-2 flex flex-col justify-center gap-0.5 text-[10px] sm:text-xs">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-400">Bersih:</span>
+                <span id="liveNetProfit" class="font-orbitron font-bold text-emerald-400">-</span>
+              </div>
+              <div class="flex items-center justify-between text-[9.5px] sm:text-[11px]">
+                <span class="text-slate-400">T40%: <strong id="liveTechShare" class="font-orbitron text-amber-400">-</strong></span>
+                <span class="text-slate-400">S60%: <strong id="liveShopShare" class="font-orbitron text-cyan-400">-</strong></span>
               </div>
             </div>
-            <div class="space-y-1 md:col-span-2 lg:col-span-3 flex items-center pt-1">
-              <label class="flex items-center space-x-3 bg-neon-dark border border-neon-border px-4 py-3 rounded-xl cursor-pointer hover:border-neon-blue w-full">
-                <input type="checkbox" id="inputLunas" class="w-4 h-4 text-neon-blue rounded focus:ring-0 bg-neon-dark border-neon-border">
-                <span class="text-xs font-semibold text-white"><i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i>Status Pembayaran Lunas (Sudah Lunas)</span>
-              </label>
-            </div>
-            <div class="space-y-1 md:col-span-2 lg:col-span-3">
-              <label class="block text-xs font-medium text-slate-300 mb-2">Status Perbaikan</label>
-              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-2" id="statusOptions">
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputStatus" value="Menunggu Pengecekan" onchange="handleFormStatusChange(this.value)" checked class="text-neon-blue focus:ring-0">
-                  <span>Menunggu Pengecekan</span>
+            <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border px-3 py-2 rounded-xl cursor-pointer hover:border-neon-blue transition">
+              <input type="checkbox" id="inputLunas" class="w-4 h-4 text-neon-blue rounded focus:ring-0 bg-neon-dark border-neon-border shrink-0">
+              <span class="text-[11px] sm:text-xs font-semibold text-white leading-tight"><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i>Sudah Lunas</span>
+            </label>
+
+            <!-- Baris 6: Status Perbaikan & Pilihan Garansi (2 Kolom Sejajar) -->
+            <div class="space-y-1.5 bg-neon-dark/50 p-2.5 rounded-xl border border-slate-800/90">
+              <label class="block text-[10px] sm:text-xs font-bold text-neon-blue uppercase tracking-wider truncate"><i class="fa-solid fa-screwdriver-wrench mr-1"></i>Status</label>
+              <div class="flex flex-col gap-1.5" id="statusOptions">
+                <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                  <input type="radio" name="inputStatus" value="Menunggu Pengecekan" onchange="handleFormStatusChange(this.value)" checked class="text-neon-blue focus:ring-0 shrink-0">
+                  <span class="truncate">Pengecekan</span>
                 </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputStatus" value="Sedang Dikerjakan" onchange="handleFormStatusChange(this.value)" class="text-neon-blue focus:ring-0">
-                  <span>Sedang Dikerjakan</span>
+                <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                  <input type="radio" name="inputStatus" value="Sedang Dikerjakan" onchange="handleFormStatusChange(this.value)" class="text-neon-blue focus:ring-0 shrink-0">
+                  <span class="truncate">Dikerjakan</span>
                 </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputStatus" value="Menunggu Sparepart" onchange="handleFormStatusChange(this.value)" class="text-neon-blue focus:ring-0">
-                  <span>Menunggu Sparepart</span>
+                <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                  <input type="radio" name="inputStatus" value="Menunggu Sparepart" onchange="handleFormStatusChange(this.value)" class="text-neon-blue focus:ring-0 shrink-0">
+                  <span class="truncate">Sparepart</span>
                 </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputStatus" value="Selesai" onchange="handleFormStatusChange(this.value)" class="text-neon-blue focus:ring-0">
-                  <span>Selesai</span>
+                <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                  <input type="radio" name="inputStatus" value="Selesai" onchange="handleFormStatusChange(this.value)" class="text-neon-blue focus:ring-0 shrink-0">
+                  <span class="truncate">Selesai</span>
                 </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputStatus" value="Diambil" onchange="handleFormStatusChange(this.value)" class="text-neon-blue focus:ring-0">
-                  <span>Diambil</span>
+                <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                  <input type="radio" name="inputStatus" value="Diambil" onchange="handleFormStatusChange(this.value)" class="text-neon-blue focus:ring-0 shrink-0">
+                  <span class="truncate">Diambil</span>
                 </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-red-500/40 p-2.5 rounded-xl cursor-pointer hover:border-red-500 text-xs">
-                  <input type="radio" name="inputStatus" value="Dibatalkan (Belum Diambil)" onchange="handleFormStatusChange(this.value)" class="text-red-500 focus:ring-0">
-                  <span class="text-red-400">Batal (Belum Diambil)</span>
+                <label class="flex items-center space-x-1.5 bg-neon-dark border border-red-500/40 px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-red-500 text-[11px] sm:text-xs">
+                  <input type="radio" name="inputStatus" value="Dibatalkan (Belum Diambil)" onchange="handleFormStatusChange(this.value)" class="text-red-500 focus:ring-0 shrink-0">
+                  <span class="text-red-400 truncate">Batal (Blm)</span>
                 </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-red-500/40 p-2.5 rounded-xl cursor-pointer hover:border-red-500 text-xs">
-                  <input type="radio" name="inputStatus" value="Dibatalkan (Sudah Diambil)" onchange="handleFormStatusChange(this.value)" class="text-red-500 focus:ring-0">
-                  <span class="text-red-400">Batal (Sudah Diambil)</span>
-                </label>
-              </div>
-            </div>
-            <div class="space-y-1 md:col-span-2 lg:col-span-3">
-              <label class="block text-xs font-medium text-slate-300 mb-2">Pilihan Garansi (Aktif saat status "Diambil")</label>
-              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2" id="garansiOptions">
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputGaransi" value="Tidak ada" class="text-neon-blue focus:ring-0">
-                  <span>Tidak ada</span>
-                </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputGaransi" value="1 minggu" class="text-neon-blue focus:ring-0">
-                  <span>1 Minggu</span>
-                </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputGaransi" value="1 bulan" checked class="text-neon-blue focus:ring-0">
-                  <span>1 Bulan</span>
-                </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputGaransi" value="3 bulan" class="text-neon-blue focus:ring-0">
-                  <span>3 Bulan</span>
-                </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputGaransi" value="6 bulan" class="text-neon-blue focus:ring-0">
-                  <span>6 Bulan</span>
-                </label>
-                <label class="flex items-center space-x-2 bg-neon-dark border border-neon-border p-2.5 rounded-xl cursor-pointer hover:border-neon-blue text-xs">
-                  <input type="radio" name="inputGaransi" value="1 tahun" class="text-neon-blue focus:ring-0">
-                  <span>1 Tahun</span>
+                <label class="flex items-center space-x-1.5 bg-neon-dark border border-red-500/40 px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-red-500 text-[11px] sm:text-xs">
+                  <input type="radio" name="inputStatus" value="Dibatalkan (Sudah Diambil)" onchange="handleFormStatusChange(this.value)" class="text-red-500 focus:ring-0 shrink-0">
+                  <span class="text-red-400 truncate">Batal (Sdh)</span>
                 </label>
               </div>
             </div>
-            <div class="md:col-span-2 lg:col-span-3 space-y-1">
-              <label class="block text-xs font-medium text-slate-300">Keterangan Perbaikan</label>
-              <textarea id="inputKeterangan" rows="2" placeholder="Detail pengerjaan..." class="w-full bg-neon-dark border border-neon-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-neon-blue"></textarea>
+
+            <div class="space-y-1.5 bg-neon-dark/50 p-2.5 rounded-xl border border-slate-800/90 flex flex-col justify-between">
+              <div class="space-y-1.5">
+                <label class="block text-[10px] sm:text-xs font-bold text-neon-blue uppercase tracking-wider truncate"><i class="fa-solid fa-shield-halved mr-1"></i>Garansi</label>
+                <div class="flex flex-col gap-1.5" id="garansiOptions">
+                  <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                    <input type="radio" name="inputGaransi" value="Tidak ada" class="text-neon-blue focus:ring-0 shrink-0">
+                    <span class="truncate">Tidak ada</span>
+                  </label>
+                  <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                    <input type="radio" name="inputGaransi" value="1 minggu" class="text-neon-blue focus:ring-0 shrink-0">
+                    <span class="truncate">1 Minggu</span>
+                  </label>
+                  <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                    <input type="radio" name="inputGaransi" value="1 bulan" checked class="text-neon-blue focus:ring-0 shrink-0">
+                    <span class="truncate">1 Bulan</span>
+                  </label>
+                  <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                    <input type="radio" name="inputGaransi" value="3 bulan" class="text-neon-blue focus:ring-0 shrink-0">
+                    <span class="truncate">3 Bulan</span>
+                  </label>
+                  <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                    <input type="radio" name="inputGaransi" value="6 bulan" class="text-neon-blue focus:ring-0 shrink-0">
+                    <span class="truncate">6 Bulan</span>
+                  </label>
+                  <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
+                    <input type="radio" name="inputGaransi" value="1 tahun" class="text-neon-blue focus:ring-0 shrink-0">
+                    <span class="truncate">1 Tahun</span>
+                  </label>
+                </div>
+              </div>
+              <p class="text-[9.5px] text-slate-400 leading-tight pt-1">Mulai dihitung saat unit <strong class="text-slate-200">"Diambil"</strong>.</p>
             </div>
-            <div class="md:col-span-2 lg:col-span-3 flex justify-end gap-3 pt-2">
-              <button type="button" onclick="switchAdminSubTab('list')" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition cursor-pointer">
-                Lihat Daftar Service
-              </button>
-              <button type="submit" class="bg-neon-blue text-neon-dark font-bold px-6 py-3 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 text-sm cursor-pointer">
-                <i class="fa-solid fa-save mr-2"></i>Simpan Data Service
-              </button>
-            </div>
+
+            <!-- Baris 7: Tombol Aksi 2 Kolom Sejajar -->
+            <button type="button" onclick="switchAdminSubTab('list')" class="w-full px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-list-check text-neon-blue"></i><span>Daftar Service</span>
+            </button>
+            <button type="submit" class="w-full bg-neon-blue text-neon-dark font-bold px-3 py-2.5 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-save"></i><span>Simpan Data</span>
+            </button>
           </form>
         </div>
       </div>
@@ -1015,24 +1022,24 @@
         </button>
         <button type="button" id="mainSettingsSubBtn-theme" onclick="switchMainSettingsSubTab('theme')" class="px-2 sm:px-3 py-2.5 rounded-xl text-[11px] sm:text-xs font-orbitron font-bold text-slate-300 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-palette text-neon-blue"></i>
-          <span class="truncate">Tema (50)</span>
+          <span class="truncate">Tema (65)</span>
         </button>
       </div>
 
-      <!-- GROUP 1: PROFIL TOKO -->
+      <!-- GROUP 1: PROFIL TOKO, AKUN, WA & CETAK NOTA -->
       <div id="mainSettingsGroup-profile" class="space-y-4">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-neon-dark p-1.5 rounded-xl border border-neon-border">
-          <button type="button" id="profTabBtn-account" onclick="switchProfileModalTab('account')" class="px-2 py-2 rounded-lg text-[11px] font-bold bg-neon-blue text-neon-dark transition cursor-pointer">
-            <i class="fa-solid fa-key mr-1"></i>Akun Admin
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-neon-dark/80 p-1.5 rounded-xl border border-slate-800 text-[11px]">
+          <button type="button" id="profTabBtn-account" onclick="switchProfileModalTab('account')" class="px-2.5 py-2 rounded-lg font-bold bg-neon-blue text-neon-dark transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-user-shield"></i><span>Akun Admin</span>
           </button>
-          <button type="button" id="profTabBtn-wa" onclick="switchProfileModalTab('wa')" class="px-2 py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:bg-slate-800 transition cursor-pointer">
-            <i class="fa-brands fa-whatsapp mr-1 text-emerald-400"></i>Template WA
+          <button type="button" id="profTabBtn-wa" onclick="switchProfileModalTab('wa')" class="px-2.5 py-2 rounded-lg font-semibold text-slate-300 hover:bg-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-brands fa-whatsapp text-emerald-400"></i><span>Template WA</span>
           </button>
-          <button type="button" id="profTabBtn-share" onclick="switchProfileModalTab('share')" class="px-2 py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:bg-slate-800 transition cursor-pointer">
-            <i class="fa-solid fa-share-nodes mr-1 text-cyan-400"></i>Template Bagikan
+          <button type="button" id="profTabBtn-share" onclick="switchProfileModalTab('share')" class="px-2.5 py-2 rounded-lg font-semibold text-slate-300 hover:bg-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-share-nodes text-cyan-400"></i><span>Kartu Bagikan</span>
           </button>
-          <button type="button" id="profTabBtn-print" onclick="switchProfileModalTab('print')" class="px-2 py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:bg-slate-800 transition cursor-pointer">
-            <i class="fa-solid fa-print mr-1 text-cyan-400"></i>Cetak Nota
+          <button type="button" id="profTabBtn-print" onclick="switchProfileModalTab('print')" class="px-2.5 py-2 rounded-lg font-semibold text-slate-300 hover:bg-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-print text-amber-400"></i><span>Cetak Nota</span>
           </button>
         </div>
 
@@ -1346,13 +1353,13 @@
         </div>
       </div>
 
-      <!-- GROUP 3: 50 PILIHAN TEMA WEBSITE -->
+      <!-- GROUP 3: PILIHAN TEMA WEBSITE -->
       <div id="mainSettingsGroup-theme" class="hidden space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2 bg-neon-dark/80 p-3 rounded-xl border border-slate-800">
           <div>
             <div class="text-xs font-bold text-neon-blue flex items-center gap-1.5">
               <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <span>50 Pilihan Tema Website (Dark &amp; Light Mode)</span>
+              <span>Pilihan Tema Website (Dark, OLED &amp; Light Mode)</span>
             </div>
             <p class="text-[11px] text-slate-400 mt-0.5">Klik kartu tema untuk pratinjau langsung seluruh halaman pelanggan &amp; admin.</p>
           </div>
@@ -1363,11 +1370,11 @@
 
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div class="inline-flex items-center gap-1.5 bg-neon-dark/80 p-1 rounded-xl border border-slate-800 text-[11px]">
-            <button type="button" id="themeFilterBtn-all" onclick="setThemeModeFilter('all')" class="px-2.5 py-1 rounded-lg font-bold bg-neon-blue text-neon-dark transition cursor-pointer">Semua (50)</button>
-            <button type="button" id="themeFilterBtn-dark" onclick="setThemeModeFilter('dark')" class="px-2.5 py-1 rounded-lg font-semibold text-slate-300 hover:text-white transition cursor-pointer"><i class="fa-solid fa-moon mr-1"></i>Gelap (38)</button>
-            <button type="button" id="themeFilterBtn-light" onclick="setThemeModeFilter('light')" class="px-2.5 py-1 rounded-lg font-semibold text-slate-300 hover:text-white transition cursor-pointer"><i class="fa-solid fa-sun mr-1"></i>Terang (12)</button>
+            <button type="button" id="themeFilterBtn-all" onclick="setThemeModeFilter('all')" class="px-2.5 py-1 rounded-lg font-bold bg-neon-blue text-neon-dark transition cursor-pointer">Semua (${WEBSITE_THEMES.length})</button>
+            <button type="button" id="themeFilterBtn-dark" onclick="setThemeModeFilter('dark')" class="px-2.5 py-1 rounded-lg font-semibold text-slate-300 hover:text-white transition cursor-pointer"><i class="fa-solid fa-moon mr-1"></i>Gelap</button>
+            <button type="button" id="themeFilterBtn-light" onclick="setThemeModeFilter('light')" class="px-2.5 py-1 rounded-lg font-semibold text-slate-300 hover:text-white transition cursor-pointer"><i class="fa-solid fa-sun mr-1"></i>Terang</button>
           </div>
-          <input type="text" id="themeSearchInput" oninput="renderWebsiteThemeGrid(selectedDraftThemeId)" placeholder="Cari nama tema..." class="bg-neon-dark border border-neon-border rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-neon-blue w-full sm:w-48">
+          <input type="text" id="themeSearchInput" oninput="renderWebsiteThemeGrid(selectedDraftThemeId)" placeholder="Cari nama tema / OLED..." class="bg-neon-dark border border-neon-border rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-neon-blue w-full sm:w-48">
         </div>
 
         <div id="websiteThemeGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-[48vh] overflow-y-auto pr-1"></div>
@@ -2576,6 +2583,336 @@
         text: "#1a2e05",
         grad1: "#84cc16",
         grad2: "#65a30d"
+      },
+      {
+        id: "oled-royal-diamond",
+        name: "OLED Royal Diamond",
+        shortName: "OLED Diamond",
+        mode: "dark",
+        desc: "True AMOLED Black & Ice Diamond",
+        bg: "#000000",
+        card: "#070b10",
+        cardAlt: "#030508",
+        cardTop: "#0c131c",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#7dd3fc",
+        accentHover: "#bae6fd",
+        accentRgb: "125, 211, 252",
+        accentContrast: "#02060a",
+        border: "#1e3a5f",
+        text: "#f0f9ff",
+        grad1: "#e0f2fe",
+        grad2: "#7dd3fc"
+      },
+      {
+        id: "oled-rose-gold-edition",
+        name: "OLED Rose Gold Luxury",
+        shortName: "OLED Rose Gold",
+        mode: "dark",
+        desc: "True AMOLED Black & Rose Gold",
+        bg: "#000000",
+        card: "#10080a",
+        cardAlt: "#080405",
+        cardTop: "#1a0d11",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#f4a29c",
+        accentHover: "#fbc4bf",
+        accentRgb: "244, 162, 156",
+        accentContrast: "#120606",
+        border: "#7f3532",
+        text: "#fff1f2",
+        grad1: "#fecdd3",
+        grad2: "#f4a29c"
+      },
+      {
+        id: "oled-crimson-ruby",
+        name: "OLED Crimson Ruby",
+        shortName: "OLED Ruby",
+        mode: "dark",
+        desc: "True AMOLED Black & Imperial Ruby",
+        bg: "#000000",
+        card: "#110407",
+        cardAlt: "#080203",
+        cardTop: "#1c070c",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#fb7185",
+        accentHover: "#fda4af",
+        accentRgb: "251, 113, 133",
+        accentContrast: "#140205",
+        border: "#881337",
+        text: "#ffe4e6",
+        grad1: "#fda4af",
+        grad2: "#f43f5e"
+      },
+      {
+        id: "oled-amethyst-royal",
+        name: "OLED Amethyst Imperial",
+        shortName: "OLED Amethyst",
+        mode: "dark",
+        desc: "True AMOLED Black & Royal Amethyst",
+        bg: "#000000",
+        card: "#0b0512",
+        cardAlt: "#050209",
+        cardTop: "#130920",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#c084fc",
+        accentHover: "#d8b4fe",
+        accentRgb: "192, 132, 252",
+        accentContrast: "#0a0312",
+        border: "#581c87",
+        text: "#f3e8ff",
+        grad1: "#e9d5ff",
+        grad2: "#a855f7"
+      },
+      {
+        id: "oled-sapphire-prestige",
+        name: "OLED Sapphire Prestige",
+        shortName: "OLED Sapphire",
+        mode: "dark",
+        desc: "True AMOLED Black & Deep Sapphire",
+        bg: "#000000",
+        card: "#040814",
+        cardAlt: "#02040a",
+        cardTop: "#081026",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#60a5fa",
+        accentHover: "#93c5fd",
+        accentRgb: "96, 165, 250",
+        accentContrast: "#030712",
+        border: "#1e40af",
+        text: "#eff6ff",
+        grad1: "#93c5fd",
+        grad2: "#3b82f6"
+      },
+      {
+        id: "oled-platinum-titanium",
+        name: "OLED Platinum Titanium",
+        shortName: "OLED Platinum",
+        mode: "dark",
+        desc: "True AMOLED Black & Brushed Platinum",
+        bg: "#000000",
+        card: "#0b0c0e",
+        cardAlt: "#050607",
+        cardTop: "#14161a",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#e2e8f0",
+        accentHover: "#ffffff",
+        accentRgb: "226, 232, 240",
+        accentContrast: "#050608",
+        border: "#475569",
+        text: "#f8fafc",
+        grad1: "#ffffff",
+        grad2: "#cbd5e1"
+      },
+      {
+        id: "oled-champagne-pearl",
+        name: "OLED Champagne Pearl",
+        shortName: "OLED Champagne",
+        mode: "dark",
+        desc: "True AMOLED Black & Champagne Silk",
+        bg: "#000000",
+        card: "#0f0d09",
+        cardAlt: "#070604",
+        cardTop: "#19160f",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#f3d5a5",
+        accentHover: "#fae6c3",
+        accentRgb: "243, 213, 165",
+        accentContrast: "#120e07",
+        border: "#785c32",
+        text: "#fef9ec",
+        grad1: "#fae6c3",
+        grad2: "#eab676"
+      },
+      {
+        id: "oled-jade-imperial",
+        name: "OLED Jade Imperial",
+        shortName: "OLED Jade",
+        mode: "dark",
+        desc: "True AMOLED Black & Imperial Jade",
+        bg: "#000000",
+        card: "#040f0b",
+        cardAlt: "#020705",
+        cardTop: "#081c15",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#2dd4bf",
+        accentHover: "#5eead4",
+        accentRgb: "45, 212, 191",
+        accentContrast: "#020c0a",
+        border: "#115e59",
+        text: "#f0fdfa",
+        grad1: "#99f6e4",
+        grad2: "#14b8a6"
+      },
+      {
+        id: "oled-copper-bronze",
+        name: "OLED Copper Sovereign",
+        shortName: "OLED Copper",
+        mode: "dark",
+        desc: "True AMOLED Black & Sovereign Copper",
+        bg: "#000000",
+        card: "#110804",
+        cardAlt: "#080402",
+        cardTop: "#1c0e07",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#fb923c",
+        accentHover: "#fdba74",
+        accentRgb: "251, 146, 60",
+        accentContrast: "#120702",
+        border: "#9a3412",
+        text: "#fff7ed",
+        grad1: "#fed7aa",
+        grad2: "#f97316"
+      },
+      {
+        id: "oled-magenta-velvet",
+        name: "OLED Magenta Velvet",
+        shortName: "OLED Magenta",
+        mode: "dark",
+        desc: "True AMOLED Black & Velvet Magenta",
+        bg: "#000000",
+        card: "#11040e",
+        cardAlt: "#080207",
+        cardTop: "#1d0718",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#f472b6",
+        accentHover: "#f9a8d4",
+        accentRgb: "244, 114, 182",
+        accentContrast: "#14030c",
+        border: "#831843",
+        text: "#fdf2f8",
+        grad1: "#fbcfe8",
+        grad2: "#ec4899"
+      },
+      {
+        id: "oled-cyber-volt",
+        name: "OLED Cyber Volt",
+        shortName: "OLED Volt",
+        mode: "dark",
+        desc: "True AMOLED Black & Electric Volt",
+        bg: "#000000",
+        card: "#090d04",
+        cardAlt: "#040602",
+        cardTop: "#111907",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#bef264",
+        accentHover: "#d9f99d",
+        accentRgb: "190, 242, 100",
+        accentContrast: "#070b02",
+        border: "#4d7c0f",
+        text: "#f7fee7",
+        grad1: "#ecfccb",
+        grad2: "#84cc16"
+      },
+      {
+        id: "oled-obsidian-aurora",
+        name: "OLED Obsidian Aurora",
+        shortName: "OLED Aurora",
+        mode: "dark",
+        desc: "True AMOLED Black & Aurora Mint",
+        bg: "#000000",
+        card: "#040e0c",
+        cardAlt: "#020706",
+        cardTop: "#081a16",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#00ffa3",
+        accentHover: "#66ffc8",
+        accentRgb: "0, 255, 163",
+        accentContrast: "#01120b",
+        border: "#047857",
+        text: "#ecfdf5",
+        grad1: "#6ee7b7",
+        grad2: "#00ffa3"
+      },
+      {
+        id: "oled-phantom-indigo",
+        name: "OLED Phantom Indigo",
+        shortName: "OLED Indigo",
+        mode: "dark",
+        desc: "True AMOLED Black & Phantom Indigo",
+        bg: "#000000",
+        card: "#060612",
+        cardAlt: "#030309",
+        cardTop: "#0b0b21",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#818cf8",
+        accentHover: "#a5b4fc",
+        accentRgb: "129, 140, 248",
+        accentContrast: "#040410",
+        border: "#3730a3",
+        text: "#eef2ff",
+        grad1: "#c7d2fe",
+        grad2: "#6366f1"
+      },
+      {
+        id: "oled-solar-amber",
+        name: "OLED Solar Amber",
+        shortName: "OLED Amber",
+        mode: "dark",
+        desc: "True AMOLED Black & Molten Amber",
+        bg: "#000000",
+        card: "#100a03",
+        cardAlt: "#080501",
+        cardTop: "#1c1205",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#f59e0b",
+        accentHover: "#fbbf24",
+        accentRgb: "245, 158, 11",
+        accentContrast: "#0d0701",
+        border: "#92400e",
+        text: "#fffbeb",
+        grad1: "#fde68a",
+        grad2: "#f59e0b"
+      },
+      {
+        id: "oled-velvet-orchid",
+        name: "OLED Velvet Orchid",
+        shortName: "OLED Orchid",
+        mode: "dark",
+        desc: "True AMOLED Black & Neon Orchid",
+        bg: "#000000",
+        card: "#0e0412",
+        cardAlt: "#070209",
+        cardTop: "#18081f",
+        inputBg: "#000000",
+        headerBg: "rgba(0, 0, 0, 0.94)",
+        footerBg: "rgba(0, 0, 0, 0.92)",
+        accent: "#e879f9",
+        accentHover: "#f0abfc",
+        accentRgb: "232, 121, 249",
+        accentContrast: "#0f0314",
+        border: "#86198f",
+        text: "#fdf4ff",
+        grad1: "#f5d0fe",
+        grad2: "#d946ef"
       }
     ];
 
