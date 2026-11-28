@@ -317,6 +317,99 @@
       animation: progress-line 2s linear infinite;
     }
 
+    /* Animated Black Cyber Canvas Background untuk Halaman Cek Status Service */
+    #homeAnimatedBg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 15%, #071324 0%, #02050a 58%, #000000 100%);
+      overflow: hidden;
+      transition: opacity 0.35s ease;
+    }
+    html.theme-light-mode #homeAnimatedBg {
+      background: radial-gradient(ellipse at 50% 15%, rgba(var(--theme-accent-rgb), 0.14) 0%, #050a12 72%, #000000 100%);
+    }
+    #homeAnimatedBg::before {
+      content: "";
+      position: absolute;
+      inset: -50%;
+      background-image:
+        linear-gradient(rgba(var(--theme-accent-rgb), 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--theme-accent-rgb), 0.06) 1px, transparent 1px);
+      background-size: 46px 46px;
+      transform: perspective(520px) rotateX(60deg) translateY(0);
+      transform-origin: center top;
+      animation: cyberGridScroll 14s linear infinite;
+      opacity: 0.65;
+    }
+    @keyframes cyberGridScroll {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 0 46px;
+      }
+    }
+    .home-cyber-orb {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(75px);
+      opacity: 0.24;
+      background: radial-gradient(circle, rgba(var(--theme-accent-rgb), 0.85) 0%, transparent 70%);
+      animation: orbFloatPulse 9s ease-in-out infinite alternate;
+    }
+    .home-cyber-orb-1 {
+      width: 340px;
+      height: 340px;
+      top: -60px;
+      left: -60px;
+      animation-delay: 0s;
+    }
+    .home-cyber-orb-2 {
+      width: 380px;
+      height: 380px;
+      bottom: -80px;
+      right: -70px;
+      animation-delay: -4.5s;
+    }
+    @keyframes orbFloatPulse {
+      0% {
+        transform: translate(0, 0) scale(0.95);
+        opacity: 0.18;
+      }
+      100% {
+        transform: translate(28px, 22px) scale(1.12);
+        opacity: 0.3;
+      }
+    }
+    .home-scan-beam {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(var(--theme-accent-rgb), 0.15) 25%, rgba(var(--theme-accent-rgb), 0.75) 50%, rgba(var(--theme-accent-rgb), 0.15) 75%, transparent 100%);
+      box-shadow: 0 0 18px rgba(var(--theme-accent-rgb), 0.65);
+      animation: scanBeamSweep 7s ease-in-out infinite;
+      opacity: 0.55;
+    }
+    @keyframes scanBeamSweep {
+      0% {
+        top: -5%;
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.65;
+      }
+      85% {
+        opacity: 0.65;
+      }
+      100% {
+        top: 105%;
+        opacity: 0;
+      }
+    }
+
     /* Cetak Nota Thermal 1 Halaman Terisolasi & Font Tebal */
     #printReceiptArea {
       display: none;
@@ -400,7 +493,15 @@
   </script>
 </head>
 
-<body class="circuit-bg min-h-screen flex flex-col justify-between">
+<body class="circuit-bg min-h-screen flex flex-col justify-between relative">
+
+  <!-- Background Hitam Beranimasi Khusus Halaman Cek Status Service -->
+  <div id="homeAnimatedBg" aria-hidden="true">
+    <div class="home-cyber-orb home-cyber-orb-1"></div>
+    <div class="home-cyber-orb home-cyber-orb-2"></div>
+    <div class="home-scan-beam"></div>
+    <canvas id="homeCyberCanvas" class="w-full h-full block"></canvas>
+  </div>
 
   <!-- Header Toko (Sticky Centered) -->
   <header class="border-b border-neon-border bg-neon-dark/85 backdrop-blur-md sticky top-0 z-40">
@@ -449,7 +550,7 @@
   </header>
 
   <!-- Konten Utama -->
-  <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+  <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full relative z-10">
 
     <!-- SECTION: HOME / CEK STATUS -->
     <section id="tab-home" class="max-w-xl mx-auto space-y-6">
@@ -1469,7 +1570,7 @@
   </div>
 
   <!-- Footer -->
-  <footer class="border-t border-neon-border bg-neon-dark/80 py-4 text-center text-xs text-slate-500 font-orbitron">
+  <footer class="border-t border-neon-border bg-neon-dark/80 py-4 text-center text-xs text-slate-500 font-orbitron relative z-10">
     &copy; 2020 ROVCELL SMARTPHONE. All Rights Reserved.
   </footer>
 
@@ -3584,9 +3685,11 @@
       if (tabId === "home") {
         if (homeEl) homeEl.classList.remove("hidden");
         updateMainNavStyles("home");
+        toggleHomeAnimatedBackground(true);
       } else if (tabId === "login") {
         if (loginEl) loginEl.classList.remove("hidden");
         updateMainNavStyles("admin");
+        toggleHomeAnimatedBackground(false);
       } else if (tabId === "admin") {
         if (!isAdminLoggedIn) {
           switchTab("login");
@@ -3594,6 +3697,7 @@
         }
         if (adminEl) adminEl.classList.remove("hidden");
         updateMainNavStyles("admin");
+        toggleHomeAnimatedBackground(false);
         switchAdminSubTab("input");
         renderAdminTable();
         updateFinancialStats();
@@ -3601,6 +3705,151 @@
       }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+
+    // Engine Animasi Canvas Background Hitam Futuristik (Halaman Cek Status)
+    let homeBgAnimationActive = true;
+    let homeBgRafId = null;
+
+    function toggleHomeAnimatedBackground(isVisible) {
+      const bgEl = document.getElementById("homeAnimatedBg");
+      if (!bgEl) return;
+      homeBgAnimationActive = isVisible;
+      if (isVisible) {
+        bgEl.classList.remove("hidden");
+      } else {
+        bgEl.classList.add("hidden");
+      }
+    }
+
+    function initHomeAnimatedCanvas() {
+      const canvas = document.getElementById("homeCyberCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      let width = 0;
+      let height = 0;
+      let particles = [];
+      let circuitPulses = [];
+
+      function resizeCanvas() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        const count = Math.min(48, Math.max(20, Math.floor((width * height) / 28000)));
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          r: Math.random() * 1.8 + 0.8,
+          phase: Math.random() * Math.PI * 2
+        }));
+      }
+
+      function spawnCircuitPulse() {
+        if (circuitPulses.length >= 6) return;
+        const horizontal = Math.random() > 0.45;
+        circuitPulses.push({
+          x: horizontal ? -40 : Math.random() * width,
+          y: horizontal ? Math.random() * height : -40,
+          vx: horizontal ? (Math.random() * 2.2 + 1.4) : 0,
+          vy: horizontal ? 0 : (Math.random() * 2.2 + 1.4),
+          len: Math.random() * 70 + 45,
+          horizontal
+        });
+      }
+
+      function getAccentRgb() {
+        const val = getComputedStyle(document.documentElement).getPropertyValue("--theme-accent-rgb").trim();
+        return val || "0, 243, 255";
+      }
+
+      function renderFrame() {
+        if (homeBgAnimationActive && !document.hidden) {
+          ctx.clearRect(0, 0, width, height);
+          const rgb = getAccentRgb();
+
+          // Partikel node & garis koneksi cyber
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.phase += 0.03;
+
+            if (p.x < 0) p.x = width;
+            if (p.x > width) p.x = 0;
+            if (p.y < 0) p.y = height;
+            if (p.y > height) p.y = 0;
+
+            const alpha = 0.25 + Math.sin(p.phase) * 0.18;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${rgb}, ${alpha.toFixed(2)})`;
+            ctx.fill();
+
+            for (let j = i + 1; j < particles.length; j++) {
+              const p2 = particles[j];
+              const dx = p.x - p2.x;
+              const dy = p.y - p2.y;
+              const dist = Math.hypot(dx, dy);
+              if (dist < 135) {
+                const lineAlpha = (1 - dist / 135) * 0.18;
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.strokeStyle = `rgba(${rgb}, ${lineAlpha.toFixed(3)})`;
+                ctx.lineWidth = 0.85;
+                ctx.stroke();
+              }
+            }
+          }
+
+          // Kilatan jalur sirkuit (data pulse)
+          if (Math.random() < 0.03) spawnCircuitPulse();
+          for (let i = circuitPulses.length - 1; i >= 0; i--) {
+            const c = circuitPulses[i];
+            c.x += c.vx;
+            c.y += c.vy;
+
+            const grad = c.horizontal
+              ? ctx.createLinearGradient(c.x - c.len, c.y, c.x, c.y)
+              : ctx.createLinearGradient(c.x, c.y - c.len, c.x, c.y);
+            grad.addColorStop(0, `rgba(${rgb}, 0)`);
+            grad.addColorStop(1, `rgba(${rgb}, 0.55)`);
+
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            if (c.horizontal) {
+              ctx.moveTo(c.x - c.len, c.y);
+              ctx.lineTo(c.x, c.y);
+            } else {
+              ctx.moveTo(c.x, c.y - c.len);
+              ctx.lineTo(c.x, c.y);
+            }
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, 2, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${rgb}, 0.85)`;
+            ctx.fill();
+
+            if (c.x - c.len > width || c.y - c.len > height) {
+              circuitPulses.splice(i, 1);
+            }
+          }
+        }
+
+        homeBgRafId = requestAnimationFrame(renderFrame);
+      }
+
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+      if (homeBgRafId) cancelAnimationFrame(homeBgRafId);
+      renderFrame();
+    }
+
+    initHomeAnimatedCanvas();
 
     function switchAdminSubTab(subTab) {
       const tabs = ["input", "list", "finance"];
