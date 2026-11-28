@@ -399,7 +399,7 @@
 
     <!-- SECTION: HOME / CEK STATUS -->
     <section id="tab-home" class="max-w-xl mx-auto space-y-6">
-      <div class="text-center space-y-2.5">
+      <div class="text-center space-y-3">
         <!-- Indikator Animasi Live Time & Sync Berdetak Real-Time -->
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold shadow-sm shadow-emerald-500/10 flex-wrap justify-center">
           <span class="relative flex h-2.5 w-2.5">
@@ -412,7 +412,7 @@
         </div>
 
         <h2 class="font-orbitron text-[22px] sm:text-3xl md:text-4xl font-extrabold text-neon-blue drop-shadow-[0_0_12px_rgba(0,243,255,0.45)] whitespace-nowrap tracking-tight">Lacak Status Service HP</h2>
-        <p class="text-slate-400 text-xs sm:text-sm">Masukkan nomor nota dan PIN 3 digit nomor HP Anda untuk melihat progres perbaikan secara real-time.</p>
+        <p class="text-slate-400 text-xs sm:text-sm max-w-md mx-auto">Masukkan nomor nota dan PIN 3 digit nomor HP Anda untuk melihat progres perbaikan secara real-time.</p>
       </div>
 
       <div class="bg-neon-card p-6 rounded-2xl neon-glow border border-neon-border space-y-4">
@@ -426,7 +426,7 @@
             </div>
             <div class="relative w-full flex items-center">
               <span class="absolute left-4 text-neon-blue font-bold font-orbitron text-sm">ROV-</span>
-              <input type="tel" inputmode="numeric" pattern="[0-9]*" id="searchNotaInput" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="0001" class="w-full bg-neon-dark border border-neon-border rounded-xl pl-16 pr-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-neon-blue">
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" id="searchNotaInput" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="0001" class="w-full bg-neon-dark border border-neon-border rounded-xl pl-16 pr-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-neon-blue transition">
             </div>
           </div>
           <div class="space-y-2">
@@ -435,8 +435,9 @@
           </div>
         </div>
 
-        <button type="button" onclick="searchService()" class="w-full bg-neon-blue text-neon-dark font-bold py-3 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-search"></i> Cek Status Service
+        <button type="button" onclick="searchService()" class="w-full bg-neon-blue text-neon-dark font-bold py-3.5 rounded-xl hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Cek Status Service</span>
         </button>
 
         <!-- Riwayat Pengecekan Cepat -->
@@ -638,7 +639,7 @@
                 <label class="block text-[10px] sm:text-xs font-bold text-neon-blue uppercase tracking-wider truncate"><i class="fa-solid fa-shield-halved mr-1"></i>Garansi</label>
                 <div class="flex flex-col gap-1.5" id="garansiOptions">
                   <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
-                    <input type="radio" name="inputGaransi" value="Tidak ada" class="text-neon-blue focus:ring-0 shrink-0">
+                    <input type="radio" name="inputGaransi" value="Tidak ada" checked class="text-neon-blue focus:ring-0 shrink-0">
                     <span class="truncate">Tidak ada</span>
                   </label>
                   <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
@@ -646,7 +647,7 @@
                     <span class="truncate">1 Minggu</span>
                   </label>
                   <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
-                    <input type="radio" name="inputGaransi" value="1 bulan" checked class="text-neon-blue focus:ring-0 shrink-0">
+                    <input type="radio" name="inputGaransi" value="1 bulan" class="text-neon-blue focus:ring-0 shrink-0">
                     <span class="truncate">1 Bulan</span>
                   </label>
                   <label class="flex items-center space-x-1.5 bg-neon-dark border border-neon-border px-2.5 py-1.5 rounded-lg cursor-pointer hover:border-neon-blue text-[11px] sm:text-xs">
@@ -1482,7 +1483,7 @@
     let cachedPreviousFormAmounts = { modal: "", biaya: "" };
     let activeThemeModeFilter = "all";
 
-    // 50 Pilihan Tema Website Lengkap (38 Dark Mode + 12 Light Mode)
+    // 65 Pilihan Tema Website Lengkap
     const WEBSITE_THEMES = [
       {
         id: "cyber-cyan",
@@ -3708,7 +3709,7 @@
       const isPaid = isStatusCancelled(status) || checking ? false : document.getElementById("inputLunas").checked;
 
       const garansiEl = document.querySelector('input[name="inputGaransi"]:checked');
-      const garansi = garansiEl ? garansiEl.value : "1 bulan";
+      const garansi = garansiEl ? garansiEl.value : "Tidak ada";
       const keterangan = document.getElementById("inputKeterangan").value.trim();
 
       const existingItem = serviceList.find((s) => s.nota === nota);
@@ -5397,19 +5398,22 @@
 
             ${garansiSection}
 
-            <!-- Total Biaya & Status Pembayaran -->
+            <!-- Total Biaya & Status Pembayaran (Tabel Terpisah) -->
             ${cancelled ? `
               <div class="px-3.5 py-2.5 rounded-xl bg-neon-dark/90 border border-red-500/30 flex items-center justify-between gap-2">
-                <span class="text-xs font-semibold text-slate-300">Status</span>
+                <span class="text-xs font-semibold text-slate-300">Status Pembayaran</span>
                 ${paymentBadge}
               </div>
             ` : `
-              <div class="px-3.5 py-2.5 rounded-xl bg-neon-dark/90 border border-cyan-500/30 flex items-center justify-between gap-2">
-                <div class="flex flex-col gap-1">
+              <div class="rounded-xl bg-neon-dark/90 border border-cyan-500/30 divide-y divide-slate-800/80 overflow-hidden">
+                <div class="px-3.5 py-2.5 flex items-center justify-between gap-2">
                   <span class="text-xs font-semibold text-slate-300">Total Biaya</span>
+                  <span class="font-orbitron font-extrabold text-neon-blue text-base sm:text-lg">${checking || found.biaya === "-" ? "-" : `Rp ${parseFormattedNumber(found.biaya).toLocaleString("id-ID")}`}</span>
+                </div>
+                <div class="px-3.5 py-2.5 flex items-center justify-between gap-2">
+                  <span class="text-xs font-semibold text-slate-300">Status Pembayaran</span>
                   <div>${paymentBadge}</div>
                 </div>
-                <span class="font-orbitron font-extrabold text-neon-blue text-base sm:text-lg">${checking || found.biaya === "-" ? "-" : `Rp ${parseFormattedNumber(found.biaya).toLocaleString("id-ID")}`}</span>
               </div>
             `}
 
@@ -5767,9 +5771,13 @@
       const notesSectionHeight = imgCfg.showNotes !== false ? 26 + ketLines.length * 24 : 0;
       const deviceBoxH = topPairHeight + notesSectionHeight;
       const warrantyH = !cancelled && imgCfg.showWarranty !== false && garansiText && garansiText !== "Tidak ada" ? 74 : 0;
-      const costBoxH = 94;
+      const showCostRow = !cancelled && imgCfg.showCost !== false;
+      const showPayRow = imgCfg.showPayment !== false;
+      const costRowH = 56;
+      const payRowH = 56;
+      const costBoxH = cancelled ? payRowH : (showCostRow ? costRowH : 0) + (showPayRow ? payRowH : 0);
       const footerH = 56;
-      const height = 40 + brandBannerH + topBarH + 22 + progressH + 16 + customerBoxH + 16 + deviceBoxH + (warrantyH ? 16 + warrantyH : 0) + 16 + costBoxH + 16 + footerH + 40;
+      const height = 40 + brandBannerH + topBarH + 22 + progressH + 16 + customerBoxH + 16 + deviceBoxH + (warrantyH ? 16 + warrantyH : 0) + (costBoxH ? 16 + costBoxH : 0) + 16 + footerH + 40;
 
       canvas.width = width;
       canvas.height = height;
@@ -6139,61 +6147,83 @@
         curY += warrantyH + 16;
       }
 
-      // Blok Total Biaya & Status Pembayaran
-      drawRoundedRectPath(ctx, innerX, curY, innerW, costBoxH, 16);
-      ctx.fillStyle = palette.panelFill;
-      ctx.fill();
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = cancelled ? "rgba(239, 68, 68, 0.5)" : palette.footerStroke;
-      ctx.stroke();
-
-      ctx.textAlign = "left";
-      ctx.fillStyle = palette.labelText;
-      ctx.font = "700 18px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText(cancelled ? "Status" : "Total Biaya", innerX + 20, curY + 34);
-
-      if (imgCfg.showPayment !== false) {
-        ctx.font = "700 15px 'Plus Jakarta Sans', sans-serif";
-        const payW = Math.max(120, ctx.measureText(paidStatus).width + 26);
-        const payX = innerX + 20;
-        const payY = curY + 46;
-        drawRoundedRectPath(ctx, payX, payY, payW, 32, 16);
-
-        let payBg = isLightCard ? "#fee2e2" : "rgba(239, 68, 68, 0.18)";
-        let payFg = isLightCard ? "#be123c" : "#f87171";
-        let payBd = "rgba(239, 68, 68, 0.45)";
-
-        if (!cancelled && !checking && item.isPaid) {
-          payBg = isLightCard ? "#dcfce7" : "rgba(16, 185, 129, 0.18)";
-          payFg = isLightCard ? "#047857" : "#34d399";
-          payBd = "rgba(16, 185, 129, 0.45)";
-        } else if (!cancelled && checking) {
-          payBg = isLightCard ? "#fef9c3" : "rgba(234, 179, 8, 0.18)";
-          payFg = isLightCard ? "#a16207" : "#facc15";
-          payBd = "rgba(234, 179, 8, 0.45)";
-        }
-
-        ctx.fillStyle = payBg;
+      // Blok Total Biaya & Status Pembayaran (2 Baris Terpisah)
+      if (costBoxH > 0) {
+        drawRoundedRectPath(ctx, innerX, curY, innerW, costBoxH, 16);
+        ctx.fillStyle = palette.panelFill;
         ctx.fill();
-        ctx.lineWidth = 1.2;
-        ctx.strokeStyle = payBd;
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = cancelled ? "rgba(239, 68, 68, 0.5)" : palette.footerStroke;
         ctx.stroke();
 
-        ctx.fillStyle = payFg;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(paidStatus, payX + payW / 2, payY + 17);
-        ctx.textBaseline = "alphabetic";
-      }
+        let boxRowY = curY;
 
-      if (!cancelled && imgCfg.showCost !== false) {
-        ctx.textAlign = "right";
-        ctx.fillStyle = palette.accent;
-        ctx.font = "800 30px Orbitron, sans-serif";
-        ctx.fillText(costDisplay, innerX + innerW - 20, curY + 58);
-      }
+        if (showCostRow) {
+          ctx.textAlign = "left";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = palette.labelText;
+          ctx.font = "700 18px 'Plus Jakarta Sans', sans-serif";
+          ctx.fillText("Total Biaya", innerX + 20, boxRowY + costRowH / 2);
 
-      curY += costBoxH + 16;
+          ctx.textAlign = "right";
+          ctx.fillStyle = palette.accent;
+          ctx.font = "800 25px Orbitron, sans-serif";
+          ctx.fillText(costDisplay, innerX + innerW - 20, boxRowY + costRowH / 2 + 1);
+          ctx.textBaseline = "alphabetic";
+
+          boxRowY += costRowH;
+
+          if (showPayRow) {
+            ctx.beginPath();
+            ctx.moveTo(innerX, boxRowY);
+            ctx.lineTo(innerX + innerW, boxRowY);
+            ctx.strokeStyle = palette.divider;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          }
+        }
+
+        if (showPayRow) {
+          ctx.textAlign = "left";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = palette.labelText;
+          ctx.font = "700 18px 'Plus Jakarta Sans', sans-serif";
+          ctx.fillText("Status Pembayaran", innerX + 20, boxRowY + payRowH / 2);
+
+          ctx.font = "700 15px 'Plus Jakarta Sans', sans-serif";
+          const payW = Math.max(132, ctx.measureText(paidStatus).width + 28);
+          const payX = innerX + innerW - 20 - payW;
+          const payY = boxRowY + (payRowH - 32) / 2;
+          drawRoundedRectPath(ctx, payX, payY, payW, 32, 16);
+
+          let payBg = isLightCard ? "#fee2e2" : "rgba(239, 68, 68, 0.18)";
+          let payFg = isLightCard ? "#be123c" : "#f87171";
+          let payBd = "rgba(239, 68, 68, 0.45)";
+
+          if (!cancelled && !checking && item.isPaid) {
+            payBg = isLightCard ? "#dcfce7" : "rgba(16, 185, 129, 0.18)";
+            payFg = isLightCard ? "#047857" : "#34d399";
+            payBd = "rgba(16, 185, 129, 0.45)";
+          } else if (!cancelled && checking) {
+            payBg = isLightCard ? "#fef9c3" : "rgba(234, 179, 8, 0.18)";
+            payFg = isLightCard ? "#a16207" : "#facc15";
+            payBd = "rgba(234, 179, 8, 0.45)";
+          }
+
+          ctx.fillStyle = payBg;
+          ctx.fill();
+          ctx.lineWidth = 1.2;
+          ctx.strokeStyle = payBd;
+          ctx.stroke();
+
+          ctx.fillStyle = payFg;
+          ctx.textAlign = "center";
+          ctx.fillText(paidStatus, payX + payW / 2, payY + 17);
+          ctx.textBaseline = "alphabetic";
+        }
+
+        curY += costBoxH + 16;
+      }
 
       // Footer Bar
       drawRoundedRectPath(ctx, innerX, curY, innerW, footerH, 14);
